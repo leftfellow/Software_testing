@@ -1,0 +1,63 @@
+        -:    0:Source:/Users/maxbazarov/Documents/Software_testing/ctest/app/myfunc.c
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/__/app/myfunc.c.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/__/app/myfunc.c.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include <stdio.h>
+        -:    3:#include <stdlib.h>
+        -:    4:#include "myfunc.h"
+        -:    5:
+function myfunc called 2 returned 100% blocks executed 100%
+        2:    6:int myfunc(int b) {
+        2:    7:    char *buffer = malloc(sizeof(char) * 1000);
+        2:    8:    buffer [0] = b + 4;
+        -:    9:    // здесь должен ругаться sonarcloud, т.к. утечка памяти
+        2:   10:    return buffer[0];
+        2:   10-block  0
+        -:   11:}
+        -:   12:
+        -:   13:int val;
+        -:   14:
+function fibonachi called 7 returned 100% blocks executed 100%
+        7:   15:int fibonachi(int num) {
+        7:   16:    int prev = 1;
+        7:   17:    int next = 1;
+        -:   18:
+        7:   19:    if (num < 0)
+        7:   19-block  0
+branch  0 taken 6
+branch  1 taken 1
+        1:   20:        return 0;
+        1:   20-block  0
+        -:   21:
+        6:   22:    if (num <= 2)
+        6:   22-block  0
+branch  0 taken 3
+branch  1 taken 3
+        3:   23:        return num;
+        3:   23-block  0
+        -:   24:
+        3:   25:    int i = 2;
+       21:   26:    while (i < num) {
+        3:   26-block  0
+       21:   26-block  1
+branch  0 taken 18
+branch  1 taken 3
+       18:   26-block  2
+       18:   27:        next += prev;
+       18:   28:        prev = next - prev;
+       18:   29:        i++;
+        -:   30:    }
+        -:   31:
+        3:   32:    return next;
+        3:   32-block  0
+        7:   33:}
+        7:   33-block  0
+        -:   34:
+function printStdoutMessages called 2 returned 100% blocks executed 100%
+        2:   35:void printStdoutMessages() {
+        2:   36:    printf("This is a test message from myfunc.c\n");
+        2:   37:    printf("Do not disturb\n");
+        2:   38:}
+        2:   38-block  0

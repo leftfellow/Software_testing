@@ -1,0 +1,1217 @@
+        -:    0:Source:/Users/maxbazarov/Documents/Software_testing/ctest/tests/googletest/googletest/include/gtest/gtest-matchers.h
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// Copyright 2007, Google Inc.
+        -:    2:// All rights reserved.
+        -:    3://
+        -:    4:// Redistribution and use in source and binary forms, with or without
+        -:    5:// modification, are permitted provided that the following conditions are
+        -:    6:// met:
+        -:    7://
+        -:    8://     * Redistributions of source code must retain the above copyright
+        -:    9:// notice, this list of conditions and the following disclaimer.
+        -:   10://     * Redistributions in binary form must reproduce the above
+        -:   11:// copyright notice, this list of conditions and the following disclaimer
+        -:   12:// in the documentation and/or other materials provided with the
+        -:   13:// distribution.
+        -:   14://     * Neither the name of Google Inc. nor the names of its
+        -:   15:// contributors may be used to endorse or promote products derived from
+        -:   16:// this software without specific prior written permission.
+        -:   17://
+        -:   18:// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        -:   19:// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        -:   20:// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        -:   21:// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        -:   22:// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        -:   23:// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        -:   24:// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        -:   25:// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+        -:   26:// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        -:   27:// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        -:   28:// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        -:   29:
+        -:   30:// The Google C++ Testing and Mocking Framework (Google Test)
+        -:   31://
+        -:   32:// This file implements just enough of the matcher interface to allow
+        -:   33:// EXPECT_DEATH and friends to accept a matcher argument.
+        -:   34:
+        -:   35:// IWYU pragma: private, include "gtest/gtest.h"
+        -:   36:// IWYU pragma: friend gtest/.*
+        -:   37:// IWYU pragma: friend gmock/.*
+        -:   38:
+        -:   39:#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
+        -:   40:#define GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
+        -:   41:
+        -:   42:#include <atomic>
+        -:   43:#include <memory>
+        -:   44:#include <ostream>
+        -:   45:#include <string>
+        -:   46:#include <type_traits>
+        -:   47:
+        -:   48:#include "gtest/gtest-printers.h"
+        -:   49:#include "gtest/internal/gtest-internal.h"
+        -:   50:#include "gtest/internal/gtest-port.h"
+        -:   51:
+        -:   52:// MSVC warning C5046 is new as of VS2017 version 15.8.
+        -:   53:#if defined(_MSC_VER) && _MSC_VER >= 1915
+        -:   54:#define GTEST_MAYBE_5046_ 5046
+        -:   55:#else
+        -:   56:#define GTEST_MAYBE_5046_
+        -:   57:#endif
+        -:   58:
+        -:   59:GTEST_DISABLE_MSC_WARNINGS_PUSH_(
+        -:   60:    4251 GTEST_MAYBE_5046_ /* class A needs to have dll-interface to be used by
+        -:   61:                              clients of class B */
+        -:   62:    /* Symbol involving type with internal linkage not defined */)
+        -:   63:
+        -:   64:namespace testing {
+        -:   65:
+        -:   66:// To implement a matcher Foo for type T, define:
+        -:   67://   1. a class FooMatcherMatcher that implements the matcher interface:
+        -:   68://     using is_gtest_matcher = void;
+        -:   69://     bool MatchAndExplain(const T&, std::ostream*);
+        -:   70://       (MatchResultListener* can also be used instead of std::ostream*)
+        -:   71://     void DescribeTo(std::ostream*);
+        -:   72://     void DescribeNegationTo(std::ostream*);
+        -:   73://
+        -:   74://   2. a factory function that creates a Matcher<T> object from a
+        -:   75://      FooMatcherMatcher.
+        -:   76:
+        -:   77:class MatchResultListener {
+        -:   78: public:
+        -:   79:  // Creates a listener object with the given underlying ostream.  The
+        -:   80:  // listener does not own the ostream, and does not dereference it
+        -:   81:  // in the constructor or destructor.
+function _ZN7testing19MatchResultListenerC2EPNSt3__113basic_ostreamIcNS1_11char_traitsIcEEEE called 0 returned 0% blocks executed 0%
+    #####:   82:  explicit MatchResultListener(::std::ostream* os) : stream_(os) {}
+    $$$$$:   82-block  0
+        -:   83:  virtual ~MatchResultListener() = 0;  // Makes this class abstract.
+        -:   84:
+        -:   85:  // Streams x to the underlying ostream; does nothing if the ostream
+        -:   86:  // is NULL.
+        -:   87:  template <typename T>
+        -:   88:  MatchResultListener& operator<<(const T& x) {
+        -:   89:    if (stream_ != nullptr) *stream_ << x;
+        -:   90:    return *this;
+        -:   91:  }
+        -:   92:
+        -:   93:  // Returns the underlying ostream.
+function _ZN7testing19MatchResultListener6streamEv called 0 returned 0% blocks executed 0%
+    #####:   94:  ::std::ostream* stream() { return stream_; }
+    $$$$$:   94-block  0
+        -:   95:
+        -:   96:  // Returns true if and only if the listener is interested in an explanation
+        -:   97:  // of the match result.  A matcher's MatchAndExplain() method can use
+        -:   98:  // this information to avoid generating the explanation when no one
+        -:   99:  // intends to hear it.
+        -:  100:  bool IsInterested() const { return stream_ != nullptr; }
+        -:  101:
+        -:  102: private:
+        -:  103:  ::std::ostream* const stream_;
+        -:  104:
+        -:  105:  GTEST_DISALLOW_COPY_AND_ASSIGN_(MatchResultListener);
+        -:  106:};
+        -:  107:
+function _ZN7testing19MatchResultListenerD2Ev called 0 returned 0% blocks executed 0%
+    #####:  108:inline MatchResultListener::~MatchResultListener() {
+    #####:  109:}
+    $$$$$:  109-block  0
+        -:  110:
+        -:  111:// An instance of a subclass of this knows how to describe itself as a
+        -:  112:// matcher.
+function _ZN7testing25MatcherDescriberInterfaceC2Ev called 0 returned 0% blocks executed 0%
+        -:  113:class GTEST_API_ MatcherDescriberInterface {
+        -:  114: public:
+function _ZN7testing25MatcherDescriberInterfaceD1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing25MatcherDescriberInterfaceD0Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing25MatcherDescriberInterfaceD2Ev called 0 returned 0% blocks executed 0%
+    #####:  115:  virtual ~MatcherDescriberInterface() {}
+    $$$$$:  115-block  0
+    $$$$$:  115-block  1
+    $$$$$:  115-block  2
+        -:  116:
+        -:  117:  // Describes this matcher to an ostream.  The function should print
+        -:  118:  // a verb phrase that describes the property a value matching this
+        -:  119:  // matcher should have.  The subject of the verb phrase is the value
+        -:  120:  // being matched.  For example, the DescribeTo() method of the Gt(7)
+        -:  121:  // matcher prints "is greater than 7".
+        -:  122:  virtual void DescribeTo(::std::ostream* os) const = 0;
+        -:  123:
+        -:  124:  // Describes the negation of this matcher to an ostream.  For
+        -:  125:  // example, if the description of this matcher is "is greater than
+        -:  126:  // 7", the negated description could be "is not greater than 7".
+        -:  127:  // You are not required to override this when implementing
+        -:  128:  // MatcherInterface, but it is highly advised so that your matcher
+        -:  129:  // can produce good error messages.
+function _ZNK7testing25MatcherDescriberInterface18DescribeNegationToEPNSt3__113basic_ostreamIcNS1_11char_traitsIcEEEE called 0 returned 0% blocks executed 0%
+    #####:  130:  virtual void DescribeNegationTo(::std::ostream* os) const {
+    #####:  131:    *os << "not (";
+    #####:  132:    DescribeTo(os);
+    #####:  133:    *os << ")";
+    #####:  134:  }
+    $$$$$:  134-block  0
+        -:  135:};
+        -:  136:
+        -:  137:// The implementation of a matcher.
+        -:  138:template <typename T>
+        -:  139:class MatcherInterface : public MatcherDescriberInterface {
+        -:  140: public:
+        -:  141:  // Returns true if and only if the matcher matches x; also explains the
+        -:  142:  // match result to 'listener' if necessary (see the next paragraph), in
+        -:  143:  // the form of a non-restrictive relative clause ("which ...",
+        -:  144:  // "whose ...", etc) that describes x.  For example, the
+        -:  145:  // MatchAndExplain() method of the Pointee(...) matcher should
+        -:  146:  // generate an explanation like "which points to ...".
+        -:  147:  //
+        -:  148:  // Implementations of MatchAndExplain() should add an explanation of
+        -:  149:  // the match result *if and only if* they can provide additional
+        -:  150:  // information that's not already present (or not obvious) in the
+        -:  151:  // print-out of x and the matcher's description.  Whether the match
+        -:  152:  // succeeds is not a factor in deciding whether an explanation is
+        -:  153:  // needed, as sometimes the caller needs to print a failure message
+        -:  154:  // when the match succeeds (e.g. when the matcher is used inside
+        -:  155:  // Not()).
+        -:  156:  //
+        -:  157:  // For example, a "has at least 10 elements" matcher should explain
+        -:  158:  // what the actual element count is, regardless of the match result,
+        -:  159:  // as it is useful information to the reader; on the other hand, an
+        -:  160:  // "is empty" matcher probably only needs to explain what the actual
+        -:  161:  // size is when the match fails, as it's redundant to say that the
+        -:  162:  // size is 0 when the value is already known to be empty.
+        -:  163:  //
+        -:  164:  // You should override this method when defining a new matcher.
+        -:  165:  //
+        -:  166:  // It's the responsibility of the caller (Google Test) to guarantee
+        -:  167:  // that 'listener' is not NULL.  This helps to simplify a matcher's
+        -:  168:  // implementation when it doesn't care about the performance, as it
+        -:  169:  // can talk to 'listener' without checking its validity first.
+        -:  170:  // However, in order to implement dummy listeners efficiently,
+        -:  171:  // listener->stream() may be NULL.
+        -:  172:  virtual bool MatchAndExplain(T x, MatchResultListener* listener) const = 0;
+        -:  173:
+        -:  174:  // Inherits these methods from MatcherDescriberInterface:
+        -:  175:  //   virtual void DescribeTo(::std::ostream* os) const = 0;
+        -:  176:  //   virtual void DescribeNegationTo(::std::ostream* os) const;
+        -:  177:};
+        -:  178:
+        -:  179:namespace internal {
+        -:  180:
+        -:  181:struct AnyEq {
+        -:  182:  template <typename A, typename B>
+function _ZNK7testing8internal5AnyEqclINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEES9_EEbRKT_RKT0_ called 0 returned 0% blocks executed 0%
+    #####:  183:  bool operator()(const A& a, const B& b) const { return a == b; }
+    $$$$$:  183-block  0
+        -:  184:};
+        -:  185:struct AnyNe {
+        -:  186:  template <typename A, typename B>
+        -:  187:  bool operator()(const A& a, const B& b) const { return a != b; }
+        -:  188:};
+        -:  189:struct AnyLt {
+        -:  190:  template <typename A, typename B>
+        -:  191:  bool operator()(const A& a, const B& b) const { return a < b; }
+        -:  192:};
+        -:  193:struct AnyGt {
+        -:  194:  template <typename A, typename B>
+        -:  195:  bool operator()(const A& a, const B& b) const { return a > b; }
+        -:  196:};
+        -:  197:struct AnyLe {
+        -:  198:  template <typename A, typename B>
+        -:  199:  bool operator()(const A& a, const B& b) const { return a <= b; }
+        -:  200:};
+        -:  201:struct AnyGe {
+        -:  202:  template <typename A, typename B>
+        -:  203:  bool operator()(const A& a, const B& b) const { return a >= b; }
+        -:  204:};
+        -:  205:
+        -:  206:// A match result listener that ignores the explanation.
+function _ZN7testing8internal24DummyMatchResultListenerD1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal24DummyMatchResultListenerD0Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal24DummyMatchResultListenerD2Ev called 0 returned 0% blocks executed 0%
+        -:  207:class DummyMatchResultListener : public MatchResultListener {
+        -:  208: public:
+function _ZN7testing8internal24DummyMatchResultListenerC1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal24DummyMatchResultListenerC2Ev called 0 returned 0% blocks executed 0%
+    #####:  209:  DummyMatchResultListener() : MatchResultListener(nullptr) {}
+    $$$$$:  209-block  0
+    $$$$$:  209-block  1
+        -:  210:
+        -:  211: private:
+        -:  212:  GTEST_DISALLOW_COPY_AND_ASSIGN_(DummyMatchResultListener);
+        -:  213:};
+        -:  214:
+        -:  215:// A match result listener that forwards the explanation to a given
+        -:  216:// ostream.  The difference between this and MatchResultListener is
+        -:  217:// that the former is concrete.
+        -:  218:class StreamMatchResultListener : public MatchResultListener {
+        -:  219: public:
+        -:  220:  explicit StreamMatchResultListener(::std::ostream* os)
+        -:  221:      : MatchResultListener(os) {}
+        -:  222:
+        -:  223: private:
+        -:  224:  GTEST_DISALLOW_COPY_AND_ASSIGN_(StreamMatchResultListener);
+        -:  225:};
+        -:  226:
+function _ZN7testing8internal17SharedPayloadBaseC2Ev called 0 returned 0% blocks executed 0%
+    #####:  227:struct SharedPayloadBase {
+    $$$$$:  227-block  0
+    #####:  228:  std::atomic<int> ref{1};
+        -:  229:  void Ref() { ref.fetch_add(1, std::memory_order_relaxed); }
+function _ZN7testing8internal17SharedPayloadBase5UnrefEv called 0 returned 0% blocks executed 0%
+    #####:  230:  bool Unref() { return ref.fetch_sub(1, std::memory_order_acq_rel) == 1; }
+    $$$$$:  230-block  0
+        -:  231:};
+        -:  232:
+        -:  233:template <typename T>
+function _ZN7testing8internal13SharedPayloadINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal13SharedPayloadINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEED2Ev called 0 returned 0% blocks executed 0%
+        -:  234:struct SharedPayload : SharedPayloadBase {
+        -:  235:  explicit SharedPayload(const T& v) : value(v) {}
+function _ZN7testing8internal13SharedPayloadINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEEC1EOSA_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal13SharedPayloadINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEEC2EOSA_ called 0 returned 0% blocks executed 0%
+    #####:  236:  explicit SharedPayload(T&& v) : value(std::move(v)) {}
+    $$$$$:  236-block  0
+    $$$$$:  236-block  1
+        -:  237:
+function _ZN7testing8internal13SharedPayloadINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEEE7DestroyEPNS0_17SharedPayloadBaseE called 0 returned 0% blocks executed 0%
+    #####:  238:  static void Destroy(SharedPayloadBase* shared) {
+    #####:  239:    delete static_cast<SharedPayload*>(shared);
+    $$$$$:  239-block  0
+    $$$$$:  239-block  1
+    $$$$$:  239-block  2
+    #####:  240:  }
+    $$$$$:  240-block  0
+        -:  241:
+        -:  242:  T value;
+        -:  243:};
+        -:  244:
+        -:  245:// An internal class for implementing Matcher<T>, which will derive
+        -:  246:// from it.  We put functionalities common to all Matcher<T>
+        -:  247:// specializations here to avoid code duplication.
+        -:  248:template <typename T>
+        -:  249:class MatcherBase : private MatcherDescriberInterface {
+        -:  250: public:
+        -:  251:  // Returns true if and only if the matcher matches x; also explains the
+        -:  252:  // match result to 'listener'.
+function _ZNK7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE15MatchAndExplainESA_PNS_19MatchResultListenerE called 0 returned 0% blocks executed 0%
+    #####:  253:  bool MatchAndExplain(const T& x, MatchResultListener* listener) const {
+    #####:  254:    GTEST_CHECK_(vtable_ != nullptr);
+    $$$$$:  254-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  254-block  1
+    $$$$$:  254-block  2
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  254-block  3
+    $$$$$:  254-block  4
+    $$$$$:  254-block  5
+    #####:  255:    return vtable_->match_and_explain(*this, x, listener);
+    $$$$$:  255-block  0
+    #####:  256:  }
+        -:  257:
+        -:  258:  // Returns true if and only if this matcher matches x.
+function _ZNK7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7MatchesESA_ called 0 returned 0% blocks executed 0%
+    #####:  259:  bool Matches(const T& x) const {
+    #####:  260:    DummyMatchResultListener dummy;
+    #####:  261:    return MatchAndExplain(x, &dummy);
+    $$$$$:  261-block  0
+branch  0 never executed
+branch  1 never executed
+    #####:  262:  }
+    $$$$$:  262-block  0
+    $$$$$:  262-block  1
+    $$$$$:  262-block  2
+        -:  263:
+        -:  264:  // Describes this matcher to an ostream.
+function _ZNK7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE10DescribeToEPNS2_13basic_ostreamIcS5_EE called 0 returned 0% blocks executed 0%
+function _ZNK7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE10DescribeToEPNS2_13basic_ostreamIcS5_EE called 0 returned 0% blocks executed 0%
+    #####:  265:  void DescribeTo(::std::ostream* os) const final {
+    #####:  266:    GTEST_CHECK_(vtable_ != nullptr);
+    $$$$$:  266-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  266-block  1
+    $$$$$:  266-block  2
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  266-block  3
+    $$$$$:  266-block  4
+    $$$$$:  266-block  5
+    $$$$$:  266-block  6
+branch  4 never executed
+branch  5 never executed
+    $$$$$:  266-block  7
+    $$$$$:  266-block  8
+branch  6 never executed
+branch  7 never executed
+    $$$$$:  266-block  9
+    $$$$$:  266-block 10
+    $$$$$:  266-block 11
+    #####:  267:    vtable_->describe(*this, os, false);
+    #####:  268:  }
+    $$$$$:  268-block  0
+    $$$$$:  268-block  1
+        -:  269:
+        -:  270:  // Describes the negation of this matcher to an ostream.
+function _ZNK7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE18DescribeNegationToEPNS2_13basic_ostreamIcS5_EE called 0 returned 0% blocks executed 0%
+function _ZNK7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE18DescribeNegationToEPNS2_13basic_ostreamIcS5_EE called 0 returned 0% blocks executed 0%
+    #####:  271:  void DescribeNegationTo(::std::ostream* os) const final {
+    #####:  272:    GTEST_CHECK_(vtable_ != nullptr);
+    $$$$$:  272-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  272-block  1
+    $$$$$:  272-block  2
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  272-block  3
+    $$$$$:  272-block  4
+    $$$$$:  272-block  5
+    $$$$$:  272-block  6
+branch  4 never executed
+branch  5 never executed
+    $$$$$:  272-block  7
+    $$$$$:  272-block  8
+branch  6 never executed
+branch  7 never executed
+    $$$$$:  272-block  9
+    $$$$$:  272-block 10
+    $$$$$:  272-block 11
+    #####:  273:    vtable_->describe(*this, os, true);
+    #####:  274:  }
+    $$$$$:  274-block  0
+    $$$$$:  274-block  1
+        -:  275:
+        -:  276:  // Explains why x matches, or doesn't match, the matcher.
+        -:  277:  void ExplainMatchResultTo(const T& x, ::std::ostream* os) const {
+        -:  278:    StreamMatchResultListener listener(os);
+        -:  279:    MatchAndExplain(x, &listener);
+        -:  280:  }
+        -:  281:
+        -:  282:  // Returns the describer for this matcher object; retains ownership
+        -:  283:  // of the describer, which is only guaranteed to be alive when
+        -:  284:  // this matcher object is alive.
+        -:  285:  const MatcherDescriberInterface* GetDescriber() const {
+        -:  286:    if (vtable_ == nullptr) return nullptr;
+        -:  287:    return vtable_->get_describer(*this);
+        -:  288:  }
+        -:  289:
+        -:  290: protected:
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2Ev called 0 returned 0% blocks executed 0%
+    #####:  291:  MatcherBase() : vtable_(nullptr) {}
+    $$$$$:  291-block  0
+    $$$$$:  291-block  1
+        -:  292:
+        -:  293:  // Constructs a matcher from its implementation.
+        -:  294:  template <typename U>
+        -:  295:  explicit MatcherBase(const MatcherInterface<U>* impl) {
+        -:  296:    Init(impl);
+        -:  297:  }
+        -:  298:
+        -:  299:  template <typename M, typename = typename std::remove_reference<
+        -:  300:                            M>::type::is_gtest_matcher>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2INS0_9EqMatcherIS8_EEvEEOT_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2INS0_9EqMatcherIS8_EEvEEOT_ called 0 returned 0% blocks executed 0%
+    #####:  301:  MatcherBase(M&& m) {  // NOLINT
+    #####:  302:    Init(std::forward<M>(m));
+    $$$$$:  302-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  302-block  1
+branch  2 never executed
+branch  3 never executed
+    #####:  303:  }
+    $$$$$:  303-block  0
+    $$$$$:  303-block  1
+    $$$$$:  303-block  2
+    $$$$$:  303-block  3
+    $$$$$:  303-block  4
+    $$$$$:  303-block  5
+        -:  304:
+        -:  305:  MatcherBase(const MatcherBase& other)
+        -:  306:      : vtable_(other.vtable_), buffer_(other.buffer_) {
+        -:  307:    if (IsShared()) buffer_.shared->Ref();
+        -:  308:  }
+        -:  309:
+        -:  310:  MatcherBase& operator=(const MatcherBase& other) {
+        -:  311:    if (this == &other) return *this;
+        -:  312:    Destroy();
+        -:  313:    vtable_ = other.vtable_;
+        -:  314:    buffer_ = other.buffer_;
+        -:  315:    if (IsShared()) buffer_.shared->Ref();
+        -:  316:    return *this;
+        -:  317:  }
+        -:  318:
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2EOSB_ called 0 returned 0% blocks executed 0%
+    #####:  319:  MatcherBase(MatcherBase&& other)
+    #####:  320:      : vtable_(other.vtable_), buffer_(other.buffer_) {
+    #####:  321:    other.vtable_ = nullptr;
+    #####:  322:  }
+    $$$$$:  322-block  0
+        -:  323:
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEaSEOSB_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEaSEOS9_ called 0 returned 0% blocks executed 0%
+    #####:  324:  MatcherBase& operator=(MatcherBase&& other) {
+    #####:  325:    if (this == &other) return *this;
+    $$$$$:  325-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  325-block  1
+    $$$$$:  325-block  2
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  325-block  3
+    #####:  326:    Destroy();
+    #####:  327:    vtable_ = other.vtable_;
+    #####:  328:    buffer_ = other.buffer_;
+    #####:  329:    other.vtable_ = nullptr;
+    #####:  330:    return *this;
+    $$$$$:  330-block  0
+    $$$$$:  330-block  1
+    #####:  331:  }
+    $$$$$:  331-block  0
+    $$$$$:  331-block  1
+        -:  332:
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev called 0 returned 0% blocks executed 0%
+    #####:  333:  ~MatcherBase() override { Destroy(); }
+    $$$$$:  333-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  333-block  1
+    $$$$$:  333-block  2
+    $$$$$:  333-block  3
+    $$$$$:  333-block  4
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  333-block  5
+    $$$$$:  333-block  6
+    $$$$$:  333-block  7
+    $$$$$:  333-block  8
+    $$$$$:  333-block  9
+    $$$$$:  333-block 10
+    $$$$$:  333-block 11
+        -:  334:
+        -:  335: private:
+        -:  336:  struct VTable {
+        -:  337:    bool (*match_and_explain)(const MatcherBase&, const T&,
+        -:  338:                              MatchResultListener*);
+        -:  339:    void (*describe)(const MatcherBase&, std::ostream*, bool negation);
+        -:  340:    // Returns the captured object if it implements the interface, otherwise
+        -:  341:    // returns the MatcherBase itself.
+        -:  342:    const MatcherDescriberInterface* (*get_describer)(const MatcherBase&);
+        -:  343:    // Called on shared instances when the reference count reaches 0.
+        -:  344:    void (*shared_destroy)(SharedPayloadBase*);
+        -:  345:  };
+        -:  346:
+function _ZNK7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE8IsSharedEv called 0 returned 0% blocks executed 0%
+function _ZNK7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE8IsSharedEv called 0 returned 0% blocks executed 0%
+    #####:  347:  bool IsShared() const {
+    #####:  348:    return vtable_ != nullptr && vtable_->shared_destroy != nullptr;
+    $$$$$:  348-block  0
+    $$$$$:  348-block  1
+    $$$$$:  348-block  2
+    $$$$$:  348-block  3
+    $$$$$:  348-block  4
+    $$$$$:  348-block  5
+    $$$$$:  348-block  6
+    $$$$$:  348-block  7
+        -:  349:  }
+        -:  350:
+        -:  351:  // If the implementation uses a listener, call that.
+        -:  352:  template <typename P>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE19MatchAndExplainImplINSB_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEDTcldtclsrT_3Getfp_E15MatchAndExplainfp0_clptfp1_6streamEEERKSB_SA_PNS_19MatchResultListenerE called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE19MatchAndExplainImplINS9_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEDTcldtclsrT_3Getfp_E15MatchAndExplainfp0_clptfp1_6streamEEERKS9_RKS8_PNS_19MatchResultListenerE called 0 returned 0% blocks executed 0%
+    #####:  353:  static auto MatchAndExplainImpl(const MatcherBase& m, const T& value,
+        -:  354:                                  MatchResultListener* listener)
+        -:  355:      -> decltype(P::Get(m).MatchAndExplain(value, listener->stream())) {
+    #####:  356:    return P::Get(m).MatchAndExplain(value, listener->stream());
+    $$$$$:  356-block  0
+    $$$$$:  356-block  1
+        -:  357:  }
+        -:  358:
+        -:  359:  template <typename P>
+        -:  360:  static auto MatchAndExplainImpl(const MatcherBase& m, const T& value,
+        -:  361:                                  MatchResultListener* listener)
+        -:  362:      -> decltype(P::Get(m).MatchAndExplain(value, listener)) {
+        -:  363:    return P::Get(m).MatchAndExplain(value, listener);
+        -:  364:  }
+        -:  365:
+        -:  366:  template <typename P>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE12DescribeImplINSB_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEvRKSB_PNS2_13basic_ostreamIcS5_EEb called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE12DescribeImplINS9_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEvRKS9_PNS2_13basic_ostreamIcS5_EEb called 0 returned 0% blocks executed 0%
+    #####:  367:  static void DescribeImpl(const MatcherBase& m, std::ostream* os,
+        -:  368:                           bool negation) {
+    #####:  369:    if (negation) {
+    $$$$$:  369-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  369-block  1
+branch  2 never executed
+branch  3 never executed
+    #####:  370:      P::Get(m).DescribeNegationTo(os);
+    #####:  371:    } else {
+    $$$$$:  371-block  0
+    $$$$$:  371-block  1
+    #####:  372:      P::Get(m).DescribeTo(os);
+    $$$$$:  372-block  0
+    $$$$$:  372-block  1
+        -:  373:    }
+    #####:  374:  }
+    $$$$$:  374-block  0
+    $$$$$:  374-block  1
+        -:  375:
+        -:  376:  template <typename P>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE16GetDescriberImplINSB_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEPKNS_25MatcherDescriberInterfaceERKSB_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE16GetDescriberImplINS9_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEPKNS_25MatcherDescriberInterfaceERKS9_ called 0 returned 0% blocks executed 0%
+    #####:  377:  static const MatcherDescriberInterface* GetDescriberImpl(
+        -:  378:      const MatcherBase& m) {
+        -:  379:    // If the impl is a MatcherDescriberInterface, then return it.
+        -:  380:    // Otherwise use MatcherBase itself.
+        -:  381:    // This allows us to implement the GetDescriber() function without support
+        -:  382:    // from the impl, but some users really want to get their impl back when
+        -:  383:    // they call GetDescriber().
+        -:  384:    // We use std::get on a tuple as a workaround of not having `if constexpr`.
+    #####:  385:    return std::get<(
+    $$$$$:  385-block  0
+    $$$$$:  385-block  1
+        -:  386:        std::is_convertible<decltype(&P::Get(m)),
+        -:  387:                            const MatcherDescriberInterface*>::value
+        -:  388:            ? 1
+    #####:  389:            : 0)>(std::make_tuple(&m, &P::Get(m)));
+        -:  390:  }
+        -:  391:
+        -:  392:  template <typename P>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE9GetVTableINSB_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEPKNSB_6VTableEv called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE9GetVTableINS9_11ValuePolicyINS0_9EqMatcherIS8_EELb0EEEEEPKNS9_6VTableEv called 0 returned 0% blocks executed 0%
+    #####:  393:  const VTable* GetVTable() {
+        -:  394:    static constexpr VTable kVTable = {&MatchAndExplainImpl<P>,
+        -:  395:                                       &DescribeImpl<P>, &GetDescriberImpl<P>,
+        -:  396:                                       P::shared_destroy};
+    #####:  397:    return &kVTable;
+    $$$$$:  397-block  0
+    $$$$$:  397-block  1
+        -:  398:  }
+        -:  399:
+        -:  400:  union Buffer {
+        -:  401:    // Add some types to give Buffer some common alignment/size use cases.
+        -:  402:    void* ptr;
+        -:  403:    double d;
+        -:  404:    int64_t i;
+        -:  405:    // And add one for the out-of-line cases.
+        -:  406:    SharedPayloadBase* shared;
+        -:  407:  };
+        -:  408:
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7DestroyEv called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE7DestroyEv called 0 returned 0% blocks executed 0%
+    #####:  409:  void Destroy() {
+    #####:  410:    if (IsShared() && buffer_.shared->Unref()) {
+    $$$$$:  410-block  0
+    $$$$$:  410-block  1
+    $$$$$:  410-block  2
+    $$$$$:  410-block  3
+    $$$$$:  410-block  4
+    $$$$$:  410-block  5
+    $$$$$:  410-block  6
+    $$$$$:  410-block  7
+    #####:  411:      vtable_->shared_destroy(buffer_.shared);
+    #####:  412:    }
+    $$$$$:  412-block  0
+    $$$$$:  412-block  1
+    #####:  413:  }
+    $$$$$:  413-block  0
+    $$$$$:  413-block  1
+        -:  414:
+        -:  415:  template <typename M>
+        -:  416:  static constexpr bool IsInlined() {
+        -:  417:    return sizeof(M) <= sizeof(Buffer) && alignof(M) <= alignof(Buffer) &&
+        -:  418:           std::is_trivially_copy_constructible<M>::value &&
+        -:  419:           std::is_trivially_destructible<M>::value;
+        -:  420:  }
+        -:  421:
+        -:  422:  template <typename M, bool = MatcherBase::IsInlined<M>()>
+        -:  423:  struct ValuePolicy {
+        -:  424:    static const M& Get(const MatcherBase& m) {
+        -:  425:      // When inlined along with Init, need to be explicit to avoid violating
+        -:  426:      // strict aliasing rules.
+        -:  427:      const M *ptr = static_cast<const M*>(
+        -:  428:          static_cast<const void*>(&m.buffer_));
+        -:  429:      return *ptr;
+        -:  430:    }
+        -:  431:    static void Init(MatcherBase& m, M impl) {
+        -:  432:      ::new (static_cast<void*>(&m.buffer_)) M(impl);
+        -:  433:    }
+        -:  434:    static constexpr auto shared_destroy = nullptr;
+        -:  435:  };
+        -:  436:
+        -:  437:  template <typename M>
+        -:  438:  struct ValuePolicy<M, false> {
+        -:  439:    using Shared = SharedPayload<M>;
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11ValuePolicyINS0_9EqMatcherIS8_EELb0EE3GetERKSB_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11ValuePolicyINS0_9EqMatcherIS8_EELb0EE3GetERKS9_ called 0 returned 0% blocks executed 0%
+    #####:  440:    static const M& Get(const MatcherBase& m) {
+    #####:  441:      return static_cast<Shared*>(m.buffer_.shared)->value;
+    $$$$$:  441-block  0
+    $$$$$:  441-block  1
+        -:  442:    }
+        -:  443:    template <typename Arg>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11ValuePolicyINS0_9EqMatcherIS8_EELb0EE4InitISE_EEvRSB_OT_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11ValuePolicyINS0_9EqMatcherIS8_EELb0EE4InitISC_EEvRS9_OT_ called 0 returned 0% blocks executed 0%
+    #####:  444:    static void Init(MatcherBase& m, Arg&& arg) {
+    #####:  445:      m.buffer_.shared = new Shared(std::forward<Arg>(arg));
+    $$$$$:  445-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  445-block  1
+    $$$$$:  445-block  2
+    $$$$$:  445-block  3
+branch  2 never executed
+branch  3 never executed
+    $$$$$:  445-block  4
+    $$$$$:  445-block  5
+    #####:  446:    }
+    $$$$$:  446-block  0
+    $$$$$:  446-block  1
+        -:  447:    static constexpr auto shared_destroy = &Shared::Destroy;
+        -:  448:  };
+        -:  449:
+        -:  450:  template <typename U, bool B>
+        -:  451:  struct ValuePolicy<const MatcherInterface<U>*, B> {
+        -:  452:    using M = const MatcherInterface<U>;
+        -:  453:    using Shared = SharedPayload<std::unique_ptr<M>>;
+        -:  454:    static const M& Get(const MatcherBase& m) {
+        -:  455:      return *static_cast<Shared*>(m.buffer_.shared)->value;
+        -:  456:    }
+        -:  457:    static void Init(MatcherBase& m, M* impl) {
+        -:  458:      m.buffer_.shared = new Shared(std::unique_ptr<M>(impl));
+        -:  459:    }
+        -:  460:
+        -:  461:    static constexpr auto shared_destroy = &Shared::Destroy;
+        -:  462:  };
+        -:  463:
+        -:  464:  template <typename M>
+function _ZN7testing8internal11MatcherBaseIRKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE4InitINS0_9EqMatcherIS8_EEEEvOT_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal11MatcherBaseINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE4InitINS0_9EqMatcherIS8_EEEEvOT_ called 0 returned 0% blocks executed 0%
+    #####:  465:  void Init(M&& m) {
+        -:  466:    using MM = typename std::decay<M>::type;
+        -:  467:    using Policy = ValuePolicy<MM>;
+    #####:  468:    vtable_ = GetVTable<Policy>();
+    #####:  469:    Policy::Init(*this, std::forward<M>(m));
+    #####:  470:  }
+    $$$$$:  470-block  0
+    $$$$$:  470-block  1
+        -:  471:
+        -:  472:  const VTable* vtable_;
+        -:  473:  Buffer buffer_;
+        -:  474:};
+        -:  475:
+        -:  476:}  // namespace internal
+        -:  477:
+        -:  478:// A Matcher<T> is a copyable and IMMUTABLE (except by assignment)
+        -:  479:// object that can check whether a value of type T matches.  The
+        -:  480:// implementation of Matcher<T> is just a std::shared_ptr to const
+        -:  481:// MatcherInterface<T>.  Don't inherit from Matcher!
+        -:  482:template <typename T>
+        -:  483:class Matcher : public internal::MatcherBase<T> {
+        -:  484: public:
+        -:  485:  // Constructs a null matcher.  Needed for storing Matcher objects in STL
+        -:  486:  // containers.  A default-constructed matcher is not yet initialized.  You
+        -:  487:  // cannot use it until a valid value has been assigned to it.
+        -:  488:  explicit Matcher() {}  // NOLINT
+        -:  489:
+        -:  490:  // Constructs a matcher from its implementation.
+        -:  491:  explicit Matcher(const MatcherInterface<const T&>* impl)
+        -:  492:      : internal::MatcherBase<T>(impl) {}
+        -:  493:
+        -:  494:  template <typename U>
+        -:  495:  explicit Matcher(
+        -:  496:      const MatcherInterface<U>* impl,
+        -:  497:      typename std::enable_if<!std::is_same<U, const U&>::value>::type* =
+        -:  498:          nullptr)
+        -:  499:      : internal::MatcherBase<T>(impl) {}
+        -:  500:
+        -:  501:  template <typename M, typename = typename std::remove_reference<
+        -:  502:                            M>::type::is_gtest_matcher>
+        -:  503:  Matcher(M&& m) : internal::MatcherBase<T>(std::forward<M>(m)) {}  // NOLINT
+        -:  504:
+        -:  505:  // Implicit constructor here allows people to write
+        -:  506:  // EXPECT_CALL(foo, Bar(5)) instead of EXPECT_CALL(foo, Bar(Eq(5))) sometimes
+        -:  507:  Matcher(T value);  // NOLINT
+        -:  508:};
+        -:  509:
+        -:  510:// The following two specializations allow the user to write str
+        -:  511:// instead of Eq(str) and "foo" instead of Eq("foo") when a std::string
+        -:  512:// matcher is expected.
+        -:  513:template <>
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC1EOSA_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEaSEOSA_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED0Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC2EOSA_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+        -:  514:class GTEST_API_ Matcher<const std::string&>
+        -:  515:    : public internal::MatcherBase<const std::string&> {
+        -:  516: public:
+        -:  517:  Matcher() {}
+        -:  518:
+        -:  519:  explicit Matcher(const MatcherInterface<const std::string&>* impl)
+        -:  520:      : internal::MatcherBase<const std::string&>(impl) {}
+        -:  521:
+        -:  522:  template <typename M, typename = typename std::remove_reference<
+        -:  523:                            M>::type::is_gtest_matcher>
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC1INS_8internal9EqMatcherIS7_EEvEEOT_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherIRKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC2INS_8internal9EqMatcherIS7_EEvEEOT_ called 0 returned 0% blocks executed 0%
+    #####:  524:  Matcher(M&& m)  // NOLINT
+    #####:  525:      : internal::MatcherBase<const std::string&>(std::forward<M>(m)) {}
+    $$$$$:  525-block  0
+    $$$$$:  525-block  1
+        -:  526:
+        -:  527:  // Allows the user to write str instead of Eq(str) sometimes, where
+        -:  528:  // str is a std::string object.
+        -:  529:  Matcher(const std::string& s);  // NOLINT
+        -:  530:
+        -:  531:  // Allows the user to write "foo" instead of Eq("foo") sometimes.
+        -:  532:  Matcher(const char* s);  // NOLINT
+        -:  533:};
+        -:  534:
+        -:  535:template <>
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEaSEOS8_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED0Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+        -:  536:class GTEST_API_ Matcher<std::string>
+        -:  537:    : public internal::MatcherBase<std::string> {
+        -:  538: public:
+        -:  539:  Matcher() {}
+        -:  540:
+        -:  541:  explicit Matcher(const MatcherInterface<const std::string&>* impl)
+        -:  542:      : internal::MatcherBase<std::string>(impl) {}
+        -:  543:  explicit Matcher(const MatcherInterface<std::string>* impl)
+        -:  544:      : internal::MatcherBase<std::string>(impl) {}
+        -:  545:
+        -:  546:  template <typename M, typename = typename std::remove_reference<
+        -:  547:                            M>::type::is_gtest_matcher>
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC1INS_8internal9EqMatcherIS7_EEvEEOT_ called 0 returned 0% blocks executed 0%
+function _ZN7testing7MatcherINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEC2INS_8internal9EqMatcherIS7_EEvEEOT_ called 0 returned 0% blocks executed 0%
+    #####:  548:  Matcher(M&& m)  // NOLINT
+    #####:  549:      : internal::MatcherBase<std::string>(std::forward<M>(m)) {}
+    $$$$$:  549-block  0
+    $$$$$:  549-block  1
+        -:  550:
+        -:  551:  // Allows the user to write str instead of Eq(str) sometimes, where
+        -:  552:  // str is a string object.
+        -:  553:  Matcher(const std::string& s);  // NOLINT
+        -:  554:
+        -:  555:  // Allows the user to write "foo" instead of Eq("foo") sometimes.
+        -:  556:  Matcher(const char* s);  // NOLINT
+        -:  557:};
+        -:  558:
+        -:  559:#if GTEST_INTERNAL_HAS_STRING_VIEW
+        -:  560:// The following two specializations allow the user to write str
+        -:  561:// instead of Eq(str) and "foo" instead of Eq("foo") when a absl::string_view
+        -:  562:// matcher is expected.
+        -:  563:template <>
+        -:  564:class GTEST_API_ Matcher<const internal::StringView&>
+        -:  565:    : public internal::MatcherBase<const internal::StringView&> {
+        -:  566: public:
+        -:  567:  Matcher() {}
+        -:  568:
+        -:  569:  explicit Matcher(const MatcherInterface<const internal::StringView&>* impl)
+        -:  570:      : internal::MatcherBase<const internal::StringView&>(impl) {}
+        -:  571:
+        -:  572:  template <typename M, typename = typename std::remove_reference<
+        -:  573:                            M>::type::is_gtest_matcher>
+        -:  574:  Matcher(M&& m)  // NOLINT
+        -:  575:      : internal::MatcherBase<const internal::StringView&>(std::forward<M>(m)) {
+        -:  576:  }
+        -:  577:
+        -:  578:  // Allows the user to write str instead of Eq(str) sometimes, where
+        -:  579:  // str is a std::string object.
+        -:  580:  Matcher(const std::string& s);  // NOLINT
+        -:  581:
+        -:  582:  // Allows the user to write "foo" instead of Eq("foo") sometimes.
+        -:  583:  Matcher(const char* s);  // NOLINT
+        -:  584:
+        -:  585:  // Allows the user to pass absl::string_views or std::string_views directly.
+        -:  586:  Matcher(internal::StringView s);  // NOLINT
+        -:  587:};
+        -:  588:
+        -:  589:template <>
+        -:  590:class GTEST_API_ Matcher<internal::StringView>
+        -:  591:    : public internal::MatcherBase<internal::StringView> {
+        -:  592: public:
+        -:  593:  Matcher() {}
+        -:  594:
+        -:  595:  explicit Matcher(const MatcherInterface<const internal::StringView&>* impl)
+        -:  596:      : internal::MatcherBase<internal::StringView>(impl) {}
+        -:  597:  explicit Matcher(const MatcherInterface<internal::StringView>* impl)
+        -:  598:      : internal::MatcherBase<internal::StringView>(impl) {}
+        -:  599:
+        -:  600:  template <typename M, typename = typename std::remove_reference<
+        -:  601:                            M>::type::is_gtest_matcher>
+        -:  602:  Matcher(M&& m)  // NOLINT
+        -:  603:      : internal::MatcherBase<internal::StringView>(std::forward<M>(m)) {}
+        -:  604:
+        -:  605:  // Allows the user to write str instead of Eq(str) sometimes, where
+        -:  606:  // str is a std::string object.
+        -:  607:  Matcher(const std::string& s);  // NOLINT
+        -:  608:
+        -:  609:  // Allows the user to write "foo" instead of Eq("foo") sometimes.
+        -:  610:  Matcher(const char* s);  // NOLINT
+        -:  611:
+        -:  612:  // Allows the user to pass absl::string_views or std::string_views directly.
+        -:  613:  Matcher(internal::StringView s);  // NOLINT
+        -:  614:};
+        -:  615:#endif  // GTEST_INTERNAL_HAS_STRING_VIEW
+        -:  616:
+        -:  617:// Prints a matcher in a human-readable format.
+        -:  618:template <typename T>
+        -:  619:std::ostream& operator<<(std::ostream& os, const Matcher<T>& matcher) {
+        -:  620:  matcher.DescribeTo(&os);
+        -:  621:  return os;
+        -:  622:}
+        -:  623:
+        -:  624:// The PolymorphicMatcher class template makes it easy to implement a
+        -:  625:// polymorphic matcher (i.e. a matcher that can match values of more
+        -:  626:// than one type, e.g. Eq(n) and NotNull()).
+        -:  627://
+        -:  628:// To define a polymorphic matcher, a user should provide an Impl
+        -:  629:// class that has a DescribeTo() method and a DescribeNegationTo()
+        -:  630:// method, and define a member function (or member function template)
+        -:  631://
+        -:  632://   bool MatchAndExplain(const Value& value,
+        -:  633://                        MatchResultListener* listener) const;
+        -:  634://
+        -:  635:// See the definition of NotNull() for a complete example.
+        -:  636:template <class Impl>
+        -:  637:class PolymorphicMatcher {
+        -:  638: public:
+        -:  639:  explicit PolymorphicMatcher(const Impl& an_impl) : impl_(an_impl) {}
+        -:  640:
+        -:  641:  // Returns a mutable reference to the underlying matcher
+        -:  642:  // implementation object.
+        -:  643:  Impl& mutable_impl() { return impl_; }
+        -:  644:
+        -:  645:  // Returns an immutable reference to the underlying matcher
+        -:  646:  // implementation object.
+        -:  647:  const Impl& impl() const { return impl_; }
+        -:  648:
+        -:  649:  template <typename T>
+        -:  650:  operator Matcher<T>() const {
+        -:  651:    return Matcher<T>(new MonomorphicImpl<const T&>(impl_));
+        -:  652:  }
+        -:  653:
+        -:  654: private:
+        -:  655:  template <typename T>
+        -:  656:  class MonomorphicImpl : public MatcherInterface<T> {
+        -:  657:   public:
+        -:  658:    explicit MonomorphicImpl(const Impl& impl) : impl_(impl) {}
+        -:  659:
+        -:  660:    void DescribeTo(::std::ostream* os) const override { impl_.DescribeTo(os); }
+        -:  661:
+        -:  662:    void DescribeNegationTo(::std::ostream* os) const override {
+        -:  663:      impl_.DescribeNegationTo(os);
+        -:  664:    }
+        -:  665:
+        -:  666:    bool MatchAndExplain(T x, MatchResultListener* listener) const override {
+        -:  667:      return impl_.MatchAndExplain(x, listener);
+        -:  668:    }
+        -:  669:
+        -:  670:   private:
+        -:  671:    const Impl impl_;
+        -:  672:  };
+        -:  673:
+        -:  674:  Impl impl_;
+        -:  675:};
+        -:  676:
+        -:  677:// Creates a matcher from its implementation.
+        -:  678:// DEPRECATED: Especially in the generic code, prefer:
+        -:  679://   Matcher<T>(new MyMatcherImpl<const T&>(...));
+        -:  680://
+        -:  681:// MakeMatcher may create a Matcher that accepts its argument by value, which
+        -:  682:// leads to unnecessary copies & lack of support for non-copyable types.
+        -:  683:template <typename T>
+        -:  684:inline Matcher<T> MakeMatcher(const MatcherInterface<T>* impl) {
+        -:  685:  return Matcher<T>(impl);
+        -:  686:}
+        -:  687:
+        -:  688:// Creates a polymorphic matcher from its implementation.  This is
+        -:  689:// easier to use than the PolymorphicMatcher<Impl> constructor as it
+        -:  690:// doesn't require you to explicitly write the template argument, e.g.
+        -:  691://
+        -:  692://   MakePolymorphicMatcher(foo);
+        -:  693:// vs
+        -:  694://   PolymorphicMatcher<TypeOfFoo>(foo);
+        -:  695:template <class Impl>
+        -:  696:inline PolymorphicMatcher<Impl> MakePolymorphicMatcher(const Impl& impl) {
+        -:  697:  return PolymorphicMatcher<Impl>(impl);
+        -:  698:}
+        -:  699:
+        -:  700:namespace internal {
+        -:  701:// Implements a matcher that compares a given value with a
+        -:  702:// pre-supplied value using one of the ==, <=, <, etc, operators.  The
+        -:  703:// two values being compared don't have to have the same type.
+        -:  704://
+        -:  705:// The matcher defined here is polymorphic (for example, Eq(5) can be
+        -:  706:// used to match an int, a short, a double, etc).  Therefore we use
+        -:  707:// a template type conversion operator in the implementation.
+        -:  708://
+        -:  709:// The following template definition assumes that the Rhs parameter is
+        -:  710:// a "bare" type (i.e. neither 'const T' nor 'T&').
+        -:  711:template <typename D, typename Rhs, typename Op>
+function _ZN7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEEC2EOSC_ called 0 returned 0% blocks executed 0%
+        -:  712:class ComparisonBase {
+        -:  713: public:
+function _ZN7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEEC2ERKS9_ called 0 returned 0% blocks executed 0%
+    #####:  714:  explicit ComparisonBase(const Rhs& rhs) : rhs_(rhs) {}
+    $$$$$:  714-block  0
+        -:  715:
+        -:  716:  using is_gtest_matcher = void;
+        -:  717:
+        -:  718:  template <typename Lhs>
+function _ZNK7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEE15MatchAndExplainIS9_EEbRKT_PNS3_13basic_ostreamIcS6_EE called 0 returned 0% blocks executed 0%
+    #####:  719:  bool MatchAndExplain(const Lhs& lhs, std::ostream*) const {
+    #####:  720:    return Op()(lhs, Unwrap(rhs_));
+    $$$$$:  720-block  0
+        -:  721:  }
+function _ZNK7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEE10DescribeToEPNS3_13basic_ostreamIcS6_EE called 0 returned 0% blocks executed 0%
+    #####:  722:  void DescribeTo(std::ostream* os) const {
+    #####:  723:    *os << D::Desc() << " ";
+    #####:  724:    UniversalPrint(Unwrap(rhs_), os);
+    #####:  725:  }
+    $$$$$:  725-block  0
+function _ZNK7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEE18DescribeNegationToEPNS3_13basic_ostreamIcS6_EE called 0 returned 0% blocks executed 0%
+    #####:  726:  void DescribeNegationTo(std::ostream* os) const {
+    #####:  727:    *os << D::NegatedDesc() << " ";
+    #####:  728:    UniversalPrint(Unwrap(rhs_), os);
+    #####:  729:  }
+    $$$$$:  729-block  0
+        -:  730:
+        -:  731: private:
+        -:  732:  template <typename T>
+function _ZN7testing8internal14ComparisonBaseINS0_9EqMatcherINSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEEES9_NS0_5AnyEqEE6UnwrapIS9_EERKT_SG_ called 0 returned 0% blocks executed 0%
+    #####:  733:  static const T& Unwrap(const T& v) {
+    #####:  734:    return v;
+    $$$$$:  734-block  0
+        -:  735:  }
+        -:  736:  template <typename T>
+        -:  737:  static const T& Unwrap(std::reference_wrapper<T> v) {
+        -:  738:    return v;
+        -:  739:  }
+        -:  740:
+        -:  741:  Rhs rhs_;
+        -:  742:};
+        -:  743:
+        -:  744:template <typename Rhs>
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED1Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC1EOS9_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2EOS9_ called 0 returned 0% blocks executed 0%
+        -:  745:class EqMatcher : public ComparisonBase<EqMatcher<Rhs>, Rhs, AnyEq> {
+        -:  746: public:
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC1ERKS8_ called 0 returned 0% blocks executed 0%
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEEC2ERKS8_ called 0 returned 0% blocks executed 0%
+    #####:  747:  explicit EqMatcher(const Rhs& rhs)
+    #####:  748:      : ComparisonBase<EqMatcher<Rhs>, Rhs, AnyEq>(rhs) { }
+    $$$$$:  748-block  0
+    $$$$$:  748-block  1
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE4DescEv called 0 returned 0% blocks executed 0%
+    #####:  749:  static const char* Desc() { return "is equal to"; }
+    $$$$$:  749-block  0
+function _ZN7testing8internal9EqMatcherINSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEE11NegatedDescEv called 0 returned 0% blocks executed 0%
+    #####:  750:  static const char* NegatedDesc() { return "isn't equal to"; }
+    $$$$$:  750-block  0
+        -:  751:};
+        -:  752:template <typename Rhs>
+        -:  753:class NeMatcher : public ComparisonBase<NeMatcher<Rhs>, Rhs, AnyNe> {
+        -:  754: public:
+        -:  755:  explicit NeMatcher(const Rhs& rhs)
+        -:  756:      : ComparisonBase<NeMatcher<Rhs>, Rhs, AnyNe>(rhs) { }
+        -:  757:  static const char* Desc() { return "isn't equal to"; }
+        -:  758:  static const char* NegatedDesc() { return "is equal to"; }
+        -:  759:};
+        -:  760:template <typename Rhs>
+        -:  761:class LtMatcher : public ComparisonBase<LtMatcher<Rhs>, Rhs, AnyLt> {
+        -:  762: public:
+        -:  763:  explicit LtMatcher(const Rhs& rhs)
+        -:  764:      : ComparisonBase<LtMatcher<Rhs>, Rhs, AnyLt>(rhs) { }
+        -:  765:  static const char* Desc() { return "is <"; }
+        -:  766:  static const char* NegatedDesc() { return "isn't <"; }
+        -:  767:};
+        -:  768:template <typename Rhs>
+        -:  769:class GtMatcher : public ComparisonBase<GtMatcher<Rhs>, Rhs, AnyGt> {
+        -:  770: public:
+        -:  771:  explicit GtMatcher(const Rhs& rhs)
+        -:  772:      : ComparisonBase<GtMatcher<Rhs>, Rhs, AnyGt>(rhs) { }
+        -:  773:  static const char* Desc() { return "is >"; }
+        -:  774:  static const char* NegatedDesc() { return "isn't >"; }
+        -:  775:};
+        -:  776:template <typename Rhs>
+        -:  777:class LeMatcher : public ComparisonBase<LeMatcher<Rhs>, Rhs, AnyLe> {
+        -:  778: public:
+        -:  779:  explicit LeMatcher(const Rhs& rhs)
+        -:  780:      : ComparisonBase<LeMatcher<Rhs>, Rhs, AnyLe>(rhs) { }
+        -:  781:  static const char* Desc() { return "is <="; }
+        -:  782:  static const char* NegatedDesc() { return "isn't <="; }
+        -:  783:};
+        -:  784:template <typename Rhs>
+        -:  785:class GeMatcher : public ComparisonBase<GeMatcher<Rhs>, Rhs, AnyGe> {
+        -:  786: public:
+        -:  787:  explicit GeMatcher(const Rhs& rhs)
+        -:  788:      : ComparisonBase<GeMatcher<Rhs>, Rhs, AnyGe>(rhs) { }
+        -:  789:  static const char* Desc() { return "is >="; }
+        -:  790:  static const char* NegatedDesc() { return "isn't >="; }
+        -:  791:};
+        -:  792:
+        -:  793:template <typename T, typename = typename std::enable_if<
+        -:  794:                          std::is_constructible<std::string, T>::value>::type>
+        -:  795:using StringLike = T;
+        -:  796:
+        -:  797:// Implements polymorphic matchers MatchesRegex(regex) and
+        -:  798:// ContainsRegex(regex), which can be used as a Matcher<T> as long as
+        -:  799:// T can be converted to a string.
+        -:  800:class MatchesRegexMatcher {
+        -:  801: public:
+        -:  802:  MatchesRegexMatcher(const RE* regex, bool full_match)
+        -:  803:      : regex_(regex), full_match_(full_match) {}
+        -:  804:
+        -:  805:#if GTEST_INTERNAL_HAS_STRING_VIEW
+        -:  806:  bool MatchAndExplain(const internal::StringView& s,
+        -:  807:                       MatchResultListener* listener) const {
+        -:  808:    return MatchAndExplain(std::string(s), listener);
+        -:  809:  }
+        -:  810:#endif  // GTEST_INTERNAL_HAS_STRING_VIEW
+        -:  811:
+        -:  812:  // Accepts pointer types, particularly:
+        -:  813:  //   const char*
+        -:  814:  //   char*
+        -:  815:  //   const wchar_t*
+        -:  816:  //   wchar_t*
+        -:  817:  template <typename CharType>
+        -:  818:  bool MatchAndExplain(CharType* s, MatchResultListener* listener) const {
+        -:  819:    return s != nullptr && MatchAndExplain(std::string(s), listener);
+        -:  820:  }
+        -:  821:
+        -:  822:  // Matches anything that can convert to std::string.
+        -:  823:  //
+        -:  824:  // This is a template, not just a plain function with const std::string&,
+        -:  825:  // because absl::string_view has some interfering non-explicit constructors.
+        -:  826:  template <class MatcheeStringType>
+        -:  827:  bool MatchAndExplain(const MatcheeStringType& s,
+        -:  828:                       MatchResultListener* /* listener */) const {
+        -:  829:    const std::string& s2(s);
+        -:  830:    return full_match_ ? RE::FullMatch(s2, *regex_)
+        -:  831:                       : RE::PartialMatch(s2, *regex_);
+        -:  832:  }
+        -:  833:
+        -:  834:  void DescribeTo(::std::ostream* os) const {
+        -:  835:    *os << (full_match_ ? "matches" : "contains") << " regular expression ";
+        -:  836:    UniversalPrinter<std::string>::Print(regex_->pattern(), os);
+        -:  837:  }
+        -:  838:
+        -:  839:  void DescribeNegationTo(::std::ostream* os) const {
+        -:  840:    *os << "doesn't " << (full_match_ ? "match" : "contain")
+        -:  841:        << " regular expression ";
+        -:  842:    UniversalPrinter<std::string>::Print(regex_->pattern(), os);
+        -:  843:  }
+        -:  844:
+        -:  845: private:
+        -:  846:  const std::shared_ptr<const RE> regex_;
+        -:  847:  const bool full_match_;
+        -:  848:};
+        -:  849:}  // namespace internal
+        -:  850:
+        -:  851:// Matches a string that fully matches regular expression 'regex'.
+        -:  852:// The matcher takes ownership of 'regex'.
+        -:  853:inline PolymorphicMatcher<internal::MatchesRegexMatcher> MatchesRegex(
+        -:  854:    const internal::RE* regex) {
+        -:  855:  return MakePolymorphicMatcher(internal::MatchesRegexMatcher(regex, true));
+        -:  856:}
+        -:  857:template <typename T = std::string>
+        -:  858:PolymorphicMatcher<internal::MatchesRegexMatcher> MatchesRegex(
+        -:  859:    const internal::StringLike<T>& regex) {
+        -:  860:  return MatchesRegex(new internal::RE(std::string(regex)));
+        -:  861:}
+        -:  862:
+        -:  863:// Matches a string that contains regular expression 'regex'.
+        -:  864:// The matcher takes ownership of 'regex'.
+        -:  865:inline PolymorphicMatcher<internal::MatchesRegexMatcher> ContainsRegex(
+        -:  866:    const internal::RE* regex) {
+        -:  867:  return MakePolymorphicMatcher(internal::MatchesRegexMatcher(regex, false));
+        -:  868:}
+        -:  869:template <typename T = std::string>
+        -:  870:PolymorphicMatcher<internal::MatchesRegexMatcher> ContainsRegex(
+        -:  871:    const internal::StringLike<T>& regex) {
+        -:  872:  return ContainsRegex(new internal::RE(std::string(regex)));
+        -:  873:}
+        -:  874:
+        -:  875:// Creates a polymorphic matcher that matches anything equal to x.
+        -:  876:// Note: if the parameter of Eq() were declared as const T&, Eq("foo")
+        -:  877:// wouldn't compile.
+        -:  878:template <typename T>
+function _ZN7testing2EqINSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEEEENS_8internal9EqMatcherIT_EESA_ called 0 returned 0% blocks executed 0%
+    #####:  879:inline internal::EqMatcher<T> Eq(T x) { return internal::EqMatcher<T>(x); }
+    $$$$$:  879-block  0
+        -:  880:
+        -:  881:// Constructs a Matcher<T> from a 'value' of type T.  The constructed
+        -:  882:// matcher matches any value that's equal to 'value'.
+        -:  883:template <typename T>
+        -:  884:Matcher<T>::Matcher(T value) { *this = Eq(value); }
+        -:  885:
+        -:  886:// Creates a monomorphic matcher that matches anything with type Lhs
+        -:  887:// and equal to rhs.  A user may need to use this instead of Eq(...)
+        -:  888:// in order to resolve an overloading ambiguity.
+        -:  889://
+        -:  890:// TypedEq<T>(x) is just a convenient short-hand for Matcher<T>(Eq(x))
+        -:  891:// or Matcher<T>(x), but more readable than the latter.
+        -:  892://
+        -:  893:// We could define similar monomorphic matchers for other comparison
+        -:  894:// operations (e.g. TypedLt, TypedGe, and etc), but decided not to do
+        -:  895:// it yet as those are used much less than Eq() in practice.  A user
+        -:  896:// can always write Matcher<T>(Lt(5)) to be explicit about the type,
+        -:  897:// for example.
+        -:  898:template <typename Lhs, typename Rhs>
+        -:  899:inline Matcher<Lhs> TypedEq(const Rhs& rhs) { return Eq(rhs); }
+        -:  900:
+        -:  901:// Creates a polymorphic matcher that matches anything >= x.
+        -:  902:template <typename Rhs>
+        -:  903:inline internal::GeMatcher<Rhs> Ge(Rhs x) {
+        -:  904:  return internal::GeMatcher<Rhs>(x);
+        -:  905:}
+        -:  906:
+        -:  907:// Creates a polymorphic matcher that matches anything > x.
+        -:  908:template <typename Rhs>
+        -:  909:inline internal::GtMatcher<Rhs> Gt(Rhs x) {
+        -:  910:  return internal::GtMatcher<Rhs>(x);
+        -:  911:}
+        -:  912:
+        -:  913:// Creates a polymorphic matcher that matches anything <= x.
+        -:  914:template <typename Rhs>
+        -:  915:inline internal::LeMatcher<Rhs> Le(Rhs x) {
+        -:  916:  return internal::LeMatcher<Rhs>(x);
+        -:  917:}
+        -:  918:
+        -:  919:// Creates a polymorphic matcher that matches anything < x.
+        -:  920:template <typename Rhs>
+        -:  921:inline internal::LtMatcher<Rhs> Lt(Rhs x) {
+        -:  922:  return internal::LtMatcher<Rhs>(x);
+        -:  923:}
+        -:  924:
+        -:  925:// Creates a polymorphic matcher that matches anything != x.
+        -:  926:template <typename Rhs>
+        -:  927:inline internal::NeMatcher<Rhs> Ne(Rhs x) {
+        -:  928:  return internal::NeMatcher<Rhs>(x);
+        -:  929:}
+        -:  930:}  // namespace testing
+        -:  931:
+        -:  932:GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251 5046
+        -:  933:
+        -:  934:#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_

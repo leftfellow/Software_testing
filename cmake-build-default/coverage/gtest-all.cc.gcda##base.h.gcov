@@ -1,0 +1,178 @@
+        -:    0:Source:/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__memory/base.h
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// -*- C++ -*-
+        -:    2://===----------------------------------------------------------------------===//
+        -:    3://
+        -:    4:// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+        -:    5:// See https://llvm.org/LICENSE.txt for license information.
+        -:    6:// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+        -:    7://
+        -:    8://===----------------------------------------------------------------------===//
+        -:    9:
+        -:   10:#ifndef _LIBCPP___MEMORY_BASE_H
+        -:   11:#define _LIBCPP___MEMORY_BASE_H
+        -:   12:
+        -:   13:#include <__config>
+        -:   14:#include <__debug>
+        -:   15:#include <type_traits>
+        -:   16:
+        -:   17:#if !defined(_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER)
+        -:   18:#pragma GCC system_header
+        -:   19:#endif
+        -:   20:
+        -:   21:_LIBCPP_PUSH_MACROS
+        -:   22:#include <__undef_macros>
+        -:   23:
+        -:   24:_LIBCPP_BEGIN_NAMESPACE_STD
+        -:   25:
+        -:   26:// addressof
+        -:   27:#ifndef _LIBCPP_HAS_NO_BUILTIN_ADDRESSOF
+        -:   28:
+        -:   29:template <class _Tp>
+        -:   30:inline _LIBCPP_CONSTEXPR_AFTER_CXX14
+        -:   31:_LIBCPP_NO_CFI _LIBCPP_INLINE_VISIBILITY
+        -:   32:_Tp*
+function _ZNSt3__1L9addressofINS_6vectorINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS5_IS7_EEEEEEPT_RSA_ called 6 returned 100% blocks executed 100%
+function _ZNSt3__1L9addressofINS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEEEEPT_RSD_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEEEPT_RS7_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_13unordered_setINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS7_EENS_8equal_toIS7_EENS5_IS7_EEEEEEPT_RSE_ called 6 returned 100% blocks executed 100%
+function _ZNSt3__1L9addressofINS_15__tree_end_nodeIPNS_16__tree_node_baseIPvEEEEEEPT_RS7_ called 3 returned 100% blocks executed 100%
+function _ZNSt3__1L9addressofINS_4pairIKNS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEmEEEEPT_RSA_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_12__value_typeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEmEEEEPT_RS9_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIPNS_16__tree_node_baseIPvEEEEPT_RS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_16__list_node_baseINS_4pairIcPKcEEPvEEEEPT_RS8_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_4pairIcPKcEEEEPT_RS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKNS_4pairIcPKcEEEEPT_RS6_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIN7testing12TestPropertyEEEPT_RS3_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_4pairIKNS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEN7testing8internal34TypeParameterizedTestSuiteRegistry30TypeParameterizedTestSuiteInfoEEEEEPT_RSE_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIcEEPT_RS1_ called 1 returned 100% blocks executed 100%
+function _ZNSt3__1L9addressofIKNS_4pairIKNS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEN7testing8internal12CodeLocationEEEEEPT_RSE_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKNS_12__value_typeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEN7testing8internal12CodeLocationEEEEEPT_RSD_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofINS_12__value_typeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEN7testing8internal34TypeParameterizedTestSuiteRegistry30TypeParameterizedTestSuiteInfoEEEEEPT_RSD_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKcEEPT_RS2_ called 494 returned 100% blocks executed 100%
+function _ZNSt3__1L9addressofIKPN7testing9TestSuiteEEEPT_RS5_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKNS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEEEPT_RS8_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKDsEEPT_RS2_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKDiEEPT_RS2_ called 0 returned 0% blocks executed 0%
+function _ZNSt3__1L9addressofIKwEEPT_RS2_ called 0 returned 0% blocks executed 0%
+      510:   33:addressof(_Tp& __x) _NOEXCEPT
+        -:   34:{
+      510:   35:    return __builtin_addressof(__x);
+        6:   35-block  0
+    $$$$$:   35-block  1
+    $$$$$:   35-block  2
+        6:   35-block  3
+        3:   35-block  4
+    $$$$$:   35-block  5
+    $$$$$:   35-block  6
+    $$$$$:   35-block  7
+    $$$$$:   35-block  8
+    $$$$$:   35-block  9
+    $$$$$:   35-block 10
+    $$$$$:   35-block 11
+    $$$$$:   35-block 12
+        1:   35-block 13
+    $$$$$:   35-block 14
+    $$$$$:   35-block 15
+    $$$$$:   35-block 16
+      494:   35-block 17
+    $$$$$:   35-block 18
+    $$$$$:   35-block 19
+    $$$$$:   35-block 20
+    $$$$$:   35-block 21
+    $$$$$:   35-block 22
+        -:   36:}
+        -:   37:
+        -:   38:#else
+        -:   39:
+        -:   40:template <class _Tp>
+        -:   41:inline _LIBCPP_NO_CFI _LIBCPP_INLINE_VISIBILITY
+        -:   42:_Tp*
+        -:   43:addressof(_Tp& __x) _NOEXCEPT
+        -:   44:{
+        -:   45:  return reinterpret_cast<_Tp *>(
+        -:   46:      const_cast<char *>(&reinterpret_cast<const volatile char &>(__x)));
+        -:   47:}
+        -:   48:
+        -:   49:#endif // _LIBCPP_HAS_NO_BUILTIN_ADDRESSOF
+        -:   50:
+        -:   51:#if defined(_LIBCPP_HAS_OBJC_ARC) && !defined(_LIBCPP_PREDEFINED_OBJC_ARC_ADDRESSOF)
+        -:   52:// Objective-C++ Automatic Reference Counting uses qualified pointers
+        -:   53:// that require special addressof() signatures. When
+        -:   54:// _LIBCPP_PREDEFINED_OBJC_ARC_ADDRESSOF is defined, the compiler
+        -:   55:// itself is providing these definitions. Otherwise, we provide them.
+        -:   56:template <class _Tp>
+        -:   57:inline _LIBCPP_INLINE_VISIBILITY
+        -:   58:__strong _Tp*
+        -:   59:addressof(__strong _Tp& __x) _NOEXCEPT
+        -:   60:{
+        -:   61:  return &__x;
+        -:   62:}
+        -:   63:
+        -:   64:#ifdef _LIBCPP_HAS_OBJC_ARC_WEAK
+        -:   65:template <class _Tp>
+        -:   66:inline _LIBCPP_INLINE_VISIBILITY
+        -:   67:__weak _Tp*
+        -:   68:addressof(__weak _Tp& __x) _NOEXCEPT
+        -:   69:{
+        -:   70:  return &__x;
+        -:   71:}
+        -:   72:#endif
+        -:   73:
+        -:   74:template <class _Tp>
+        -:   75:inline _LIBCPP_INLINE_VISIBILITY
+        -:   76:__autoreleasing _Tp*
+        -:   77:addressof(__autoreleasing _Tp& __x) _NOEXCEPT
+        -:   78:{
+        -:   79:  return &__x;
+        -:   80:}
+        -:   81:
+        -:   82:template <class _Tp>
+        -:   83:inline _LIBCPP_INLINE_VISIBILITY
+        -:   84:__unsafe_unretained _Tp*
+        -:   85:addressof(__unsafe_unretained _Tp& __x) _NOEXCEPT
+        -:   86:{
+        -:   87:  return &__x;
+        -:   88:}
+        -:   89:#endif
+        -:   90:
+        -:   91:#if !defined(_LIBCPP_CXX03_LANG)
+        -:   92:template <class _Tp> _Tp* addressof(const _Tp&&) noexcept = delete;
+        -:   93:#endif
+        -:   94:
+        -:   95:// construct_at
+        -:   96:
+        -:   97:#if _LIBCPP_STD_VER > 17
+        -:   98:
+        -:   99:template<class _Tp, class ..._Args, class = decltype(
+        -:  100:    ::new (_VSTD::declval<void*>()) _Tp(_VSTD::declval<_Args>()...)
+        -:  101:)>
+        -:  102:_LIBCPP_INLINE_VISIBILITY
+        -:  103:constexpr _Tp* construct_at(_Tp* __location, _Args&& ...__args) {
+        -:  104:    _LIBCPP_ASSERT(__location, "null pointer given to construct_at");
+        -:  105:    return ::new ((void*)__location) _Tp(_VSTD::forward<_Args>(__args)...);
+        -:  106:}
+        -:  107:
+        -:  108:#endif
+        -:  109:
+        -:  110:// destroy_at
+        -:  111:
+        -:  112:#if _LIBCPP_STD_VER > 14
+        -:  113:
+        -:  114:template <class _Tp>
+        -:  115:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_CONSTEXPR_AFTER_CXX17
+        -:  116:void destroy_at(_Tp* __loc) {
+        -:  117:    _LIBCPP_ASSERT(__loc, "null pointer given to destroy_at");
+        -:  118:    __loc->~_Tp();
+        -:  119:}
+        -:  120:
+        -:  121:#endif
+        -:  122:
+        -:  123:_LIBCPP_END_NAMESPACE_STD
+        -:  124:
+        -:  125:_LIBCPP_POP_MACROS
+        -:  126:
+        -:  127:#endif  // _LIBCPP___MEMORY_BASE_H

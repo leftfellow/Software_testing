@@ -1,0 +1,15 @@
+# ninja log v5
+0	43	1645169710914668765	app/CMakeFiles/ctest.dir/main.c.o	cd54f17c4909d93b
+2	626	1645172073236937500	tests/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o	686c09319c411ad8
+1	51	1645169710923198501	app/CMakeFiles/ctest.dir/myfunc.c.o	dc53482c8dbf423b
+2327	2374	1645172074992662000	lib/libgtest.a	a391932b42526af9
+51	84	1645169710956142941	app/ctest	b34fae653aa66ae9
+1	143	1645172072758637871	tests/CMakeFiles/ctest-tests.dir/__/app/myfunc.c.o	9f00f61fbf058d60
+2	2327	1645172074939813536	tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o	c731373a9e87d222
+1	1119	1645172073733330857	tests/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o	8d97979c204af907
+2375	2388	1645172075005852000	lib/libgtest_main.a	57ee58291f3a73f7
+1	825	1645172073439695793	tests/CMakeFiles/ctest-tests.dir/main.cpp.o	ef61cef961c4093a
+2374	2392	1645172075010273000	lib/libgmock.a	c0a35a07ea56b23f
+6	98	1645172141112283849	tests/ctest-tests	c4a427ba7813841a
+2	455	1645172168128898000	tests/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o	d6f2927078fb88c4
+456	471	1645172168145824000	lib/libgmock_main.a	6f71528c7138e5e1

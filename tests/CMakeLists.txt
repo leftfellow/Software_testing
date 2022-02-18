@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wconversion -Wunreachable-code -W
 set(CMAKE_C_FLAGS "-Wall -Wextra -Wpedantic -Wconversion -Wunreachable-code -Wold-style-cast -fprofile-arcs -ftest-coverage")
 
 include(GoogleTest)
-
+add_subdirectory(googletest)
 set (TESTS
         fibonachi_test.h
         tst_stdout.h
@@ -16,6 +16,8 @@ set (TESTS
         )
 
 include_directories(${PROJECT_NAME} PUBLIC ../app)
+include_directories(${PROJECT_NAME} PUBLIC googletest/googletest/include)
+include_directories(${PROJECT_NAME} PUBLIC googletest/googlemock/include)
 
 set (EXT_HEADERS
 
@@ -33,7 +35,7 @@ add_executable(${PROJECT_NAME} main.cpp ${TESTS} ${EXT_HEADERS} ${EXT_SOURCES})
 target_link_libraries(${PROJECT_NAME} gtest gtest_main gmock pthread)
 
 # оценка покрытия кода тестами
-target_link_libraries(${PROJECT_NAME} gcov)
+#target_link_libraries(${PROJECT_NAME} gcov)
 
 gtest_add_tests(TARGET      ${PROJECT_NAME}
         TEST_SUFFIX .noArgs

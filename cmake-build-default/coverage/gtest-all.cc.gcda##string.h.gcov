@@ -1,0 +1,132 @@
+        -:    0:Source:/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/string.h
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// -*- C++ -*-
+        -:    2://===--------------------------- string.h ---------------------------------===//
+        -:    3://
+        -:    4:// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+        -:    5:// See https://llvm.org/LICENSE.txt for license information.
+        -:    6:// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+        -:    7://
+        -:    8://===----------------------------------------------------------------------===//
+        -:    9:
+        -:   10:#ifndef _LIBCPP_STRING_H
+        -:   11:#define _LIBCPP_STRING_H
+        -:   12:
+        -:   13:/*
+        -:   14:    string.h synopsis
+        -:   15:
+        -:   16:Macros:
+        -:   17:
+        -:   18:    NULL
+        -:   19:
+        -:   20:Types:
+        -:   21:
+        -:   22:    size_t
+        -:   23:
+        -:   24:void* memcpy(void* restrict s1, const void* restrict s2, size_t n);
+        -:   25:void* memmove(void* s1, const void* s2, size_t n);
+        -:   26:char* strcpy (char* restrict s1, const char* restrict s2);
+        -:   27:char* strncpy(char* restrict s1, const char* restrict s2, size_t n);
+        -:   28:char* strcat (char* restrict s1, const char* restrict s2);
+        -:   29:char* strncat(char* restrict s1, const char* restrict s2, size_t n);
+        -:   30:int memcmp(const void* s1, const void* s2, size_t n);
+        -:   31:int strcmp (const char* s1, const char* s2);
+        -:   32:int strncmp(const char* s1, const char* s2, size_t n);
+        -:   33:int strcoll(const char* s1, const char* s2);
+        -:   34:size_t strxfrm(char* restrict s1, const char* restrict s2, size_t n);
+        -:   35:const void* memchr(const void* s, int c, size_t n);
+        -:   36:      void* memchr(      void* s, int c, size_t n);
+        -:   37:const char* strchr(const char* s, int c);
+        -:   38:      char* strchr(      char* s, int c);
+        -:   39:size_t strcspn(const char* s1, const char* s2);
+        -:   40:const char* strpbrk(const char* s1, const char* s2);
+        -:   41:      char* strpbrk(      char* s1, const char* s2);
+        -:   42:const char* strrchr(const char* s, int c);
+        -:   43:      char* strrchr(      char* s, int c);
+        -:   44:size_t strspn(const char* s1, const char* s2);
+        -:   45:const char* strstr(const char* s1, const char* s2);
+        -:   46:      char* strstr(      char* s1, const char* s2);
+        -:   47:char* strtok(char* restrict s1, const char* restrict s2);
+        -:   48:void* memset(void* s, int c, size_t n);
+        -:   49:char* strerror(int errnum);
+        -:   50:size_t strlen(const char* s);
+        -:   51:
+        -:   52:*/
+        -:   53:
+        -:   54:#include <__config>
+        -:   55:
+        -:   56:#if !defined(_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER)
+        -:   57:#pragma GCC system_header
+        -:   58:#endif
+        -:   59:
+        -:   60:// TODO: Temporary workaround for RTKit's libc not checking for the correct
+        -:   61://       cplusplus macro.
+        -:   62:#if defined(__cplusplus)
+        -:   63:# define __cpluplus __cplusplus
+        -:   64:#endif
+        -:   65:
+        -:   66:#include_next <string.h>
+        -:   67:
+        -:   68:// MSVCRT, GNU libc and its derivates may already have the correct prototype in
+        -:   69:// <string.h>. This macro can be defined by users if their C library provides
+        -:   70:// the right signature.
+        -:   71:#if defined(__CORRECT_ISO_CPP_STRING_H_PROTO) || defined(_LIBCPP_MSVCRT) || \
+        -:   72:    defined(__sun__) || defined(_STRING_H_CPLUSPLUS_98_CONFORMANCE_)
+        -:   73:#define _LIBCPP_STRING_H_HAS_CONST_OVERLOADS
+        -:   74:#endif
+        -:   75:
+        -:   76:#if defined(__cplusplus) && !defined(_LIBCPP_STRING_H_HAS_CONST_OVERLOADS) && defined(_LIBCPP_PREFERRED_OVERLOAD)
+        -:   77:extern "C++" {
+        -:   78:inline _LIBCPP_INLINE_VISIBILITY
+function _ZL15__libcpp_strchrPKci called 1 returned 100% blocks executed 100%
+        1:   79:char* __libcpp_strchr(const char* __s, int __c) {return (char*)strchr(__s, __c);}
+        1:   79-block  0
+        -:   80:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+function _ZL6strchrUa9enable_ifIXLb1EEEPKci called 1 returned 100% blocks executed 100%
+        1:   81:const char* strchr(const char* __s, int __c) {return __libcpp_strchr(__s, __c);}
+        1:   81-block  0
+        -:   82:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:   83:      char* strchr(      char* __s, int __c) {return __libcpp_strchr(__s, __c);}
+        -:   84:
+        -:   85:inline _LIBCPP_INLINE_VISIBILITY
+        -:   86:char* __libcpp_strpbrk(const char* __s1, const char* __s2) {return (char*)strpbrk(__s1, __s2);}
+        -:   87:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:   88:const char* strpbrk(const char* __s1, const char* __s2) {return __libcpp_strpbrk(__s1, __s2);}
+        -:   89:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:   90:      char* strpbrk(      char* __s1, const char* __s2) {return __libcpp_strpbrk(__s1, __s2);}
+        -:   91:
+        -:   92:inline _LIBCPP_INLINE_VISIBILITY
+function _ZL16__libcpp_strrchrPKci called 0 returned 0% blocks executed 0%
+    #####:   93:char* __libcpp_strrchr(const char* __s, int __c) {return (char*)strrchr(__s, __c);}
+    $$$$$:   93-block  0
+        -:   94:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+function _ZL7strrchrUa9enable_ifIXLb1EEEPKci called 0 returned 0% blocks executed 0%
+    #####:   95:const char* strrchr(const char* __s, int __c) {return __libcpp_strrchr(__s, __c);}
+    $$$$$:   95-block  0
+        -:   96:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:   97:      char* strrchr(      char* __s, int __c) {return __libcpp_strrchr(__s, __c);}
+        -:   98:
+        -:   99:inline _LIBCPP_INLINE_VISIBILITY
+        -:  100:void* __libcpp_memchr(const void* __s, int __c, size_t __n) {return (void*)memchr(__s, __c, __n);}
+        -:  101:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:  102:const void* memchr(const void* __s, int __c, size_t __n) {return __libcpp_memchr(__s, __c, __n);}
+        -:  103:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:  104:      void* memchr(      void* __s, int __c, size_t __n) {return __libcpp_memchr(__s, __c, __n);}
+        -:  105:
+        -:  106:inline _LIBCPP_INLINE_VISIBILITY
+function _ZL15__libcpp_strstrPKcS0_ called 0 returned 0% blocks executed 0%
+    #####:  107:char* __libcpp_strstr(const char* __s1, const char* __s2) {return (char*)strstr(__s1, __s2);}
+    $$$$$:  107-block  0
+        -:  108:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+function _ZL6strstrUa9enable_ifIXLb1EEEPKcS0_ called 0 returned 0% blocks executed 0%
+    #####:  109:const char* strstr(const char* __s1, const char* __s2) {return __libcpp_strstr(__s1, __s2);}
+    $$$$$:  109-block  0
+        -:  110:inline _LIBCPP_INLINE_VISIBILITY _LIBCPP_PREFERRED_OVERLOAD
+        -:  111:      char* strstr(      char* __s1, const char* __s2) {return __libcpp_strstr(__s1, __s2);}
+        -:  112:}
+        -:  113:#endif
+        -:  114:
+        -:  115:#endif  // _LIBCPP_STRING_H

@@ -1,0 +1,359 @@
+        -:    0:Source:/Users/maxbazarov/Documents/Software_testing/ctest/tests/tst_stdout.h
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#ifndef TST_STDOUT_H
+        -:    2:#define TST_STDOUT_H
+        -:    3:
+        -:    4:#include <gtest/gtest.h>
+        -:    5:
+        -:    6:#include<fstream>
+        -:    7:
+        -:    8:// dup, dup2
+        -:    9:#include <unistd.h>
+        -:   10:
+        -:   11:#include <fcntl.h>
+        -:   12:
+        -:   13:extern "C" {
+        -:   14:#include "myfunc.h"
+        -:   15:}
+        -:   16:
+        -:   17:
+        -:   18:#define MAXLINE 1024
+        -:   19:
+function _ZN26TestStdOut_TestStdOut_Test8TestBodyEv called 1 returned 100% blocks executed 36%
+function _ZN26TestStdOut_TestStdOut_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN26TestStdOut_TestStdOut_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN26TestStdOut_TestStdOut_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN26TestStdOut_TestStdOut_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN26TestStdOut_TestStdOut_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   20:TEST(TestStdOut, TestStdOut) {
+        1:   20-block  0
+        1:   20-block  1
+        1:   20-block  2
+        1:   20-block  3
+        1:   20-block  4
+        -:   21:    // тест проверки вывода на экран нужных фраз с помощью перехвата потока (dup/dup2) и побайтового сравнения результатов
+        -:   22:
+        -:   23:    // запоминаем старый поток вывода
+        1:   24:    int oldOutput = dup(STDOUT_FILENO);
+        -:   25:
+        -:   26:    // открываем файл для записи результата
+        1:   27:    FILE *outFile = fopen("TestStdOut_TestStdOut.out", "wb");
+        -:   28:
+        -:   29:    // проверяем что файл открылся
+        1:   30:    ASSERT_TRUE(outFile != NULL);
+        1:   30-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   30-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   30-block  2
+    $$$$$:   30-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   30-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   30-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   30-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   30-block  7
+    $$$$$:   30-block  8
+    $$$$$:   30-block  9
+    $$$$$:   30-block 10
+        1:   30-block 11
+        1:   30-block 12
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   30-block 13
+    $$$$$:   30-block 14
+        -:   31:
+        -:   32:    // закрываем выходной поток и заменяем его на файл
+        1:   33:    close(STDOUT_FILENO);
+        1:   34:    dup2(fileno(outFile), STDOUT_FILENO);
+        -:   35:
+        -:   36:    // запускаем функцию
+        1:   37:    printStdoutMessages();
+        -:   38:
+        -:   39:    // очищаем выходной поток
+        1:   40:    fflush(stdout);
+        -:   41:
+        -:   42:    // закрываем файл
+        1:   43:    fclose(outFile);
+        -:   44:
+        -:   45:    // возвращаем вывод на место
+        1:   46:    dup2(oldOutput, STDOUT_FILENO);
+        -:   47:
+        -:   48:    // открываем оригинал и результат
+        1:   49:    char *filename = (char *)malloc(sizeof(char) * 1024);
+        1:   50:    sprintf(filename, "%s/TestSTDOut_output.txt", INPUTDIR);
+        1:   51:    int testFd = open("TestStdOut_TestStdOut.out", O_RDONLY);
+        1:   52:    int originFd = open(filename, O_RDONLY);
+        1:   53:    free(filename);
+        -:   54:
+        1:   55:    ASSERT_NE(testFd, -1);
+        1:   55-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   55-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   55-block  2
+    $$$$$:   55-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   55-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   55-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   55-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   55-block  7
+    $$$$$:   55-block  8
+    $$$$$:   55-block  9
+        1:   55-block 10
+        1:   55-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   55-block 12
+        1:   56:    ASSERT_NE(originFd, -1);
+        1:   56-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   56-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   56-block  2
+    $$$$$:   56-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   56-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   56-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   56-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   56-block  7
+    $$$$$:   56-block  8
+    $$$$$:   56-block  9
+        1:   56-block 10
+        1:   56-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   56-block 12
+        -:   57:
+        -:   58:    // подготовка к чтению данных
+        -:   59:    int outputCount;
+        -:   60:    int originCount;
+        -:   61:    char outBuffer[MAXLINE];
+        -:   62:    char originBuffer[MAXLINE];
+        -:   63:
+        1:   64:    do {
+        1:   64-block  0
+        -:   65:        // блоковое чтение данных
+        2:   66:        outputCount = read(testFd, outBuffer, MAXLINE - 1);
+        2:   67:        originCount = read(originFd, originBuffer, MAXLINE - 1);
+        2:   68:        ASSERT_EQ(outputCount, originCount);
+        2:   68-block  0
+branch  0 taken 2
+branch  1 taken 0
+        2:   68-block  1
+branch  2 taken 0
+branch  3 taken 2
+        2:   68-block  2
+    $$$$$:   68-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   68-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   68-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   68-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   68-block  7
+    $$$$$:   68-block  8
+    $$$$$:   68-block  9
+        2:   68-block 10
+        2:   68-block 11
+branch 12 taken 0
+branch 13 taken 2
+    $$$$$:   68-block 12
+       54:   69:        for (int i = 0; i < outputCount; i++) {
+        2:   69-block  0
+       54:   69-block  1
+branch  0 taken 52
+branch  1 taken 2
+       52:   69-block  2
+       52:   70:            ASSERT_EQ(outBuffer[i], originBuffer[i]);
+       52:   70-block  0
+branch  0 taken 52
+branch  1 taken 0
+       52:   70-block  1
+branch  2 taken 0
+branch  3 taken 52
+       52:   70-block  2
+    $$$$$:   70-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   70-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   70-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   70-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   70-block  7
+    $$$$$:   70-block  8
+    $$$$$:   70-block  9
+       52:   70-block 10
+       52:   70-block 11
+branch 12 taken 0
+branch 13 taken 52
+    $$$$$:   70-block 12
+       52:   71:        }
+       52:   71-block  0
+        2:   72:    } while (outputCount > 0);
+        2:   72-block  0
+        2:   72-block  1
+branch  0 taken 1
+branch  1 taken 1
+        -:   73:
+        -:   74:    // все отлично, закрываем
+        1:   75:    close(testFd);
+        1:   76:    close(originFd);
+        1:   77:}
+    $$$$$:   77-block  0
+    $$$$$:   77-block  1
+    $$$$$:   77-block  2
+    $$$$$:   77-block  3
+    $$$$$:   77-block  4
+    $$$$$:   77-block  5
+    $$$$$:   77-block  6
+    $$$$$:   77-block  7
+    $$$$$:   77-block  8
+    $$$$$:   77-block  9
+    $$$$$:   77-block 10
+        1:   77-block 11
+        1:   77-block 12
+        -:   78:
+function _ZN28TestStdOut_usingCapture_Test8TestBodyEv called 1 returned 100% blocks executed 44%
+function _ZN28TestStdOut_usingCapture_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN28TestStdOut_usingCapture_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN28TestStdOut_usingCapture_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN28TestStdOut_usingCapture_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN28TestStdOut_usingCapture_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   79:TEST(TestStdOut, usingCapture) {
+        1:   79-block  0
+        1:   79-block  1
+        1:   79-block  2
+        1:   79-block  3
+        1:   79-block  4
+        -:   80:    // тест проверки вывода на экран нужных фраз с помощью библиотеки STD и gtest Capture
+        -:   81:
+        -:   82:    // подключаем захват вывода
+        1:   83:    testing::internal::CaptureStdout();
+        -:   84:
+        -:   85:    // зпускаем функцию
+        1:   86:    printStdoutMessages();
+        -:   87:
+        -:   88:    //получаем результат
+        1:   89:    std::string output = testing::internal::GetCapturedStdout();
+        -:   90:
+        -:   91:    // читаем ожидаемую строку из файла
+        1:   92:    char *filename = (char *)malloc(sizeof(char) * 1024);
+        1:   92-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   93:    sprintf(filename, "%s/TestSTDOut_output.txt", INPUTDIR);
+        1:   93-block  0
+branch  0 taken 1
+branch  1 taken 0
+        -:   94:
+        1:   95:    std::ifstream f(filename);
+        1:   95-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   96:    free(filename);
+        1:   96-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   97:    std::string content;
+        2:   98:    content.assign( (std::istreambuf_iterator<char>(f) ),
+        1:   98-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   98-block  1
+branch  2 taken 1
+branch  3 taken 0
+        1:   99:                    (std::istreambuf_iterator<char>()    ) );
+        -:  100:
+        -:  101:    // сравниваем значения
+        1:  102:    ASSERT_EQ(output, content);
+        1:  102-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:  102-block  1
+branch  2 taken 1
+branch  3 taken 0
+        1:  102-block  2
+branch  4 taken 0
+branch  5 taken 1
+        1:  102-block  3
+    $$$$$:  102-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:  102-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:  102-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:  102-block  7
+branch 12 never executed
+branch 13 never executed
+    $$$$$:  102-block  8
+    $$$$$:  102-block  9
+    $$$$$:  102-block 10
+        1:  102-block 11
+        1:  102-block 12
+branch 14 taken 1
+branch 15 taken 0
+    $$$$$:  102-block 13
+        1:  103:    f.close();
+        1:  103-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:  104:}
+    $$$$$:  104-block  0
+    $$$$$:  104-block  1
+    $$$$$:  104-block  2
+    $$$$$:  104-block  3
+    $$$$$:  104-block  4
+        1:  104-block  5
+        1:  104-block  6
+branch  0 taken 0
+branch  1 taken 1
+        1:  104-block  7
+    $$$$$:  104-block  8
+    $$$$$:  104-block  9
+    $$$$$:  104-block 10
+    $$$$$:  104-block 11
+        -:  105:
+        -:  106:#endif // TST_STDOUT_H

@@ -1,0 +1,46 @@
+        -:    0:Source:/Users/maxbazarov/Documents/Software_testing/ctest/tests/main.cpp
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "tst_test1.h"
+        -:    2:#include "fibonachi_test.h"
+        -:    3:#include "tst_stdout.h"
+        -:    4:
+        -:    5:#include <gtest/gtest.h>
+        -:    6:
+function main called 1 returned 100% blocks executed 100%
+        1:    7:int main(int argc, char *argv[])
+        -:    8:{
+        2:    9:    ::testing::InitGoogleTest(&argc, argv);
+        1:    9-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:    9-block  1
+branch  2 taken 1
+branch  3 taken 0
+        1:    9-block  2
+branch  4 taken 1
+branch  5 taken 0
+        1:    9-block  3
+branch  6 taken 1
+branch  7 taken 0
+        1:    9-block  4
+branch  8 taken 1
+branch  9 taken 0
+        1:    9-block  5
+branch 10 taken 1
+branch 11 taken 0
+        1:    9-block  6
+branch 12 taken 1
+branch 13 taken 0
+        1:    9-block  7
+    $$$$$:    9-block  8
+    $$$$$:    9-block  9
+    $$$$$:    9-block 10
+    $$$$$:    9-block 11
+    $$$$$:    9-block 12
+    $$$$$:    9-block 13
+        1:   10:    return RUN_ALL_TESTS();
+        1:   10-block  0
+        -:   11:}

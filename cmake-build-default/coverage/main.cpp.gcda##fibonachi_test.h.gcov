@@ -1,0 +1,402 @@
+        -:    0:Source:/Users/maxbazarov/Documents/Software_testing/ctest/tests/fibonachi_test.h
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/CMakeFiles/ctest-tests.dir/main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#ifndef FIBONACHI_H
+        -:    2:#define FIBONACHI_H
+        -:    3:
+        -:    4:#include <gtest/gtest.h>
+        -:    5:
+        -:    6:#include <fcntl.h>
+        -:    7:#include <errno.h>
+        -:    8:#include <unistd.h>
+        -:    9:
+        -:   10:extern "C" {
+        -:   11:#include "myfunc.h"
+        -:   12:}
+        -:   13:
+function _ZN23fibonachiTest_num0_Test8TestBodyEv called 1 returned 100% blocks executed 30%
+function _ZN23fibonachiTest_num0_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN23fibonachiTest_num0_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN23fibonachiTest_num0_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN23fibonachiTest_num0_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN23fibonachiTest_num0_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   14:TEST(fibonachiTest, num0) {
+        1:   14-block  0
+        1:   14-block  1
+        1:   14-block  2
+        1:   14-block  3
+        1:   14-block  4
+        1:   15:    ASSERT_EQ(fibonachi(0), 0);
+        1:   15-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   15-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   15-block  2
+    $$$$$:   15-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   15-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   15-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   15-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   15-block  7
+    $$$$$:   15-block  8
+    $$$$$:   15-block  9
+        1:   15-block 10
+        1:   15-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   15-block 12
+    $$$$$:   15-block 13
+        1:   16:    ASSERT_EQ(fibonachi(1), 1);
+        1:   16-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   16-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   16-block  2
+    $$$$$:   16-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   16-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   16-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   16-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   16-block  7
+    $$$$$:   16-block  8
+    $$$$$:   16-block  9
+        1:   16-block 10
+        1:   16-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   16-block 12
+        1:   17:    ASSERT_EQ(fibonachi(2), 2);
+        1:   17-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   17-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   17-block  2
+    $$$$$:   17-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   17-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   17-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   17-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   17-block  7
+    $$$$$:   17-block  8
+    $$$$$:   17-block  9
+        1:   17-block 10
+        1:   17-block 11
+    $$$$$:   17-block 12
+        1:   18:}
+    $$$$$:   18-block  0
+    $$$$$:   18-block  1
+    $$$$$:   18-block  2
+    $$$$$:   18-block  3
+    $$$$$:   18-block  4
+    $$$$$:   18-block  5
+        1:   18-block  6
+        -:   19:
+function _ZN28fibonachiTest_greather2_Test8TestBodyEv called 1 returned 100% blocks executed 30%
+function _ZN28fibonachiTest_greather2_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_greather2_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_greather2_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_greather2_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_greather2_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   20:TEST(fibonachiTest, greather2) {
+        1:   20-block  0
+        1:   20-block  1
+        1:   20-block  2
+        1:   20-block  3
+        1:   20-block  4
+        1:   21:    ASSERT_EQ(fibonachi(5), 5);
+        1:   21-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   21-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   21-block  2
+    $$$$$:   21-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   21-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   21-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   21-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   21-block  7
+    $$$$$:   21-block  8
+    $$$$$:   21-block  9
+        1:   21-block 10
+        1:   21-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   21-block 12
+    $$$$$:   21-block 13
+        1:   22:    ASSERT_EQ(fibonachi(10), 55);
+        1:   22-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   22-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   22-block  2
+    $$$$$:   22-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   22-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   22-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   22-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   22-block  7
+    $$$$$:   22-block  8
+    $$$$$:   22-block  9
+        1:   22-block 10
+        1:   22-block 11
+    $$$$$:   22-block 12
+        1:   23:}
+    $$$$$:   23-block  0
+    $$$$$:   23-block  1
+    $$$$$:   23-block  2
+    $$$$$:   23-block  3
+        1:   23-block  4
+        -:   24:
+function _ZN27fibonachiTest_negative_Test8TestBodyEv called 1 returned 100% blocks executed 31%
+function _ZN27fibonachiTest_negative_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN27fibonachiTest_negative_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN27fibonachiTest_negative_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN27fibonachiTest_negative_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN27fibonachiTest_negative_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   25:TEST(fibonachiTest, negative) {
+        1:   25-block  0
+        1:   25-block  1
+        1:   25-block  2
+        1:   25-block  3
+        1:   25-block  4
+        1:   26:    ASSERT_EQ(fibonachi(-1), 0);
+        1:   26-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   26-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   26-block  2
+    $$$$$:   26-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   26-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   26-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   26-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   26-block  7
+    $$$$$:   26-block  8
+    $$$$$:   26-block  9
+        1:   26-block 10
+        1:   26-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   26-block 12
+    $$$$$:   26-block 13
+        1:   27:}
+    $$$$$:   27-block  0
+    $$$$$:   27-block  1
+        1:   27-block  2
+        -:   28:
+function _ZN28fibonachiTest_inputFile_Test8TestBodyEv called 1 returned 100% blocks executed 23%
+function _ZN28fibonachiTest_inputFile_TestD1Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_inputFile_TestD0Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_inputFile_TestC1Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_inputFile_TestC2Ev called 1 returned 100% blocks executed 100%
+function _ZN28fibonachiTest_inputFile_TestD2Ev called 1 returned 100% blocks executed 100%
+        6:   29:TEST(fibonachiTest, inputFile) {
+        1:   29-block  0
+        1:   29-block  1
+        1:   29-block  2
+        1:   29-block  3
+        1:   29-block  4
+        1:   30:    val = 2;
+        1:   31:    char *filename = (char *)malloc(sizeof(char) * 1024);
+        1:   32:    sprintf(filename, "%s/input321.txt", INPUTDIR);
+        -:   33:
+        1:   34:    int fd = open(filename, O_RDONLY);
+        1:   35:    free(filename);
+        1:   36:    if (fd < 0) {
+        1:   36-block  0
+branch  0 taken 1
+branch  1 taken 0
+    #####:   37:        ASSERT_EQ(errno, 0);
+    $$$$$:   37-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:   37-block  1
+branch  2 never executed
+branch  3 never executed
+    $$$$$:   37-block  2
+    $$$$$:   37-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   37-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   37-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   37-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   37-block  7
+    $$$$$:   37-block  8
+    $$$$$:   37-block  9
+    $$$$$:   37-block 10
+    $$$$$:   37-block 11
+branch 12 never executed
+branch 13 never executed
+    $$$$$:   37-block 12
+    $$$$$:   37-block 13
+    #####:   38:    }
+    $$$$$:   38-block  0
+        -:   39:
+        1:   40:    char *buf = (char *)malloc(sizeof(char) * 512);
+        1:   41:    int readcount = read(fd, buf, 512);
+        1:   42:    ASSERT_TRUE(readcount > 0);
+        1:   42-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   42-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   42-block  2
+    $$$$$:   42-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   42-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   42-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   42-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   42-block  7
+    $$$$$:   42-block  8
+    $$$$$:   42-block  9
+    $$$$$:   42-block 10
+        1:   42-block 11
+        1:   42-block 12
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   42-block 13
+        1:   43:    close(fd);
+        -:   44:
+        1:   45:    int input = 0;
+        1:   46:    int output =0;
+        1:   47:    int ret = sscanf(buf, "%d %d", &input, &output);
+        1:   48:    free(buf);
+        1:   49:    ASSERT_EQ(ret, 2);
+        1:   49-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   49-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   49-block  2
+    $$$$$:   49-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   49-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   49-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   49-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   49-block  7
+    $$$$$:   49-block  8
+    $$$$$:   49-block  9
+        1:   49-block 10
+        1:   49-block 11
+branch 12 taken 0
+branch 13 taken 1
+    $$$$$:   49-block 12
+        -:   50:
+        1:   51:    ret = fibonachi(input);
+        1:   52:    ASSERT_EQ(ret, output);
+        1:   52-block  0
+branch  0 taken 1
+branch  1 taken 0
+        1:   52-block  1
+branch  2 taken 0
+branch  3 taken 1
+        1:   52-block  2
+    $$$$$:   52-block  3
+branch  4 never executed
+branch  5 never executed
+    $$$$$:   52-block  4
+branch  6 never executed
+branch  7 never executed
+    $$$$$:   52-block  5
+branch  8 never executed
+branch  9 never executed
+    $$$$$:   52-block  6
+branch 10 never executed
+branch 11 never executed
+    $$$$$:   52-block  7
+    $$$$$:   52-block  8
+    $$$$$:   52-block  9
+        1:   52-block 10
+        1:   52-block 11
+    $$$$$:   52-block 12
+        1:   53:}
+    $$$$$:   53-block  0
+    $$$$$:   53-block  1
+    $$$$$:   53-block  2
+    $$$$$:   53-block  3
+    $$$$$:   53-block  4
+    $$$$$:   53-block  5
+    $$$$$:   53-block  6
+    $$$$$:   53-block  7
+    $$$$$:   53-block  8
+        1:   53-block  9
+        -:   54:
+        -:   55:#endif // FIBONACHI_H

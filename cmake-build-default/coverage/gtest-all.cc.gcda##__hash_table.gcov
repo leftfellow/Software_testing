@@ -1,0 +1,3123 @@
+        -:    0:Source:/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__hash_table
+        -:    0:Graph:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcno
+        -:    0:Data:/Users/maxbazarov/Documents/Software_testing/ctest/cmake-build-default/tests/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// -*- C++ -*-
+        -:    2://===----------------------------------------------------------------------===//
+        -:    3://
+        -:    4:// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+        -:    5:// See https://llvm.org/LICENSE.txt for license information.
+        -:    6:// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+        -:    7://
+        -:    8://===----------------------------------------------------------------------===//
+        -:    9:
+        -:   10:#ifndef _LIBCPP__HASH_TABLE
+        -:   11:#define _LIBCPP__HASH_TABLE
+        -:   12:
+        -:   13:#include <__config>
+        -:   14:#include <initializer_list>
+        -:   15:#include <memory>
+        -:   16:#include <iterator>
+        -:   17:#include <algorithm>
+        -:   18:#include <cmath>
+        -:   19:#include <utility>
+        -:   20:#include <type_traits>
+        -:   21:
+        -:   22:#include <__debug>
+        -:   23:
+        -:   24:#if !defined(_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER)
+        -:   25:#pragma GCC system_header
+        -:   26:#endif
+        -:   27:
+        -:   28:_LIBCPP_PUSH_MACROS
+        -:   29:#include <__undef_macros>
+        -:   30:
+        -:   31:
+        -:   32:_LIBCPP_BEGIN_NAMESPACE_STD
+        -:   33:
+        -:   34:template <class _Key, class _Tp>
+        -:   35:struct __hash_value_type;
+        -:   36:
+        -:   37:template <class _Tp>
+        -:   38:struct __is_hash_value_type_imp : false_type {};
+        -:   39:
+        -:   40:template <class _Key, class _Value>
+        -:   41:struct __is_hash_value_type_imp<__hash_value_type<_Key, _Value> > : true_type {};
+        -:   42:
+        -:   43:template <class ..._Args>
+        -:   44:struct __is_hash_value_type : false_type {};
+        -:   45:
+        -:   46:template <class _One>
+        -:   47:struct __is_hash_value_type<_One> : __is_hash_value_type_imp<typename __uncvref<_One>::type> {};
+        -:   48:
+        -:   49:_LIBCPP_FUNC_VIS
+        -:   50:size_t __next_prime(size_t __n);
+        -:   51:
+        -:   52:template <class _NodePtr>
+        -:   53:struct __hash_node_base
+        -:   54:{
+        -:   55:    typedef typename pointer_traits<_NodePtr>::element_type __node_type;
+        -:   56:    typedef __hash_node_base __first_node;
+        -:   57:    typedef typename __rebind_pointer<_NodePtr, __first_node>::type __node_base_pointer;
+        -:   58:    typedef _NodePtr __node_pointer;
+        -:   59:
+        -:   60:#if defined(_LIBCPP_ABI_FIX_UNORDERED_NODE_POINTER_UB)
+        -:   61:  typedef __node_base_pointer __next_pointer;
+        -:   62:#else
+        -:   63:  typedef typename conditional<
+        -:   64:      is_pointer<__node_pointer>::value,
+        -:   65:      __node_base_pointer,
+        -:   66:      __node_pointer>::type   __next_pointer;
+        -:   67:#endif
+        -:   68:
+        -:   69:    __next_pointer    __next_;
+        -:   70:
+        -:   71:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__116__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEE5__ptrEv called 0 returned 0% blocks executed 0%
+    #####:   72:    __next_pointer __ptr() _NOEXCEPT {
+    #####:   73:        return static_cast<__next_pointer>(
+    $$$$$:   73-block  0
+    #####:   74:            pointer_traits<__node_base_pointer>::pointer_to(*this));
+        -:   75:    }
+        -:   76:
+        -:   77:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__116__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEE8__upcastEv called 0 returned 0% blocks executed 0%
+    #####:   78:    __node_pointer __upcast() _NOEXCEPT {
+    #####:   79:        return static_cast<__node_pointer>(
+    $$$$$:   79-block  0
+    #####:   80:            pointer_traits<__node_base_pointer>::pointer_to(*this));
+        -:   81:    }
+        -:   82:
+        -:   83:    _LIBCPP_INLINE_VISIBILITY
+function _ZNKSt3__116__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEE6__hashEv called 0 returned 0% blocks executed 0%
+    #####:   84:    size_t __hash() const _NOEXCEPT {
+    #####:   85:        return static_cast<__node_type const&>(*this).__hash_;
+    $$$$$:   85-block  0
+        -:   86:    }
+        -:   87:
+function _ZNSt3__116__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC1Ev called 8 returned 100% blocks executed 100%
+function _ZNSt3__116__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC2Ev called 8 returned 100% blocks executed 100%
+       16:   88:    _LIBCPP_INLINE_VISIBILITY __hash_node_base() _NOEXCEPT : __next_(nullptr) {}
+        8:   88-block  0
+        8:   88-block  1
+        -:   89:};
+        -:   90:
+        -:   91:template <class _Tp, class _VoidPtr>
+        -:   92:struct __hash_node
+        -:   93:    : public __hash_node_base
+        -:   94:             <
+        -:   95:                 typename __rebind_pointer<_VoidPtr, __hash_node<_Tp, _VoidPtr> >::type
+        -:   96:             >
+        -:   97:{
+        -:   98:    typedef _Tp __node_value_type;
+        -:   99:
+        -:  100:    size_t            __hash_;
+        -:  101:    __node_value_type __value_;
+        -:  102:};
+        -:  103:
+        -:  104:inline _LIBCPP_INLINE_VISIBILITY
+        -:  105:bool
+function _ZNSt3__1L16__is_hash_power2Em called 0 returned 0% blocks executed 0%
+    #####:  106:__is_hash_power2(size_t __bc)
+        -:  107:{
+    #####:  108:    return __bc > 2 && !(__bc & (__bc - 1));
+    $$$$$:  108-block  0
+    $$$$$:  108-block  1
+    $$$$$:  108-block  2
+    $$$$$:  108-block  3
+        -:  109:}
+        -:  110:
+        -:  111:inline _LIBCPP_INLINE_VISIBILITY
+        -:  112:size_t
+function _ZNSt3__1L16__constrain_hashEmm called 0 returned 0% blocks executed 0%
+    #####:  113:__constrain_hash(size_t __h, size_t __bc)
+        -:  114:{
+    #####:  115:    return !(__bc & (__bc - 1)) ? __h & (__bc - 1) :
+    $$$$$:  115-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  115-block  1
+    $$$$$:  115-block  2
+    $$$$$:  115-block  3
+    #####:  116:        (__h < __bc ? __h : __h % __bc);
+    $$$$$:  116-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  116-block  1
+    $$$$$:  116-block  2
+        -:  117:}
+        -:  118:
+        -:  119:inline _LIBCPP_INLINE_VISIBILITY
+        -:  120:size_t
+function _ZNSt3__1L16__next_hash_pow2Em called 0 returned 0% blocks executed 0%
+    #####:  121:__next_hash_pow2(size_t __n)
+        -:  122:{
+    #####:  123:    return __n < 2 ? __n : (size_t(1) << (numeric_limits<size_t>::digits - __libcpp_clz(__n-1)));
+    $$$$$:  123-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  123-block  1
+    $$$$$:  123-block  2
+    $$$$$:  123-block  3
+        -:  124:}
+        -:  125:
+        -:  126:
+        -:  127:template <class _Tp, class _Hash, class _Equal, class _Alloc> class __hash_table;
+        -:  128:
+        -:  129:template <class _NodePtr>      class _LIBCPP_TEMPLATE_VIS __hash_iterator;
+        -:  130:template <class _ConstNodePtr> class _LIBCPP_TEMPLATE_VIS __hash_const_iterator;
+        -:  131:template <class _NodePtr>      class _LIBCPP_TEMPLATE_VIS __hash_local_iterator;
+        -:  132:template <class _ConstNodePtr> class _LIBCPP_TEMPLATE_VIS __hash_const_local_iterator;
+        -:  133:template <class _HashIterator> class _LIBCPP_TEMPLATE_VIS __hash_map_iterator;
+        -:  134:template <class _HashIterator> class _LIBCPP_TEMPLATE_VIS __hash_map_const_iterator;
+        -:  135:
+        -:  136:template <class _Tp>
+        -:  137:struct __hash_key_value_types {
+        -:  138:  static_assert(!is_reference<_Tp>::value && !is_const<_Tp>::value, "");
+        -:  139:  typedef _Tp key_type;
+        -:  140:  typedef _Tp __node_value_type;
+        -:  141:  typedef _Tp __container_value_type;
+        -:  142:  static const bool __is_map = false;
+        -:  143:
+        -:  144:  _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__122__hash_key_value_typesINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEE9__get_keyERKS6_ called 0 returned 0% blocks executed 0%
+    #####:  145:  static key_type const& __get_key(_Tp const& __v) {
+    #####:  146:    return __v;
+    $$$$$:  146-block  0
+        -:  147:  }
+        -:  148:  _LIBCPP_INLINE_VISIBILITY
+        -:  149:  static __container_value_type const& __get_value(__node_value_type const& __v) {
+        -:  150:    return __v;
+        -:  151:  }
+        -:  152:  _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__122__hash_key_value_typesINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEE9__get_ptrERS6_ called 0 returned 0% blocks executed 0%
+    #####:  153:  static __container_value_type* __get_ptr(__node_value_type& __n) {
+    #####:  154:    return _VSTD::addressof(__n);
+    $$$$$:  154-block  0
+        -:  155:  }
+        -:  156:  _LIBCPP_INLINE_VISIBILITY
+        -:  157:  static __container_value_type&& __move(__node_value_type& __v) {
+        -:  158:    return _VSTD::move(__v);
+        -:  159:  }
+        -:  160:};
+        -:  161:
+        -:  162:template <class _Key, class _Tp>
+        -:  163:struct __hash_key_value_types<__hash_value_type<_Key, _Tp> > {
+        -:  164:  typedef _Key                                         key_type;
+        -:  165:  typedef _Tp                                          mapped_type;
+        -:  166:  typedef __hash_value_type<_Key, _Tp>                 __node_value_type;
+        -:  167:  typedef pair<const _Key, _Tp>                        __container_value_type;
+        -:  168:  typedef __container_value_type                       __map_value_type;
+        -:  169:  static const bool __is_map = true;
+        -:  170:
+        -:  171:  _LIBCPP_INLINE_VISIBILITY
+        -:  172:  static key_type const& __get_key(__container_value_type const& __v) {
+        -:  173:    return __v.first;
+        -:  174:  }
+        -:  175:
+        -:  176:  template <class _Up>
+        -:  177:  _LIBCPP_INLINE_VISIBILITY
+        -:  178:  static typename enable_if<__is_same_uncvref<_Up, __node_value_type>::value,
+        -:  179:      __container_value_type const&>::type
+        -:  180:  __get_value(_Up& __t) {
+        -:  181:    return __t.__get_value();
+        -:  182:  }
+        -:  183:
+        -:  184:  template <class _Up>
+        -:  185:  _LIBCPP_INLINE_VISIBILITY
+        -:  186:  static typename enable_if<__is_same_uncvref<_Up, __container_value_type>::value,
+        -:  187:      __container_value_type const&>::type
+        -:  188:  __get_value(_Up& __t) {
+        -:  189:    return __t;
+        -:  190:  }
+        -:  191:
+        -:  192:  _LIBCPP_INLINE_VISIBILITY
+        -:  193:  static __container_value_type* __get_ptr(__node_value_type& __n) {
+        -:  194:    return _VSTD::addressof(__n.__get_value());
+        -:  195:  }
+        -:  196:  _LIBCPP_INLINE_VISIBILITY
+        -:  197:  static pair<key_type&&, mapped_type&&> __move(__node_value_type& __v) {
+        -:  198:    return __v.__move();
+        -:  199:  }
+        -:  200:};
+        -:  201:
+        -:  202:template <class _Tp, class _AllocPtr, class _KVTypes = __hash_key_value_types<_Tp>,
+        -:  203:          bool = _KVTypes::__is_map>
+        -:  204:struct __hash_map_pointer_types {};
+        -:  205:
+        -:  206:template <class _Tp, class _AllocPtr, class _KVTypes>
+        -:  207:struct __hash_map_pointer_types<_Tp, _AllocPtr, _KVTypes, true> {
+        -:  208:  typedef typename _KVTypes::__map_value_type   _Mv;
+        -:  209:  typedef typename __rebind_pointer<_AllocPtr, _Mv>::type
+        -:  210:                                                       __map_value_type_pointer;
+        -:  211:  typedef typename __rebind_pointer<_AllocPtr, const _Mv>::type
+        -:  212:                                                 __const_map_value_type_pointer;
+        -:  213:};
+        -:  214:
+        -:  215:template <class _NodePtr, class _NodeT = typename pointer_traits<_NodePtr>::element_type>
+        -:  216:struct __hash_node_types;
+        -:  217:
+        -:  218:template <class _NodePtr, class _Tp, class _VoidPtr>
+        -:  219:struct __hash_node_types<_NodePtr, __hash_node<_Tp, _VoidPtr> >
+        -:  220:    : public __hash_key_value_types<_Tp>, __hash_map_pointer_types<_Tp, _VoidPtr>
+        -:  221:
+        -:  222:{
+        -:  223:  typedef __hash_key_value_types<_Tp>           __base;
+        -:  224:
+        -:  225:public:
+        -:  226:  typedef ptrdiff_t difference_type;
+        -:  227:  typedef size_t size_type;
+        -:  228:
+        -:  229:  typedef typename __rebind_pointer<_NodePtr, void>::type       __void_pointer;
+        -:  230:
+        -:  231:  typedef typename pointer_traits<_NodePtr>::element_type       __node_type;
+        -:  232:  typedef _NodePtr                                              __node_pointer;
+        -:  233:
+        -:  234:  typedef __hash_node_base<__node_pointer>                      __node_base_type;
+        -:  235:  typedef typename __rebind_pointer<_NodePtr, __node_base_type>::type
+        -:  236:                                                             __node_base_pointer;
+        -:  237:
+        -:  238:  typedef typename __node_base_type::__next_pointer          __next_pointer;
+        -:  239:
+        -:  240:  typedef _Tp                                                 __node_value_type;
+        -:  241:  typedef typename __rebind_pointer<_VoidPtr, __node_value_type>::type
+        -:  242:                                                      __node_value_type_pointer;
+        -:  243:  typedef typename __rebind_pointer<_VoidPtr, const __node_value_type>::type
+        -:  244:                                                __const_node_value_type_pointer;
+        -:  245:
+        -:  246:private:
+        -:  247:    static_assert(!is_const<__node_type>::value,
+        -:  248:                "_NodePtr should never be a pointer to const");
+        -:  249:    static_assert((is_same<typename pointer_traits<_VoidPtr>::element_type, void>::value),
+        -:  250:                  "_VoidPtr does not point to unqualified void type");
+        -:  251:    static_assert((is_same<typename __rebind_pointer<_VoidPtr, __node_type>::type,
+        -:  252:                          _NodePtr>::value), "_VoidPtr does not rebind to _NodePtr.");
+        -:  253:};
+        -:  254:
+        -:  255:template <class _HashIterator>
+        -:  256:struct __hash_node_types_from_iterator;
+        -:  257:template <class _NodePtr>
+        -:  258:struct __hash_node_types_from_iterator<__hash_iterator<_NodePtr> > : __hash_node_types<_NodePtr> {};
+        -:  259:template <class _NodePtr>
+        -:  260:struct __hash_node_types_from_iterator<__hash_const_iterator<_NodePtr> > : __hash_node_types<_NodePtr> {};
+        -:  261:template <class _NodePtr>
+        -:  262:struct __hash_node_types_from_iterator<__hash_local_iterator<_NodePtr> > : __hash_node_types<_NodePtr> {};
+        -:  263:template <class _NodePtr>
+        -:  264:struct __hash_node_types_from_iterator<__hash_const_local_iterator<_NodePtr> > : __hash_node_types<_NodePtr> {};
+        -:  265:
+        -:  266:
+        -:  267:template <class _NodeValueTp, class _VoidPtr>
+        -:  268:struct __make_hash_node_types {
+        -:  269:  typedef __hash_node<_NodeValueTp, _VoidPtr> _NodeTp;
+        -:  270:  typedef typename __rebind_pointer<_VoidPtr, _NodeTp>::type _NodePtr;
+        -:  271:  typedef __hash_node_types<_NodePtr> type;
+        -:  272:};
+        -:  273:
+        -:  274:template <class _NodePtr>
+        -:  275:class _LIBCPP_TEMPLATE_VIS __hash_iterator
+        -:  276:{
+        -:  277:    typedef __hash_node_types<_NodePtr> _NodeTypes;
+        -:  278:    typedef _NodePtr                            __node_pointer;
+        -:  279:    typedef typename _NodeTypes::__next_pointer __next_pointer;
+        -:  280:
+        -:  281:    __next_pointer            __node_;
+        -:  282:
+        -:  283:public:
+        -:  284:    typedef forward_iterator_tag                           iterator_category;
+        -:  285:    typedef typename _NodeTypes::__node_value_type         value_type;
+        -:  286:    typedef typename _NodeTypes::difference_type           difference_type;
+        -:  287:    typedef value_type&                                    reference;
+        -:  288:    typedef typename _NodeTypes::__node_value_type_pointer pointer;
+        -:  289:
+        -:  290:    _LIBCPP_INLINE_VISIBILITY __hash_iterator() _NOEXCEPT : __node_(nullptr) {
+        -:  291:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  292:        __get_db()->__insert_i(this);
+        -:  293:#endif
+        -:  294:    }
+        -:  295:
+        -:  296:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  297:    _LIBCPP_INLINE_VISIBILITY
+        -:  298:    __hash_iterator(const __hash_iterator& __i)
+        -:  299:        : __node_(__i.__node_)
+        -:  300:    {
+        -:  301:        __get_db()->__iterator_copy(this, &__i);
+        -:  302:    }
+        -:  303:
+        -:  304:    _LIBCPP_INLINE_VISIBILITY
+        -:  305:    ~__hash_iterator()
+        -:  306:    {
+        -:  307:        __get_db()->__erase_i(this);
+        -:  308:    }
+        -:  309:
+        -:  310:    _LIBCPP_INLINE_VISIBILITY
+        -:  311:    __hash_iterator& operator=(const __hash_iterator& __i)
+        -:  312:    {
+        -:  313:        if (this != &__i)
+        -:  314:        {
+        -:  315:            __get_db()->__iterator_copy(this, &__i);
+        -:  316:            __node_ = __i.__node_;
+        -:  317:        }
+        -:  318:        return *this;
+        -:  319:    }
+        -:  320:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -:  321:
+        -:  322:    _LIBCPP_INLINE_VISIBILITY
+        -:  323:    reference operator*() const {
+        -:  324:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  325:                             "Attempted to dereference a non-dereferenceable unordered container iterator");
+        -:  326:        return __node_->__upcast()->__value_;
+        -:  327:    }
+        -:  328:
+        -:  329:    _LIBCPP_INLINE_VISIBILITY
+        -:  330:    pointer operator->() const {
+        -:  331:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  332:                           "Attempted to dereference a non-dereferenceable unordered container iterator");
+        -:  333:        return pointer_traits<pointer>::pointer_to(__node_->__upcast()->__value_);
+        -:  334:    }
+        -:  335:
+        -:  336:    _LIBCPP_INLINE_VISIBILITY
+        -:  337:    __hash_iterator& operator++() {
+        -:  338:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  339:                       "Attempted to increment non-incrementable unordered container iterator");
+        -:  340:        __node_ = __node_->__next_;
+        -:  341:        return *this;
+        -:  342:    }
+        -:  343:
+        -:  344:    _LIBCPP_INLINE_VISIBILITY
+        -:  345:    __hash_iterator operator++(int)
+        -:  346:    {
+        -:  347:        __hash_iterator __t(*this);
+        -:  348:        ++(*this);
+        -:  349:        return __t;
+        -:  350:    }
+        -:  351:
+        -:  352:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  353:    bool operator==(const __hash_iterator& __x, const __hash_iterator& __y)
+        -:  354:    {
+        -:  355:        return __x.__node_ == __y.__node_;
+        -:  356:    }
+        -:  357:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  358:    bool operator!=(const __hash_iterator& __x, const __hash_iterator& __y)
+        -:  359:        {return !(__x == __y);}
+        -:  360:
+        -:  361:private:
+        -:  362:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  363:    _LIBCPP_INLINE_VISIBILITY
+        -:  364:    __hash_iterator(__next_pointer __node, const void* __c) _NOEXCEPT
+        -:  365:        : __node_(__node)
+        -:  366:        {
+        -:  367:            __get_db()->__insert_ic(this, __c);
+        -:  368:        }
+        -:  369:#else
+        -:  370:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__115__hash_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC1EPNS_16__hash_node_baseISA_EE called 6 returned 100% blocks executed 100%
+function _ZNSt3__115__hash_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC2EPNS_16__hash_node_baseISA_EE called 6 returned 100% blocks executed 100%
+       12:  371:    __hash_iterator(__next_pointer __node) _NOEXCEPT
+        6:  372:        : __node_(__node)
+       12:  373:        {}
+        6:  373-block  0
+        6:  373-block  1
+        -:  374:#endif
+        -:  375:    template <class, class, class, class> friend class __hash_table;
+        -:  376:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_const_iterator;
+        -:  377:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_map_iterator;
+        -:  378:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_map;
+        -:  379:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_multimap;
+        -:  380:};
+        -:  381:
+        -:  382:template <class _NodePtr>
+        -:  383:class _LIBCPP_TEMPLATE_VIS __hash_const_iterator
+        -:  384:{
+        -:  385:    static_assert(!is_const<typename pointer_traits<_NodePtr>::element_type>::value, "");
+        -:  386:    typedef __hash_node_types<_NodePtr> _NodeTypes;
+        -:  387:    typedef _NodePtr                            __node_pointer;
+        -:  388:    typedef typename _NodeTypes::__next_pointer __next_pointer;
+        -:  389:
+        -:  390:    __next_pointer __node_;
+        -:  391:
+        -:  392:public:
+        -:  393:    typedef __hash_iterator<_NodePtr> __non_const_iterator;
+        -:  394:
+        -:  395:    typedef forward_iterator_tag                                 iterator_category;
+        -:  396:    typedef typename _NodeTypes::__node_value_type               value_type;
+        -:  397:    typedef typename _NodeTypes::difference_type                 difference_type;
+        -:  398:    typedef const value_type&                                    reference;
+        -:  399:    typedef typename _NodeTypes::__const_node_value_type_pointer pointer;
+        -:  400:
+        -:  401:
+        -:  402:    _LIBCPP_INLINE_VISIBILITY __hash_const_iterator() _NOEXCEPT : __node_(nullptr) {
+        -:  403:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  404:        __get_db()->__insert_i(this);
+        -:  405:#endif
+        -:  406:    }
+        -:  407:
+        -:  408:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__121__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC1ERKNS_15__hash_iteratorISA_EE called 6 returned 100% blocks executed 100%
+function _ZNSt3__121__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC2ERKNS_15__hash_iteratorISA_EE called 6 returned 100% blocks executed 100%
+       12:  409:    __hash_const_iterator(const __non_const_iterator& __x) _NOEXCEPT
+        6:  410:        : __node_(__x.__node_)
+        6:  411:    {
+        -:  412:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  413:        __get_db()->__iterator_copy(this, &__x);
+        -:  414:#endif
+       12:  415:    }
+        6:  415-block  0
+        6:  415-block  1
+        -:  416:
+        -:  417:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  418:    _LIBCPP_INLINE_VISIBILITY
+        -:  419:    __hash_const_iterator(const __hash_const_iterator& __i)
+        -:  420:        : __node_(__i.__node_)
+        -:  421:    {
+        -:  422:        __get_db()->__iterator_copy(this, &__i);
+        -:  423:    }
+        -:  424:
+        -:  425:    _LIBCPP_INLINE_VISIBILITY
+        -:  426:    ~__hash_const_iterator()
+        -:  427:    {
+        -:  428:        __get_db()->__erase_i(this);
+        -:  429:    }
+        -:  430:
+        -:  431:    _LIBCPP_INLINE_VISIBILITY
+        -:  432:    __hash_const_iterator& operator=(const __hash_const_iterator& __i)
+        -:  433:    {
+        -:  434:        if (this != &__i)
+        -:  435:        {
+        -:  436:            __get_db()->__iterator_copy(this, &__i);
+        -:  437:            __node_ = __i.__node_;
+        -:  438:        }
+        -:  439:        return *this;
+        -:  440:    }
+        -:  441:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -:  442:
+        -:  443:    _LIBCPP_INLINE_VISIBILITY
+        -:  444:    reference operator*() const {
+        -:  445:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  446:                           "Attempted to dereference a non-dereferenceable unordered container const_iterator");
+        -:  447:        return __node_->__upcast()->__value_;
+        -:  448:    }
+        -:  449:    _LIBCPP_INLINE_VISIBILITY
+        -:  450:    pointer operator->() const {
+        -:  451:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  452:                           "Attempted to dereference a non-dereferenceable unordered container const_iterator");
+        -:  453:        return pointer_traits<pointer>::pointer_to(__node_->__upcast()->__value_);
+        -:  454:    }
+        -:  455:
+        -:  456:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__121__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEppEv called 0 returned 0% blocks executed 0%
+    #####:  457:    __hash_const_iterator& operator++() {
+        -:  458:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  459:                             "Attempted to increment non-incrementable unordered container const_iterator");
+    #####:  460:        __node_ = __node_->__next_;
+    #####:  461:        return *this;
+    $$$$$:  461-block  0
+        -:  462:    }
+        -:  463:
+        -:  464:    _LIBCPP_INLINE_VISIBILITY
+        -:  465:    __hash_const_iterator operator++(int)
+        -:  466:    {
+        -:  467:        __hash_const_iterator __t(*this);
+        -:  468:        ++(*this);
+        -:  469:        return __t;
+        -:  470:    }
+        -:  471:
+        -:  472:    friend _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__1eqERKNS_21__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEESD_ called 40 returned 100% blocks executed 100%
+       40:  473:    bool operator==(const __hash_const_iterator& __x, const __hash_const_iterator& __y)
+        -:  474:    {
+       40:  475:        return __x.__node_ == __y.__node_;
+       40:  475-block  0
+        -:  476:    }
+        -:  477:    friend _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__1neERKNS_21__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEESD_ called 40 returned 100% blocks executed 100%
+       40:  478:    bool operator!=(const __hash_const_iterator& __x, const __hash_const_iterator& __y)
+       40:  479:        {return !(__x == __y);}
+       40:  479-block  0
+        -:  480:
+        -:  481:private:
+        -:  482:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  483:    _LIBCPP_INLINE_VISIBILITY
+        -:  484:    __hash_const_iterator(__next_pointer __node, const void* __c) _NOEXCEPT
+        -:  485:        : __node_(__node)
+        -:  486:        {
+        -:  487:            __get_db()->__insert_ic(this, __c);
+        -:  488:        }
+        -:  489:#else
+        -:  490:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__121__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC1EPNS_16__hash_node_baseISA_EE called 80 returned 100% blocks executed 100%
+function _ZNSt3__121__hash_const_iteratorIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPvEEEC2EPNS_16__hash_node_baseISA_EE called 80 returned 100% blocks executed 100%
+      160:  491:    __hash_const_iterator(__next_pointer __node) _NOEXCEPT
+       80:  492:        : __node_(__node)
+      160:  493:        {}
+       80:  493-block  0
+       80:  493-block  1
+        -:  494:#endif
+        -:  495:    template <class, class, class, class> friend class __hash_table;
+        -:  496:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_map_const_iterator;
+        -:  497:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_map;
+        -:  498:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_multimap;
+        -:  499:};
+        -:  500:
+        -:  501:template <class _NodePtr>
+        -:  502:class _LIBCPP_TEMPLATE_VIS __hash_local_iterator
+        -:  503:{
+        -:  504:    typedef __hash_node_types<_NodePtr> _NodeTypes;
+        -:  505:    typedef _NodePtr                            __node_pointer;
+        -:  506:    typedef typename _NodeTypes::__next_pointer __next_pointer;
+        -:  507:
+        -:  508:    __next_pointer         __node_;
+        -:  509:    size_t                 __bucket_;
+        -:  510:    size_t                 __bucket_count_;
+        -:  511:
+        -:  512:public:
+        -:  513:    typedef forward_iterator_tag                                iterator_category;
+        -:  514:    typedef typename _NodeTypes::__node_value_type              value_type;
+        -:  515:    typedef typename _NodeTypes::difference_type                difference_type;
+        -:  516:    typedef value_type&                                         reference;
+        -:  517:    typedef typename _NodeTypes::__node_value_type_pointer      pointer;
+        -:  518:
+        -:  519:    _LIBCPP_INLINE_VISIBILITY __hash_local_iterator() _NOEXCEPT : __node_(nullptr) {
+        -:  520:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  521:        __get_db()->__insert_i(this);
+        -:  522:#endif
+        -:  523:    }
+        -:  524:
+        -:  525:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  526:    _LIBCPP_INLINE_VISIBILITY
+        -:  527:    __hash_local_iterator(const __hash_local_iterator& __i)
+        -:  528:        : __node_(__i.__node_),
+        -:  529:          __bucket_(__i.__bucket_),
+        -:  530:          __bucket_count_(__i.__bucket_count_)
+        -:  531:    {
+        -:  532:        __get_db()->__iterator_copy(this, &__i);
+        -:  533:    }
+        -:  534:
+        -:  535:    _LIBCPP_INLINE_VISIBILITY
+        -:  536:    ~__hash_local_iterator()
+        -:  537:    {
+        -:  538:        __get_db()->__erase_i(this);
+        -:  539:    }
+        -:  540:
+        -:  541:    _LIBCPP_INLINE_VISIBILITY
+        -:  542:    __hash_local_iterator& operator=(const __hash_local_iterator& __i)
+        -:  543:    {
+        -:  544:        if (this != &__i)
+        -:  545:        {
+        -:  546:            __get_db()->__iterator_copy(this, &__i);
+        -:  547:            __node_ = __i.__node_;
+        -:  548:            __bucket_ = __i.__bucket_;
+        -:  549:            __bucket_count_ = __i.__bucket_count_;
+        -:  550:        }
+        -:  551:        return *this;
+        -:  552:    }
+        -:  553:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -:  554:
+        -:  555:    _LIBCPP_INLINE_VISIBILITY
+        -:  556:    reference operator*() const {
+        -:  557:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  558:                           "Attempted to dereference a non-dereferenceable unordered container local_iterator");
+        -:  559:        return __node_->__upcast()->__value_;
+        -:  560:    }
+        -:  561:
+        -:  562:    _LIBCPP_INLINE_VISIBILITY
+        -:  563:    pointer operator->() const {
+        -:  564:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  565:                             "Attempted to dereference a non-dereferenceable unordered container local_iterator");
+        -:  566:        return pointer_traits<pointer>::pointer_to(__node_->__upcast()->__value_);
+        -:  567:    }
+        -:  568:
+        -:  569:    _LIBCPP_INLINE_VISIBILITY
+        -:  570:    __hash_local_iterator& operator++() {
+        -:  571:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  572:                       "Attempted to increment non-incrementable unordered container local_iterator");
+        -:  573:        __node_ = __node_->__next_;
+        -:  574:        if (__node_ != nullptr && __constrain_hash(__node_->__hash(), __bucket_count_) != __bucket_)
+        -:  575:            __node_ = nullptr;
+        -:  576:        return *this;
+        -:  577:    }
+        -:  578:
+        -:  579:    _LIBCPP_INLINE_VISIBILITY
+        -:  580:    __hash_local_iterator operator++(int)
+        -:  581:    {
+        -:  582:        __hash_local_iterator __t(*this);
+        -:  583:        ++(*this);
+        -:  584:        return __t;
+        -:  585:    }
+        -:  586:
+        -:  587:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  588:    bool operator==(const __hash_local_iterator& __x, const __hash_local_iterator& __y)
+        -:  589:    {
+        -:  590:        return __x.__node_ == __y.__node_;
+        -:  591:    }
+        -:  592:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  593:    bool operator!=(const __hash_local_iterator& __x, const __hash_local_iterator& __y)
+        -:  594:        {return !(__x == __y);}
+        -:  595:
+        -:  596:private:
+        -:  597:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  598:    _LIBCPP_INLINE_VISIBILITY
+        -:  599:    __hash_local_iterator(__next_pointer __node, size_t __bucket,
+        -:  600:                          size_t __bucket_count, const void* __c) _NOEXCEPT
+        -:  601:        : __node_(__node),
+        -:  602:          __bucket_(__bucket),
+        -:  603:          __bucket_count_(__bucket_count)
+        -:  604:        {
+        -:  605:            __get_db()->__insert_ic(this, __c);
+        -:  606:            if (__node_ != nullptr)
+        -:  607:                __node_ = __node_->__next_;
+        -:  608:        }
+        -:  609:#else
+        -:  610:    _LIBCPP_INLINE_VISIBILITY
+        -:  611:    __hash_local_iterator(__next_pointer __node, size_t __bucket,
+        -:  612:                          size_t __bucket_count) _NOEXCEPT
+        -:  613:        : __node_(__node),
+        -:  614:          __bucket_(__bucket),
+        -:  615:          __bucket_count_(__bucket_count)
+        -:  616:        {
+        -:  617:            if (__node_ != nullptr)
+        -:  618:                __node_ = __node_->__next_;
+        -:  619:        }
+        -:  620:#endif
+        -:  621:    template <class, class, class, class> friend class __hash_table;
+        -:  622:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_const_local_iterator;
+        -:  623:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_map_iterator;
+        -:  624:};
+        -:  625:
+        -:  626:template <class _ConstNodePtr>
+        -:  627:class _LIBCPP_TEMPLATE_VIS __hash_const_local_iterator
+        -:  628:{
+        -:  629:    typedef __hash_node_types<_ConstNodePtr> _NodeTypes;
+        -:  630:    typedef _ConstNodePtr                       __node_pointer;
+        -:  631:    typedef typename _NodeTypes::__next_pointer __next_pointer;
+        -:  632:
+        -:  633:    __next_pointer         __node_;
+        -:  634:    size_t                 __bucket_;
+        -:  635:    size_t                 __bucket_count_;
+        -:  636:
+        -:  637:    typedef pointer_traits<__node_pointer>          __pointer_traits;
+        -:  638:    typedef typename __pointer_traits::element_type __node;
+        -:  639:    typedef typename remove_const<__node>::type     __non_const_node;
+        -:  640:    typedef typename __rebind_pointer<__node_pointer, __non_const_node>::type
+        -:  641:        __non_const_node_pointer;
+        -:  642:public:
+        -:  643:    typedef __hash_local_iterator<__non_const_node_pointer>
+        -:  644:                                                    __non_const_iterator;
+        -:  645:
+        -:  646:    typedef forward_iterator_tag                                 iterator_category;
+        -:  647:    typedef typename _NodeTypes::__node_value_type               value_type;
+        -:  648:    typedef typename _NodeTypes::difference_type                 difference_type;
+        -:  649:    typedef const value_type&                                    reference;
+        -:  650:    typedef typename _NodeTypes::__const_node_value_type_pointer pointer;
+        -:  651:
+        -:  652:
+        -:  653:    _LIBCPP_INLINE_VISIBILITY __hash_const_local_iterator() _NOEXCEPT : __node_(nullptr) {
+        -:  654:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  655:        __get_db()->__insert_i(this);
+        -:  656:#endif
+        -:  657:    }
+        -:  658:
+        -:  659:    _LIBCPP_INLINE_VISIBILITY
+        -:  660:    __hash_const_local_iterator(const __non_const_iterator& __x) _NOEXCEPT
+        -:  661:        : __node_(__x.__node_),
+        -:  662:          __bucket_(__x.__bucket_),
+        -:  663:          __bucket_count_(__x.__bucket_count_)
+        -:  664:    {
+        -:  665:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  666:        __get_db()->__iterator_copy(this, &__x);
+        -:  667:#endif
+        -:  668:    }
+        -:  669:
+        -:  670:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  671:    _LIBCPP_INLINE_VISIBILITY
+        -:  672:    __hash_const_local_iterator(const __hash_const_local_iterator& __i)
+        -:  673:        : __node_(__i.__node_),
+        -:  674:          __bucket_(__i.__bucket_),
+        -:  675:          __bucket_count_(__i.__bucket_count_)
+        -:  676:    {
+        -:  677:        __get_db()->__iterator_copy(this, &__i);
+        -:  678:    }
+        -:  679:
+        -:  680:    _LIBCPP_INLINE_VISIBILITY
+        -:  681:    ~__hash_const_local_iterator()
+        -:  682:    {
+        -:  683:        __get_db()->__erase_i(this);
+        -:  684:    }
+        -:  685:
+        -:  686:    _LIBCPP_INLINE_VISIBILITY
+        -:  687:    __hash_const_local_iterator& operator=(const __hash_const_local_iterator& __i)
+        -:  688:    {
+        -:  689:        if (this != &__i)
+        -:  690:        {
+        -:  691:            __get_db()->__iterator_copy(this, &__i);
+        -:  692:            __node_ = __i.__node_;
+        -:  693:            __bucket_ = __i.__bucket_;
+        -:  694:            __bucket_count_ = __i.__bucket_count_;
+        -:  695:        }
+        -:  696:        return *this;
+        -:  697:    }
+        -:  698:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -:  699:
+        -:  700:    _LIBCPP_INLINE_VISIBILITY
+        -:  701:    reference operator*() const {
+        -:  702:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  703:                           "Attempted to dereference a non-dereferenceable unordered container const_local_iterator");
+        -:  704:        return __node_->__upcast()->__value_;
+        -:  705:    }
+        -:  706:
+        -:  707:    _LIBCPP_INLINE_VISIBILITY
+        -:  708:    pointer operator->() const {
+        -:  709:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  710:                           "Attempted to dereference a non-dereferenceable unordered container const_local_iterator");
+        -:  711:        return pointer_traits<pointer>::pointer_to(__node_->__upcast()->__value_);
+        -:  712:    }
+        -:  713:
+        -:  714:    _LIBCPP_INLINE_VISIBILITY
+        -:  715:    __hash_const_local_iterator& operator++() {
+        -:  716:        _LIBCPP_DEBUG_ASSERT(__get_const_db()->__dereferenceable(this),
+        -:  717:                       "Attempted to increment non-incrementable unordered container const_local_iterator");
+        -:  718:        __node_ = __node_->__next_;
+        -:  719:        if (__node_ != nullptr && __constrain_hash(__node_->__hash(), __bucket_count_) != __bucket_)
+        -:  720:            __node_ = nullptr;
+        -:  721:        return *this;
+        -:  722:    }
+        -:  723:
+        -:  724:    _LIBCPP_INLINE_VISIBILITY
+        -:  725:    __hash_const_local_iterator operator++(int)
+        -:  726:    {
+        -:  727:        __hash_const_local_iterator __t(*this);
+        -:  728:        ++(*this);
+        -:  729:        return __t;
+        -:  730:    }
+        -:  731:
+        -:  732:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  733:    bool operator==(const __hash_const_local_iterator& __x, const __hash_const_local_iterator& __y)
+        -:  734:    {
+        -:  735:        return __x.__node_ == __y.__node_;
+        -:  736:    }
+        -:  737:    friend _LIBCPP_INLINE_VISIBILITY
+        -:  738:    bool operator!=(const __hash_const_local_iterator& __x, const __hash_const_local_iterator& __y)
+        -:  739:        {return !(__x == __y);}
+        -:  740:
+        -:  741:private:
+        -:  742:#if _LIBCPP_DEBUG_LEVEL == 2
+        -:  743:    _LIBCPP_INLINE_VISIBILITY
+        -:  744:    __hash_const_local_iterator(__next_pointer __node, size_t __bucket,
+        -:  745:                                size_t __bucket_count, const void* __c) _NOEXCEPT
+        -:  746:        : __node_(__node),
+        -:  747:          __bucket_(__bucket),
+        -:  748:          __bucket_count_(__bucket_count)
+        -:  749:        {
+        -:  750:            __get_db()->__insert_ic(this, __c);
+        -:  751:            if (__node_ != nullptr)
+        -:  752:                __node_ = __node_->__next_;
+        -:  753:        }
+        -:  754:#else
+        -:  755:    _LIBCPP_INLINE_VISIBILITY
+        -:  756:    __hash_const_local_iterator(__next_pointer __node, size_t __bucket,
+        -:  757:                                size_t __bucket_count) _NOEXCEPT
+        -:  758:        : __node_(__node),
+        -:  759:          __bucket_(__bucket),
+        -:  760:          __bucket_count_(__bucket_count)
+        -:  761:        {
+        -:  762:            if (__node_ != nullptr)
+        -:  763:                __node_ = __node_->__next_;
+        -:  764:        }
+        -:  765:#endif
+        -:  766:    template <class, class, class, class> friend class __hash_table;
+        -:  767:    template <class> friend class _LIBCPP_TEMPLATE_VIS __hash_map_const_iterator;
+        -:  768:};
+        -:  769:
+        -:  770:template <class _Alloc>
+        -:  771:class __bucket_list_deallocator
+        -:  772:{
+        -:  773:    typedef _Alloc                                          allocator_type;
+        -:  774:    typedef allocator_traits<allocator_type>                __alloc_traits;
+        -:  775:    typedef typename __alloc_traits::size_type              size_type;
+        -:  776:
+        -:  777:    __compressed_pair<size_type, allocator_type> __data_;
+        -:  778:public:
+        -:  779:    typedef typename __alloc_traits::pointer pointer;
+        -:  780:
+        -:  781:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEEC1Ev called 8 returned 100% blocks executed 100%
+function _ZNSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEEC2Ev called 8 returned 100% blocks executed 66%
+       16:  782:    __bucket_list_deallocator()
+        -:  783:        _NOEXCEPT_(is_nothrow_default_constructible<allocator_type>::value)
+       16:  784:        : __data_(0, __default_init_tag()) {}
+        8:  784-block  0
+        8:  784-block  1
+branch  0 taken 8
+branch  1 taken 0
+        8:  784-block  2
+    $$$$$:  784-block  3
+        -:  785:
+        -:  786:    _LIBCPP_INLINE_VISIBILITY
+        -:  787:    __bucket_list_deallocator(const allocator_type& __a, size_type __size)
+        -:  788:        _NOEXCEPT_(is_nothrow_copy_constructible<allocator_type>::value)
+        -:  789:        : __data_(__size, __a) {}
+        -:  790:
+        -:  791:    _LIBCPP_INLINE_VISIBILITY
+        -:  792:    __bucket_list_deallocator(__bucket_list_deallocator&& __x)
+        -:  793:        _NOEXCEPT_(is_nothrow_move_constructible<allocator_type>::value)
+        -:  794:        : __data_(_VSTD::move(__x.__data_))
+        -:  795:    {
+        -:  796:        __x.size() = 0;
+        -:  797:    }
+        -:  798:
+        -:  799:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEE4sizeEv called 3 returned 100% blocks executed 100%
+        3:  800:    size_type& size() _NOEXCEPT {return __data_.first();}
+        3:  800-block  0
+        -:  801:    _LIBCPP_INLINE_VISIBILITY
+function _ZNKSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEE4sizeEv called 40 returned 100% blocks executed 100%
+       40:  802:    size_type  size() const _NOEXCEPT {return __data_.first();}
+       40:  802-block  0
+        -:  803:
+        -:  804:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEE7__allocEv called 2 returned 100% blocks executed 100%
+        2:  805:    allocator_type& __alloc() _NOEXCEPT {return __data_.second();}
+        2:  805-block  0
+        -:  806:    _LIBCPP_INLINE_VISIBILITY
+        -:  807:    const allocator_type& __alloc() const _NOEXCEPT {return __data_.second();}
+        -:  808:
+        -:  809:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__125__bucket_list_deallocatorINS_9allocatorIPNS_16__hash_node_baseIPNS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEEEclEPSD_ called 0 returned 0% blocks executed 0%
+    #####:  810:    void operator()(pointer __p) _NOEXCEPT
+        -:  811:    {
+    #####:  812:        __alloc_traits::deallocate(__alloc(), __p, size());
+    #####:  813:    }
+    $$$$$:  813-block  0
+        -:  814:};
+        -:  815:
+        -:  816:template <class _Alloc> class __hash_map_node_destructor;
+        -:  817:
+        -:  818:template <class _Alloc>
+        -:  819:class __hash_node_destructor
+        -:  820:{
+        -:  821:    typedef _Alloc                                          allocator_type;
+        -:  822:    typedef allocator_traits<allocator_type>                __alloc_traits;
+        -:  823:
+        -:  824:public:
+        -:  825:    typedef typename __alloc_traits::pointer                pointer;
+        -:  826:private:
+        -:  827:    typedef __hash_node_types<pointer> _NodeTypes;
+        -:  828:
+        -:  829:    allocator_type& __na_;
+        -:  830:
+        -:  831:public:
+        -:  832:    bool __value_constructed;
+        -:  833:
+        -:  834:    __hash_node_destructor(__hash_node_destructor const&) = default;
+        -:  835:    __hash_node_destructor& operator=(const __hash_node_destructor&) = delete;
+        -:  836:
+        -:  837:
+        -:  838:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__122__hash_node_destructorINS_9allocatorINS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEC1ERSA_b called 0 returned 0% blocks executed 0%
+function _ZNSt3__122__hash_node_destructorINS_9allocatorINS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEC2ERSA_b called 0 returned 0% blocks executed 0%
+    #####:  839:    explicit __hash_node_destructor(allocator_type& __na,
+        -:  840:                                    bool __constructed = false) _NOEXCEPT
+    #####:  841:        : __na_(__na),
+    #####:  842:          __value_constructed(__constructed)
+    #####:  843:        {}
+    $$$$$:  843-block  0
+    $$$$$:  843-block  1
+        -:  844:
+        -:  845:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__122__hash_node_destructorINS_9allocatorINS_11__hash_nodeINS_12basic_stringIcNS_11char_traitsIcEENS1_IcEEEEPvEEEEEclEPS9_ called 0 returned 0% blocks executed 0%
+    #####:  846:    void operator()(pointer __p) _NOEXCEPT
+        -:  847:    {
+    #####:  848:        if (__value_constructed)
+    $$$$$:  848-block  0
+    $$$$$:  848-block  1
+    #####:  849:            __alloc_traits::destroy(__na_, _NodeTypes::__get_ptr(__p->__value_));
+    $$$$$:  849-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$:  849-block  1
+    $$$$$:  849-block  2
+    #####:  850:        if (__p)
+    $$$$$:  850-block  0
+    $$$$$:  850-block  1
+    #####:  851:            __alloc_traits::deallocate(__na_, __p, 1);
+    $$$$$:  851-block  0
+    #####:  852:    }
+    $$$$$:  852-block  0
+        -:  853:
+        -:  854:    template <class> friend class __hash_map_node_destructor;
+        -:  855:};
+        -:  856:
+        -:  857:#if _LIBCPP_STD_VER > 14
+        -:  858:template <class _NodeType, class _Alloc>
+        -:  859:struct __generic_container_node_destructor;
+        -:  860:
+        -:  861:template <class _Tp, class _VoidPtr, class _Alloc>
+        -:  862:struct __generic_container_node_destructor<__hash_node<_Tp, _VoidPtr>, _Alloc>
+        -:  863:    : __hash_node_destructor<_Alloc>
+        -:  864:{
+        -:  865:    using __hash_node_destructor<_Alloc>::__hash_node_destructor;
+        -:  866:};
+        -:  867:#endif
+        -:  868:
+        -:  869:template <class _Key, class _Hash, class _Equal>
+        -:  870:struct __enforce_unordered_container_requirements {
+        -:  871:#ifndef _LIBCPP_CXX03_LANG
+        -:  872:    static_assert(__check_hash_requirements<_Key, _Hash>::value,
+        -:  873:    "the specified hash does not meet the Hash requirements");
+        -:  874:    static_assert(is_copy_constructible<_Equal>::value,
+        -:  875:    "the specified comparator is required to be copy constructible");
+        -:  876:#endif
+        -:  877:    typedef int type;
+        -:  878:};
+        -:  879:
+        -:  880:template <class _Key, class _Hash, class _Equal>
+        -:  881:#ifndef _LIBCPP_CXX03_LANG
+        -:  882:    _LIBCPP_DIAGNOSE_WARNING(!__invokable<_Equal const&, _Key const&, _Key const&>::value,
+        -:  883:    "the specified comparator type does not provide a viable const call operator")
+        -:  884:    _LIBCPP_DIAGNOSE_WARNING(!__invokable<_Hash const&, _Key const&>::value,
+        -:  885:    "the specified hash functor does not provide a viable const call operator")
+        -:  886:#endif
+        -:  887:typename __enforce_unordered_container_requirements<_Key, _Hash, _Equal>::type
+        -:  888:__diagnose_unordered_container_requirements(int);
+        -:  889:
+        -:  890:// This dummy overload is used so that the compiler won't emit a spurious
+        -:  891:// "no matching function for call to __diagnose_unordered_xxx" diagnostic
+        -:  892:// when the overload above causes a hard error.
+        -:  893:template <class _Key, class _Hash, class _Equal>
+        -:  894:int __diagnose_unordered_container_requirements(void*);
+        -:  895:
+        -:  896:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -:  897:class __hash_table
+        -:  898:{
+        -:  899:public:
+        -:  900:    typedef _Tp    value_type;
+        -:  901:    typedef _Hash  hasher;
+        -:  902:    typedef _Equal key_equal;
+        -:  903:    typedef _Alloc allocator_type;
+        -:  904:
+        -:  905:private:
+        -:  906:    typedef allocator_traits<allocator_type> __alloc_traits;
+        -:  907:    typedef typename
+        -:  908:      __make_hash_node_types<value_type, typename __alloc_traits::void_pointer>::type
+        -:  909:                                                                     _NodeTypes;
+        -:  910:public:
+        -:  911:
+        -:  912:    typedef typename _NodeTypes::__node_value_type           __node_value_type;
+        -:  913:    typedef typename _NodeTypes::__container_value_type      __container_value_type;
+        -:  914:    typedef typename _NodeTypes::key_type                    key_type;
+        -:  915:    typedef value_type&                              reference;
+        -:  916:    typedef const value_type&                        const_reference;
+        -:  917:    typedef typename __alloc_traits::pointer         pointer;
+        -:  918:    typedef typename __alloc_traits::const_pointer   const_pointer;
+        -:  919:#ifndef _LIBCPP_ABI_FIX_UNORDERED_CONTAINER_SIZE_TYPE
+        -:  920:    typedef typename __alloc_traits::size_type       size_type;
+        -:  921:#else
+        -:  922:    typedef typename _NodeTypes::size_type           size_type;
+        -:  923:#endif
+        -:  924:    typedef typename _NodeTypes::difference_type     difference_type;
+        -:  925:public:
+        -:  926:    // Create __node
+        -:  927:
+        -:  928:    typedef typename _NodeTypes::__node_type __node;
+        -:  929:    typedef typename __rebind_alloc_helper<__alloc_traits, __node>::type __node_allocator;
+        -:  930:    typedef allocator_traits<__node_allocator>       __node_traits;
+        -:  931:    typedef typename _NodeTypes::__void_pointer      __void_pointer;
+        -:  932:    typedef typename _NodeTypes::__node_pointer      __node_pointer;
+        -:  933:    typedef typename _NodeTypes::__node_pointer      __node_const_pointer;
+        -:  934:    typedef typename _NodeTypes::__node_base_type    __first_node;
+        -:  935:    typedef typename _NodeTypes::__node_base_pointer __node_base_pointer;
+        -:  936:    typedef typename _NodeTypes::__next_pointer      __next_pointer;
+        -:  937:
+        -:  938:private:
+        -:  939:    // check for sane allocator pointer rebinding semantics. Rebinding the
+        -:  940:    // allocator for a new pointer type should be exactly the same as rebinding
+        -:  941:    // the pointer using 'pointer_traits'.
+        -:  942:    static_assert((is_same<__node_pointer, typename __node_traits::pointer>::value),
+        -:  943:                  "Allocator does not rebind pointers in a sane manner.");
+        -:  944:    typedef typename __rebind_alloc_helper<__node_traits, __first_node>::type
+        -:  945:        __node_base_allocator;
+        -:  946:    typedef allocator_traits<__node_base_allocator> __node_base_traits;
+        -:  947:    static_assert((is_same<__node_base_pointer, typename __node_base_traits::pointer>::value),
+        -:  948:                 "Allocator does not rebind pointers in a sane manner.");
+        -:  949:
+        -:  950:private:
+        -:  951:
+        -:  952:    typedef typename __rebind_alloc_helper<__node_traits, __next_pointer>::type __pointer_allocator;
+        -:  953:    typedef __bucket_list_deallocator<__pointer_allocator> __bucket_list_deleter;
+        -:  954:    typedef unique_ptr<__next_pointer[], __bucket_list_deleter> __bucket_list;
+        -:  955:    typedef allocator_traits<__pointer_allocator>          __pointer_alloc_traits;
+        -:  956:    typedef typename __bucket_list_deleter::pointer       __node_pointer_pointer;
+        -:  957:
+        -:  958:    // --- Member data begin ---
+        -:  959:    __bucket_list                                         __bucket_list_;
+        -:  960:    __compressed_pair<__first_node, __node_allocator>     __p1_;
+        -:  961:    __compressed_pair<size_type, hasher>                  __p2_;
+        -:  962:    __compressed_pair<float, key_equal>                   __p3_;
+        -:  963:    // --- Member data end ---
+        -:  964:
+        -:  965:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE4sizeEv called 4 returned 100% blocks executed 100%
+        4:  966:    size_type& size() _NOEXCEPT {return __p2_.first();}
+        4:  966-block  0
+        -:  967:public:
+        -:  968:    _LIBCPP_INLINE_VISIBILITY
+        -:  969:    size_type  size() const _NOEXCEPT {return __p2_.first();}
+        -:  970:
+        -:  971:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE13hash_functionEv called 2 returned 100% blocks executed 100%
+        2:  972:    hasher& hash_function() _NOEXCEPT {return __p2_.second();}
+        2:  972-block  0
+        -:  973:    _LIBCPP_INLINE_VISIBILITY
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE13hash_functionEv called 40 returned 100% blocks executed 100%
+       40:  974:    const hasher& hash_function() const _NOEXCEPT {return __p2_.second();}
+       40:  974-block  0
+        -:  975:
+        -:  976:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE15max_load_factorEv called 2 returned 100% blocks executed 100%
+        2:  977:    float& max_load_factor() _NOEXCEPT {return __p3_.first();}
+        2:  977-block  0
+        -:  978:    _LIBCPP_INLINE_VISIBILITY
+        -:  979:    float  max_load_factor() const _NOEXCEPT {return __p3_.first();}
+        -:  980:
+        -:  981:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE6key_eqEv called 2 returned 100% blocks executed 100%
+        2:  982:    key_equal& key_eq() _NOEXCEPT {return __p3_.second();}
+        2:  982-block  0
+        -:  983:    _LIBCPP_INLINE_VISIBILITY
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE6key_eqEv called 0 returned 0% blocks executed 0%
+    #####:  984:    const key_equal& key_eq() const _NOEXCEPT {return __p3_.second();}
+    $$$$$:  984-block  0
+        -:  985:
+        -:  986:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE12__node_allocEv called 10 returned 100% blocks executed 100%
+       10:  987:    __node_allocator& __node_alloc() _NOEXCEPT {return __p1_.second();}
+       10:  987-block  0
+        -:  988:    _LIBCPP_INLINE_VISIBILITY
+        -:  989:    const __node_allocator& __node_alloc() const _NOEXCEPT
+        -:  990:        {return __p1_.second();}
+        -:  991:
+        -:  992:public:
+        -:  993:    typedef __hash_iterator<__node_pointer>                   iterator;
+        -:  994:    typedef __hash_const_iterator<__node_pointer>             const_iterator;
+        -:  995:    typedef __hash_local_iterator<__node_pointer>             local_iterator;
+        -:  996:    typedef __hash_const_local_iterator<__node_pointer>       const_local_iterator;
+        -:  997:
+        -:  998:    _LIBCPP_INLINE_VISIBILITY
+        8:  999:    __hash_table()
+        8:  999-block  0
+        -: 1000:        _NOEXCEPT_(
+        -: 1001:            is_nothrow_default_constructible<__bucket_list>::value &&
+        -: 1002:            is_nothrow_default_constructible<__first_node>::value &&
+        -: 1003:            is_nothrow_default_constructible<__node_allocator>::value &&
+        -: 1004:            is_nothrow_default_constructible<hasher>::value &&
+        -: 1005:            is_nothrow_default_constructible<key_equal>::value);
+        -: 1006:    _LIBCPP_INLINE_VISIBILITY
+        -: 1007:    __hash_table(const hasher& __hf, const key_equal& __eql);
+        -: 1008:    __hash_table(const hasher& __hf, const key_equal& __eql,
+        -: 1009:                 const allocator_type& __a);
+        -: 1010:    explicit __hash_table(const allocator_type& __a);
+        -: 1011:    __hash_table(const __hash_table& __u);
+        -: 1012:    __hash_table(const __hash_table& __u, const allocator_type& __a);
+        -: 1013:    __hash_table(__hash_table&& __u)
+        -: 1014:        _NOEXCEPT_(
+        -: 1015:            is_nothrow_move_constructible<__bucket_list>::value &&
+        -: 1016:            is_nothrow_move_constructible<__first_node>::value &&
+        -: 1017:            is_nothrow_move_constructible<__node_allocator>::value &&
+        -: 1018:            is_nothrow_move_constructible<hasher>::value &&
+        -: 1019:            is_nothrow_move_constructible<key_equal>::value);
+        -: 1020:    __hash_table(__hash_table&& __u, const allocator_type& __a);
+        -: 1021:    ~__hash_table();
+        -: 1022:
+        -: 1023:    __hash_table& operator=(const __hash_table& __u);
+        -: 1024:    _LIBCPP_INLINE_VISIBILITY
+        -: 1025:    __hash_table& operator=(__hash_table&& __u)
+        -: 1026:        _NOEXCEPT_(
+        -: 1027:            __node_traits::propagate_on_container_move_assignment::value &&
+        -: 1028:            is_nothrow_move_assignable<__node_allocator>::value &&
+        -: 1029:            is_nothrow_move_assignable<hasher>::value &&
+        -: 1030:            is_nothrow_move_assignable<key_equal>::value);
+        -: 1031:    template <class _InputIterator>
+        -: 1032:        void __assign_unique(_InputIterator __first, _InputIterator __last);
+        -: 1033:    template <class _InputIterator>
+        -: 1034:        void __assign_multi(_InputIterator __first, _InputIterator __last);
+        -: 1035:
+        -: 1036:    _LIBCPP_INLINE_VISIBILITY
+        -: 1037:    size_type max_size() const _NOEXCEPT
+        -: 1038:    {
+        -: 1039:        return _VSTD::min<size_type>(
+        -: 1040:            __node_traits::max_size(__node_alloc()),
+        -: 1041:            numeric_limits<difference_type >::max()
+        -: 1042:        );
+        -: 1043:    }
+        -: 1044:
+        -: 1045:private:
+        -: 1046:    _LIBCPP_INLINE_VISIBILITY
+        -: 1047:    __next_pointer __node_insert_multi_prepare(size_t __cp_hash,
+        -: 1048:                                               value_type& __cp_val);
+        -: 1049:    _LIBCPP_INLINE_VISIBILITY
+        -: 1050:    void __node_insert_multi_perform(__node_pointer __cp,
+        -: 1051:                                     __next_pointer __pn) _NOEXCEPT;
+        -: 1052:
+        -: 1053:    _LIBCPP_INLINE_VISIBILITY
+        -: 1054:    __next_pointer __node_insert_unique_prepare(size_t __nd_hash,
+        -: 1055:                                                value_type& __nd_val);
+        -: 1056:    _LIBCPP_INLINE_VISIBILITY
+        -: 1057:    void __node_insert_unique_perform(__node_pointer __ptr) _NOEXCEPT;
+        -: 1058:
+        -: 1059:public:
+        -: 1060:    _LIBCPP_INLINE_VISIBILITY
+        -: 1061:    pair<iterator, bool> __node_insert_unique(__node_pointer __nd);
+        -: 1062:    _LIBCPP_INLINE_VISIBILITY
+        -: 1063:    iterator             __node_insert_multi(__node_pointer __nd);
+        -: 1064:    _LIBCPP_INLINE_VISIBILITY
+        -: 1065:    iterator             __node_insert_multi(const_iterator __p,
+        -: 1066:                                             __node_pointer __nd);
+        -: 1067:
+        -: 1068:    template <class _Key, class ..._Args>
+        -: 1069:    _LIBCPP_INLINE_VISIBILITY
+        -: 1070:    pair<iterator, bool> __emplace_unique_key_args(_Key const& __k, _Args&&... __args);
+        -: 1071:
+        -: 1072:    template <class... _Args>
+        -: 1073:    _LIBCPP_INLINE_VISIBILITY
+        -: 1074:    pair<iterator, bool> __emplace_unique_impl(_Args&&... __args);
+        -: 1075:
+        -: 1076:    template <class _Pp>
+        -: 1077:    _LIBCPP_INLINE_VISIBILITY
+        -: 1078:    pair<iterator, bool> __emplace_unique(_Pp&& __x) {
+        -: 1079:      return __emplace_unique_extract_key(_VSTD::forward<_Pp>(__x),
+        -: 1080:                                          __can_extract_key<_Pp, key_type>());
+        -: 1081:    }
+        -: 1082:
+        -: 1083:    template <class _First, class _Second>
+        -: 1084:    _LIBCPP_INLINE_VISIBILITY
+        -: 1085:    typename enable_if<
+        -: 1086:        __can_extract_map_key<_First, key_type, __container_value_type>::value,
+        -: 1087:        pair<iterator, bool>
+        -: 1088:    >::type __emplace_unique(_First&& __f, _Second&& __s) {
+        -: 1089:        return __emplace_unique_key_args(__f, _VSTD::forward<_First>(__f),
+        -: 1090:                                              _VSTD::forward<_Second>(__s));
+        -: 1091:    }
+        -: 1092:
+        -: 1093:    template <class... _Args>
+        -: 1094:    _LIBCPP_INLINE_VISIBILITY
+        -: 1095:    pair<iterator, bool> __emplace_unique(_Args&&... __args) {
+        -: 1096:      return __emplace_unique_impl(_VSTD::forward<_Args>(__args)...);
+        -: 1097:    }
+        -: 1098:
+        -: 1099:    template <class _Pp>
+        -: 1100:    _LIBCPP_INLINE_VISIBILITY
+        -: 1101:    pair<iterator, bool>
+        -: 1102:    __emplace_unique_extract_key(_Pp&& __x, __extract_key_fail_tag) {
+        -: 1103:      return __emplace_unique_impl(_VSTD::forward<_Pp>(__x));
+        -: 1104:    }
+        -: 1105:    template <class _Pp>
+        -: 1106:    _LIBCPP_INLINE_VISIBILITY
+        -: 1107:    pair<iterator, bool>
+        -: 1108:    __emplace_unique_extract_key(_Pp&& __x, __extract_key_self_tag) {
+        -: 1109:      return __emplace_unique_key_args(__x, _VSTD::forward<_Pp>(__x));
+        -: 1110:    }
+        -: 1111:    template <class _Pp>
+        -: 1112:    _LIBCPP_INLINE_VISIBILITY
+        -: 1113:    pair<iterator, bool>
+        -: 1114:    __emplace_unique_extract_key(_Pp&& __x, __extract_key_first_tag) {
+        -: 1115:      return __emplace_unique_key_args(__x.first, _VSTD::forward<_Pp>(__x));
+        -: 1116:    }
+        -: 1117:
+        -: 1118:    template <class... _Args>
+        -: 1119:    _LIBCPP_INLINE_VISIBILITY
+        -: 1120:    iterator __emplace_multi(_Args&&... __args);
+        -: 1121:    template <class... _Args>
+        -: 1122:    _LIBCPP_INLINE_VISIBILITY
+        -: 1123:    iterator __emplace_hint_multi(const_iterator __p, _Args&&... __args);
+        -: 1124:
+        -: 1125:
+        -: 1126:    _LIBCPP_INLINE_VISIBILITY
+        -: 1127:    pair<iterator, bool>
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE15__insert_uniqueEOS6_ called 0 returned 0% blocks executed 0%
+    #####: 1128:    __insert_unique(__container_value_type&& __x) {
+    #####: 1129:      return __emplace_unique_key_args(_NodeTypes::__get_key(__x), _VSTD::move(__x));
+    $$$$$: 1129-block  0
+        -: 1130:    }
+        -: 1131:
+        -: 1132:    template <class _Pp, class = typename enable_if<
+        -: 1133:            !__is_same_uncvref<_Pp, __container_value_type>::value
+        -: 1134:        >::type>
+        -: 1135:    _LIBCPP_INLINE_VISIBILITY
+        -: 1136:    pair<iterator, bool> __insert_unique(_Pp&& __x) {
+        -: 1137:      return __emplace_unique(_VSTD::forward<_Pp>(__x));
+        -: 1138:    }
+        -: 1139:
+        -: 1140:    template <class _Pp>
+        -: 1141:    _LIBCPP_INLINE_VISIBILITY
+        -: 1142:    iterator __insert_multi(_Pp&& __x) {
+        -: 1143:      return __emplace_multi(_VSTD::forward<_Pp>(__x));
+        -: 1144:    }
+        -: 1145:
+        -: 1146:    template <class _Pp>
+        -: 1147:    _LIBCPP_INLINE_VISIBILITY
+        -: 1148:    iterator __insert_multi(const_iterator __p, _Pp&& __x) {
+        -: 1149:        return __emplace_hint_multi(__p, _VSTD::forward<_Pp>(__x));
+        -: 1150:    }
+        -: 1151:
+        -: 1152:    _LIBCPP_INLINE_VISIBILITY
+        -: 1153:    pair<iterator, bool> __insert_unique(const __container_value_type& __x) {
+        -: 1154:        return __emplace_unique_key_args(_NodeTypes::__get_key(__x), __x);
+        -: 1155:    }
+        -: 1156:
+        -: 1157:#if _LIBCPP_STD_VER > 14
+        -: 1158:    template <class _NodeHandle, class _InsertReturnType>
+        -: 1159:    _LIBCPP_INLINE_VISIBILITY
+        -: 1160:    _InsertReturnType __node_handle_insert_unique(_NodeHandle&& __nh);
+        -: 1161:    template <class _NodeHandle>
+        -: 1162:    _LIBCPP_INLINE_VISIBILITY
+        -: 1163:    iterator __node_handle_insert_unique(const_iterator __hint,
+        -: 1164:                                         _NodeHandle&& __nh);
+        -: 1165:    template <class _Table>
+        -: 1166:    _LIBCPP_INLINE_VISIBILITY
+        -: 1167:    void __node_handle_merge_unique(_Table& __source);
+        -: 1168:
+        -: 1169:    template <class _NodeHandle>
+        -: 1170:    _LIBCPP_INLINE_VISIBILITY
+        -: 1171:    iterator __node_handle_insert_multi(_NodeHandle&& __nh);
+        -: 1172:    template <class _NodeHandle>
+        -: 1173:    _LIBCPP_INLINE_VISIBILITY
+        -: 1174:    iterator __node_handle_insert_multi(const_iterator __hint, _NodeHandle&& __nh);
+        -: 1175:    template <class _Table>
+        -: 1176:    _LIBCPP_INLINE_VISIBILITY
+        -: 1177:    void __node_handle_merge_multi(_Table& __source);
+        -: 1178:
+        -: 1179:    template <class _NodeHandle>
+        -: 1180:    _LIBCPP_INLINE_VISIBILITY
+        -: 1181:    _NodeHandle __node_handle_extract(key_type const& __key);
+        -: 1182:    template <class _NodeHandle>
+        -: 1183:    _LIBCPP_INLINE_VISIBILITY
+        -: 1184:    _NodeHandle __node_handle_extract(const_iterator __it);
+        -: 1185:#endif
+        -: 1186:
+        -: 1187:    void clear() _NOEXCEPT;
+        -: 1188:    void rehash(size_type __n);
+        -: 1189:    _LIBCPP_INLINE_VISIBILITY void reserve(size_type __n)
+        -: 1190:        {rehash(static_cast<size_type>(ceil(__n / max_load_factor())));}
+        -: 1191:
+        -: 1192:    _LIBCPP_INLINE_VISIBILITY
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE12bucket_countEv called 40 returned 100% blocks executed 100%
+       40: 1193:    size_type bucket_count() const _NOEXCEPT
+        -: 1194:    {
+       40: 1195:        return __bucket_list_.get_deleter().size();
+       40: 1195-block  0
+        -: 1196:    }
+        -: 1197:
+        -: 1198:    _LIBCPP_INLINE_VISIBILITY
+        -: 1199:    iterator       begin() _NOEXCEPT;
+        -: 1200:    _LIBCPP_INLINE_VISIBILITY
+        -: 1201:    iterator       end() _NOEXCEPT;
+        -: 1202:    _LIBCPP_INLINE_VISIBILITY
+        -: 1203:    const_iterator begin() const _NOEXCEPT;
+        -: 1204:    _LIBCPP_INLINE_VISIBILITY
+        -: 1205:    const_iterator end() const _NOEXCEPT;
+        -: 1206:
+        -: 1207:    template <class _Key>
+        -: 1208:        _LIBCPP_INLINE_VISIBILITY
+        -: 1209:        size_type bucket(const _Key& __k) const
+        -: 1210:        {
+        -: 1211:            _LIBCPP_ASSERT(bucket_count() > 0,
+        -: 1212:                "unordered container::bucket(key) called when bucket_count() == 0");
+        -: 1213:            return __constrain_hash(hash_function()(__k), bucket_count());
+        -: 1214:        }
+        -: 1215:
+        -: 1216:    template <class _Key>
+        -: 1217:        iterator       find(const _Key& __x);
+        -: 1218:    template <class _Key>
+        -: 1219:        const_iterator find(const _Key& __x) const;
+        -: 1220:
+        -: 1221:    typedef __hash_node_destructor<__node_allocator> _Dp;
+        -: 1222:    typedef unique_ptr<__node, _Dp> __node_holder;
+        -: 1223:
+        -: 1224:    iterator erase(const_iterator __p);
+        -: 1225:    iterator erase(const_iterator __first, const_iterator __last);
+        -: 1226:    template <class _Key>
+        -: 1227:        size_type __erase_unique(const _Key& __k);
+        -: 1228:    template <class _Key>
+        -: 1229:        size_type __erase_multi(const _Key& __k);
+        -: 1230:    __node_holder remove(const_iterator __p) _NOEXCEPT;
+        -: 1231:
+        -: 1232:    template <class _Key>
+        -: 1233:        _LIBCPP_INLINE_VISIBILITY
+        -: 1234:        size_type __count_unique(const _Key& __k) const;
+        -: 1235:    template <class _Key>
+        -: 1236:        size_type __count_multi(const _Key& __k) const;
+        -: 1237:
+        -: 1238:    template <class _Key>
+        -: 1239:        pair<iterator, iterator>
+        -: 1240:        __equal_range_unique(const _Key& __k);
+        -: 1241:    template <class _Key>
+        -: 1242:        pair<const_iterator, const_iterator>
+        -: 1243:        __equal_range_unique(const _Key& __k) const;
+        -: 1244:
+        -: 1245:    template <class _Key>
+        -: 1246:        pair<iterator, iterator>
+        -: 1247:        __equal_range_multi(const _Key& __k);
+        -: 1248:    template <class _Key>
+        -: 1249:        pair<const_iterator, const_iterator>
+        -: 1250:        __equal_range_multi(const _Key& __k) const;
+        -: 1251:
+        -: 1252:    void swap(__hash_table& __u)
+        -: 1253:#if _LIBCPP_STD_VER <= 11
+        -: 1254:        _NOEXCEPT_(
+        -: 1255:            __is_nothrow_swappable<hasher>::value && __is_nothrow_swappable<key_equal>::value
+        -: 1256:            && (!allocator_traits<__pointer_allocator>::propagate_on_container_swap::value
+        -: 1257:                  || __is_nothrow_swappable<__pointer_allocator>::value)
+        -: 1258:            && (!__node_traits::propagate_on_container_swap::value
+        -: 1259:                  || __is_nothrow_swappable<__node_allocator>::value)
+        -: 1260:            );
+        -: 1261:#else
+        -: 1262:     _NOEXCEPT_(__is_nothrow_swappable<hasher>::value && __is_nothrow_swappable<key_equal>::value);
+        -: 1263:#endif
+        -: 1264:
+        -: 1265:    _LIBCPP_INLINE_VISIBILITY
+        -: 1266:    size_type max_bucket_count() const _NOEXCEPT
+        -: 1267:        {return max_size(); }
+        -: 1268:    size_type bucket_size(size_type __n) const;
+        -: 1269:    _LIBCPP_INLINE_VISIBILITY float load_factor() const _NOEXCEPT
+        -: 1270:    {
+        -: 1271:        size_type __bc = bucket_count();
+        -: 1272:        return __bc != 0 ? (float)size() / __bc : 0.f;
+        -: 1273:    }
+        -: 1274:    _LIBCPP_INLINE_VISIBILITY void max_load_factor(float __mlf) _NOEXCEPT
+        -: 1275:    {
+        -: 1276:        _LIBCPP_ASSERT(__mlf > 0,
+        -: 1277:            "unordered container::max_load_factor(lf) called with lf <= 0");
+        -: 1278:        max_load_factor() = _VSTD::max(__mlf, load_factor());
+        -: 1279:    }
+        -: 1280:
+        -: 1281:    _LIBCPP_INLINE_VISIBILITY
+        -: 1282:    local_iterator
+        -: 1283:    begin(size_type __n)
+        -: 1284:    {
+        -: 1285:        _LIBCPP_ASSERT(__n < bucket_count(),
+        -: 1286:            "unordered container::begin(n) called with n >= bucket_count()");
+        -: 1287:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1288:        return local_iterator(__bucket_list_[__n], __n, bucket_count(), this);
+        -: 1289:#else
+        -: 1290:        return local_iterator(__bucket_list_[__n], __n, bucket_count());
+        -: 1291:#endif
+        -: 1292:    }
+        -: 1293:
+        -: 1294:    _LIBCPP_INLINE_VISIBILITY
+        -: 1295:    local_iterator
+        -: 1296:    end(size_type __n)
+        -: 1297:    {
+        -: 1298:        _LIBCPP_ASSERT(__n < bucket_count(),
+        -: 1299:            "unordered container::end(n) called with n >= bucket_count()");
+        -: 1300:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1301:        return local_iterator(nullptr, __n, bucket_count(), this);
+        -: 1302:#else
+        -: 1303:        return local_iterator(nullptr, __n, bucket_count());
+        -: 1304:#endif
+        -: 1305:    }
+        -: 1306:
+        -: 1307:    _LIBCPP_INLINE_VISIBILITY
+        -: 1308:    const_local_iterator
+        -: 1309:    cbegin(size_type __n) const
+        -: 1310:    {
+        -: 1311:        _LIBCPP_ASSERT(__n < bucket_count(),
+        -: 1312:            "unordered container::cbegin(n) called with n >= bucket_count()");
+        -: 1313:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1314:        return const_local_iterator(__bucket_list_[__n], __n, bucket_count(), this);
+        -: 1315:#else
+        -: 1316:        return const_local_iterator(__bucket_list_[__n], __n, bucket_count());
+        -: 1317:#endif
+        -: 1318:    }
+        -: 1319:
+        -: 1320:    _LIBCPP_INLINE_VISIBILITY
+        -: 1321:    const_local_iterator
+        -: 1322:    cend(size_type __n) const
+        -: 1323:    {
+        -: 1324:        _LIBCPP_ASSERT(__n < bucket_count(),
+        -: 1325:            "unordered container::cend(n) called with n >= bucket_count()");
+        -: 1326:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1327:        return const_local_iterator(nullptr, __n, bucket_count(), this);
+        -: 1328:#else
+        -: 1329:        return const_local_iterator(nullptr, __n, bucket_count());
+        -: 1330:#endif
+        -: 1331:    }
+        -: 1332:
+        -: 1333:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1334:
+        -: 1335:    bool __dereferenceable(const const_iterator* __i) const;
+        -: 1336:    bool __decrementable(const const_iterator* __i) const;
+        -: 1337:    bool __addable(const const_iterator* __i, ptrdiff_t __n) const;
+        -: 1338:    bool __subscriptable(const const_iterator* __i, ptrdiff_t __n) const;
+        -: 1339:
+        -: 1340:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -: 1341:
+        -: 1342:private:
+        -: 1343:    void __rehash(size_type __n);
+        -: 1344:
+        -: 1345:    template <class ..._Args>
+        -: 1346:    __node_holder __construct_node(_Args&& ...__args);
+        -: 1347:
+        -: 1348:    template <class _First, class ..._Rest>
+        -: 1349:    __node_holder __construct_node_hash(size_t __hash, _First&& __f, _Rest&&... __rest);
+        -: 1350:
+        -: 1351:
+        -: 1352:    _LIBCPP_INLINE_VISIBILITY
+        -: 1353:    void __copy_assign_alloc(const __hash_table& __u)
+        -: 1354:        {__copy_assign_alloc(__u, integral_constant<bool,
+        -: 1355:             __node_traits::propagate_on_container_copy_assignment::value>());}
+        -: 1356:    void __copy_assign_alloc(const __hash_table& __u, true_type);
+        -: 1357:    _LIBCPP_INLINE_VISIBILITY
+        -: 1358:        void __copy_assign_alloc(const __hash_table&, false_type) {}
+        -: 1359:
+        -: 1360:    void __move_assign(__hash_table& __u, false_type);
+        -: 1361:    void __move_assign(__hash_table& __u, true_type)
+        -: 1362:        _NOEXCEPT_(
+        -: 1363:            is_nothrow_move_assignable<__node_allocator>::value &&
+        -: 1364:            is_nothrow_move_assignable<hasher>::value &&
+        -: 1365:            is_nothrow_move_assignable<key_equal>::value);
+        -: 1366:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE19__move_assign_allocERSC_ called 1 returned 100% blocks executed 100%
+        1: 1367:    void __move_assign_alloc(__hash_table& __u)
+        -: 1368:        _NOEXCEPT_(
+        -: 1369:            !__node_traits::propagate_on_container_move_assignment::value ||
+        -: 1370:            (is_nothrow_move_assignable<__pointer_allocator>::value &&
+        -: 1371:             is_nothrow_move_assignable<__node_allocator>::value))
+        1: 1372:        {__move_assign_alloc(__u, integral_constant<bool,
+        1: 1373:             __node_traits::propagate_on_container_move_assignment::value>());}
+        1: 1373-block  0
+        -: 1374:    _LIBCPP_INLINE_VISIBILITY
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE19__move_assign_allocERSC_NS_17integral_constantIbLb1EEE called 1 returned 100% blocks executed 100%
+        1: 1375:    void __move_assign_alloc(__hash_table& __u, true_type)
+        -: 1376:        _NOEXCEPT_(
+        -: 1377:            is_nothrow_move_assignable<__pointer_allocator>::value &&
+        -: 1378:            is_nothrow_move_assignable<__node_allocator>::value)
+        -: 1379:    {
+        1: 1380:        __bucket_list_.get_deleter().__alloc() =
+        1: 1381:                _VSTD::move(__u.__bucket_list_.get_deleter().__alloc());
+        1: 1382:        __node_alloc() = _VSTD::move(__u.__node_alloc());
+        1: 1383:    }
+        1: 1383-block  0
+        -: 1384:    _LIBCPP_INLINE_VISIBILITY
+        -: 1385:        void __move_assign_alloc(__hash_table&, false_type) _NOEXCEPT {}
+        -: 1386:
+        -: 1387:    void __deallocate_node(__next_pointer __np) _NOEXCEPT;
+        -: 1388:    __next_pointer __detach() _NOEXCEPT;
+        -: 1389:
+        -: 1390:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_map;
+        -: 1391:    template <class, class, class, class, class> friend class _LIBCPP_TEMPLATE_VIS unordered_multimap;
+        -: 1392:};
+        -: 1393:
+        -: 1394:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1395:inline
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEEC1Ev called 8 returned 100% blocks executed 100%
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEEC2Ev called 8 returned 100% blocks executed 66%
+       16: 1396:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table()
+        -: 1397:    _NOEXCEPT_(
+        -: 1398:        is_nothrow_default_constructible<__bucket_list>::value &&
+        -: 1399:        is_nothrow_default_constructible<__first_node>::value &&
+        -: 1400:        is_nothrow_default_constructible<__node_allocator>::value &&
+        -: 1401:        is_nothrow_default_constructible<hasher>::value &&
+        -: 1402:        is_nothrow_default_constructible<key_equal>::value)
+        8: 1403:    : __p2_(0, __default_init_tag()),
+        8: 1403-block  0
+        8: 1404:      __p3_(1.0f, __default_init_tag())
+        8: 1404-block  0
+        8: 1405:{
+       16: 1406:}
+        8: 1406-block  0
+        8: 1406-block  1
+    $$$$$: 1406-block  2
+    $$$$$: 1406-block  3
+        -: 1407:
+        -: 1408:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1409:inline
+        -: 1410:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(const hasher& __hf,
+        -: 1411:                                                       const key_equal& __eql)
+        -: 1412:    : __bucket_list_(nullptr, __bucket_list_deleter()),
+        -: 1413:      __p1_(),
+        -: 1414:      __p2_(0, __hf),
+        -: 1415:      __p3_(1.0f, __eql)
+        -: 1416:{
+        -: 1417:}
+        -: 1418:
+        -: 1419:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1420:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(const hasher& __hf,
+        -: 1421:                                                       const key_equal& __eql,
+        -: 1422:                                                       const allocator_type& __a)
+        -: 1423:    : __bucket_list_(nullptr, __bucket_list_deleter(__pointer_allocator(__a), 0)),
+        -: 1424:      __p1_(__default_init_tag(), __node_allocator(__a)),
+        -: 1425:      __p2_(0, __hf),
+        -: 1426:      __p3_(1.0f, __eql)
+        -: 1427:{
+        -: 1428:}
+        -: 1429:
+        -: 1430:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1431:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(const allocator_type& __a)
+        -: 1432:    : __bucket_list_(nullptr, __bucket_list_deleter(__pointer_allocator(__a), 0)),
+        -: 1433:      __p1_(__default_init_tag(), __node_allocator(__a)),
+        -: 1434:      __p2_(0, __default_init_tag()),
+        -: 1435:      __p3_(1.0f, __default_init_tag())
+        -: 1436:{
+        -: 1437:}
+        -: 1438:
+        -: 1439:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1440:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(const __hash_table& __u)
+        -: 1441:    : __bucket_list_(nullptr,
+        -: 1442:          __bucket_list_deleter(allocator_traits<__pointer_allocator>::
+        -: 1443:              select_on_container_copy_construction(
+        -: 1444:                  __u.__bucket_list_.get_deleter().__alloc()), 0)),
+        -: 1445:      __p1_(__default_init_tag(), allocator_traits<__node_allocator>::
+        -: 1446:          select_on_container_copy_construction(__u.__node_alloc())),
+        -: 1447:      __p2_(0, __u.hash_function()),
+        -: 1448:      __p3_(__u.__p3_)
+        -: 1449:{
+        -: 1450:}
+        -: 1451:
+        -: 1452:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1453:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(const __hash_table& __u,
+        -: 1454:                                                       const allocator_type& __a)
+        -: 1455:    : __bucket_list_(nullptr, __bucket_list_deleter(__pointer_allocator(__a), 0)),
+        -: 1456:      __p1_(__default_init_tag(), __node_allocator(__a)),
+        -: 1457:      __p2_(0, __u.hash_function()),
+        -: 1458:      __p3_(__u.__p3_)
+        -: 1459:{
+        -: 1460:}
+        -: 1461:
+        -: 1462:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1463:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(__hash_table&& __u)
+        -: 1464:        _NOEXCEPT_(
+        -: 1465:            is_nothrow_move_constructible<__bucket_list>::value &&
+        -: 1466:            is_nothrow_move_constructible<__first_node>::value &&
+        -: 1467:            is_nothrow_move_constructible<__node_allocator>::value &&
+        -: 1468:            is_nothrow_move_constructible<hasher>::value &&
+        -: 1469:            is_nothrow_move_constructible<key_equal>::value)
+        -: 1470:    : __bucket_list_(_VSTD::move(__u.__bucket_list_)),
+        -: 1471:      __p1_(_VSTD::move(__u.__p1_)),
+        -: 1472:      __p2_(_VSTD::move(__u.__p2_)),
+        -: 1473:      __p3_(_VSTD::move(__u.__p3_))
+        -: 1474:{
+        -: 1475:    if (size() > 0)
+        -: 1476:    {
+        -: 1477:        __bucket_list_[__constrain_hash(__p1_.first().__next_->__hash(), bucket_count())] =
+        -: 1478:            __p1_.first().__ptr();
+        -: 1479:        __u.__p1_.first().__next_ = nullptr;
+        -: 1480:        __u.size() = 0;
+        -: 1481:    }
+        -: 1482:}
+        -: 1483:
+        -: 1484:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1485:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__hash_table(__hash_table&& __u,
+        -: 1486:                                                       const allocator_type& __a)
+        -: 1487:    : __bucket_list_(nullptr, __bucket_list_deleter(__pointer_allocator(__a), 0)),
+        -: 1488:      __p1_(__default_init_tag(), __node_allocator(__a)),
+        -: 1489:      __p2_(0, _VSTD::move(__u.hash_function())),
+        -: 1490:      __p3_(_VSTD::move(__u.__p3_))
+        -: 1491:{
+        -: 1492:    if (__a == allocator_type(__u.__node_alloc()))
+        -: 1493:    {
+        -: 1494:        __bucket_list_.reset(__u.__bucket_list_.release());
+        -: 1495:        __bucket_list_.get_deleter().size() = __u.__bucket_list_.get_deleter().size();
+        -: 1496:        __u.__bucket_list_.get_deleter().size() = 0;
+        -: 1497:        if (__u.size() > 0)
+        -: 1498:        {
+        -: 1499:            __p1_.first().__next_ = __u.__p1_.first().__next_;
+        -: 1500:            __u.__p1_.first().__next_ = nullptr;
+        -: 1501:            __bucket_list_[__constrain_hash(__p1_.first().__next_->__hash(), bucket_count())] =
+        -: 1502:                __p1_.first().__ptr();
+        -: 1503:            size() = __u.size();
+        -: 1504:            __u.size() = 0;
+        -: 1505:        }
+        -: 1506:    }
+        -: 1507:}
+        -: 1508:
+        -: 1509:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEED1Ev called 8 returned 100% blocks executed 100%
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEED2Ev called 8 returned 100% blocks executed 100%
+       16: 1510:__hash_table<_Tp, _Hash, _Equal, _Alloc>::~__hash_table()
+        8: 1511:{
+        -: 1512:#if defined(_LIBCPP_CXX03_LANG)
+        -: 1513:    static_assert((is_copy_constructible<key_equal>::value),
+        -: 1514:                 "Predicate must be copy-constructible.");
+        -: 1515:    static_assert((is_copy_constructible<hasher>::value),
+        -: 1516:                 "Hasher must be copy-constructible.");
+        -: 1517:#endif
+        -: 1518:
+        8: 1519:    __deallocate_node(__p1_.first().__next_);
+        -: 1520:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1521:    __get_db()->__erase_c(this);
+        -: 1522:#endif
+       16: 1523:}
+        8: 1523-block  0
+        8: 1523-block  1
+        -: 1524:
+        -: 1525:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1526:void
+        -: 1527:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__copy_assign_alloc(
+        -: 1528:        const __hash_table& __u, true_type)
+        -: 1529:{
+        -: 1530:    if (__node_alloc() != __u.__node_alloc())
+        -: 1531:    {
+        -: 1532:        clear();
+        -: 1533:        __bucket_list_.reset();
+        -: 1534:        __bucket_list_.get_deleter().size() = 0;
+        -: 1535:    }
+        -: 1536:    __bucket_list_.get_deleter().__alloc() = __u.__bucket_list_.get_deleter().__alloc();
+        -: 1537:    __node_alloc() = __u.__node_alloc();
+        -: 1538:}
+        -: 1539:
+        -: 1540:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1541:__hash_table<_Tp, _Hash, _Equal, _Alloc>&
+        -: 1542:__hash_table<_Tp, _Hash, _Equal, _Alloc>::operator=(const __hash_table& __u)
+        -: 1543:{
+        -: 1544:    if (this != &__u)
+        -: 1545:    {
+        -: 1546:        __copy_assign_alloc(__u);
+        -: 1547:        hash_function() = __u.hash_function();
+        -: 1548:        key_eq() = __u.key_eq();
+        -: 1549:        max_load_factor() = __u.max_load_factor();
+        -: 1550:        __assign_multi(__u.begin(), __u.end());
+        -: 1551:    }
+        -: 1552:    return *this;
+        -: 1553:}
+        -: 1554:
+        -: 1555:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1556:void
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE17__deallocate_nodeEPNS_16__hash_node_baseIPNS_11__hash_nodeIS6_PvEEEE called 8 returned 100% blocks executed 75%
+        8: 1557:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__deallocate_node(__next_pointer __np)
+        -: 1558:    _NOEXCEPT
+        -: 1559:{
+        8: 1560:    __node_allocator& __na = __node_alloc();
+        8: 1561:    while (__np != nullptr)
+        8: 1561-block  0
+        8: 1561-block  1
+branch  0 taken 0
+branch  1 taken 8
+    $$$$$: 1561-block  2
+        -: 1562:    {
+    #####: 1563:        __next_pointer __next = __np->__next_;
+        -: 1564:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1565:        __c_node* __c = __get_db()->__find_c_and_lock(this);
+        -: 1566:        for (__i_node** __p = __c->end_; __p != __c->beg_; )
+        -: 1567:        {
+        -: 1568:            --__p;
+        -: 1569:            iterator* __i = static_cast<iterator*>((*__p)->__i_);
+        -: 1570:            if (__i->__node_ == __np)
+        -: 1571:            {
+        -: 1572:                (*__p)->__c_ = nullptr;
+        -: 1573:                if (--__c->end_ != __p)
+        -: 1574:                    _VSTD::memmove(__p, __p+1, (__c->end_ - __p)*sizeof(__i_node*));
+        -: 1575:            }
+        -: 1576:        }
+        -: 1577:        __get_db()->unlock();
+        -: 1578:#endif
+    #####: 1579:        __node_pointer __real_np = __np->__upcast();
+    #####: 1580:        __node_traits::destroy(__na, _NodeTypes::__get_ptr(__real_np->__value_));
+    #####: 1581:        __node_traits::deallocate(__na, __real_np, 1);
+    #####: 1582:        __np = __next;
+        -: 1583:    }
+        8: 1584:}
+        8: 1584-block  0
+        -: 1585:
+        -: 1586:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1587:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__next_pointer
+        -: 1588:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__detach() _NOEXCEPT
+        -: 1589:{
+        -: 1590:    size_type __bc = bucket_count();
+        -: 1591:    for (size_type __i = 0; __i < __bc; ++__i)
+        -: 1592:        __bucket_list_[__i] = nullptr;
+        -: 1593:    size() = 0;
+        -: 1594:    __next_pointer __cache = __p1_.first().__next_;
+        -: 1595:    __p1_.first().__next_ = nullptr;
+        -: 1596:    return __cache;
+        -: 1597:}
+        -: 1598:
+        -: 1599:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1600:void
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE13__move_assignERSC_NS_17integral_constantIbLb1EEE called 1 returned 100% blocks executed 50%
+        1: 1601:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__move_assign(
+        -: 1602:        __hash_table& __u, true_type)
+        -: 1603:    _NOEXCEPT_(
+        -: 1604:        is_nothrow_move_assignable<__node_allocator>::value &&
+        -: 1605:        is_nothrow_move_assignable<hasher>::value &&
+        -: 1606:        is_nothrow_move_assignable<key_equal>::value)
+        -: 1607:{
+        1: 1608:    clear();
+        1: 1609:    __bucket_list_.reset(__u.__bucket_list_.release());
+        1: 1610:    __bucket_list_.get_deleter().size() = __u.__bucket_list_.get_deleter().size();
+        1: 1611:    __u.__bucket_list_.get_deleter().size() = 0;
+        1: 1612:    __move_assign_alloc(__u);
+        1: 1613:    size() = __u.size();
+        1: 1614:    hash_function() = _VSTD::move(__u.hash_function());
+        1: 1615:    max_load_factor() = __u.max_load_factor();
+        1: 1616:    key_eq() = _VSTD::move(__u.key_eq());
+        1: 1617:    __p1_.first().__next_ = __u.__p1_.first().__next_;
+        1: 1618:    if (size() > 0)
+    $$$$$: 1618-block  0
+        1: 1618-block  1
+        -: 1619:    {
+    #####: 1620:        __bucket_list_[__constrain_hash(__p1_.first().__next_->__hash(), bucket_count())] =
+    #####: 1621:            __p1_.first().__ptr();
+    #####: 1622:        __u.__p1_.first().__next_ = nullptr;
+    #####: 1623:        __u.size() = 0;
+    #####: 1624:    }
+    $$$$$: 1624-block  0
+        -: 1625:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1626:    __get_db()->swap(this, &__u);
+        -: 1627:#endif
+        1: 1628:}
+        1: 1628-block  0
+        -: 1629:
+        -: 1630:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1631:void
+        -: 1632:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__move_assign(
+        -: 1633:        __hash_table& __u, false_type)
+        -: 1634:{
+        -: 1635:    if (__node_alloc() == __u.__node_alloc())
+        -: 1636:        __move_assign(__u, true_type());
+        -: 1637:    else
+        -: 1638:    {
+        -: 1639:        hash_function() = _VSTD::move(__u.hash_function());
+        -: 1640:        key_eq() = _VSTD::move(__u.key_eq());
+        -: 1641:        max_load_factor() = __u.max_load_factor();
+        -: 1642:        if (bucket_count() != 0)
+        -: 1643:        {
+        -: 1644:            __next_pointer __cache = __detach();
+        -: 1645:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1646:            try
+        -: 1647:            {
+        -: 1648:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1649:                const_iterator __i = __u.begin();
+        -: 1650:                while (__cache != nullptr && __u.size() != 0)
+        -: 1651:                {
+        -: 1652:                    __cache->__upcast()->__value_ =
+        -: 1653:                        _VSTD::move(__u.remove(__i++)->__value_);
+        -: 1654:                    __next_pointer __next = __cache->__next_;
+        -: 1655:                    __node_insert_multi(__cache->__upcast());
+        -: 1656:                    __cache = __next;
+        -: 1657:                }
+        -: 1658:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1659:            }
+        -: 1660:            catch (...)
+        -: 1661:            {
+        -: 1662:                __deallocate_node(__cache);
+        -: 1663:                throw;
+        -: 1664:            }
+        -: 1665:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1666:            __deallocate_node(__cache);
+        -: 1667:        }
+        -: 1668:        const_iterator __i = __u.begin();
+        -: 1669:        while (__u.size() != 0)
+        -: 1670:        {
+        -: 1671:            __node_holder __h = __construct_node(_NodeTypes::__move(__u.remove(__i++)->__value_));
+        -: 1672:            __node_insert_multi(__h.get());
+        -: 1673:            __h.release();
+        -: 1674:        }
+        -: 1675:    }
+        -: 1676:}
+        -: 1677:
+        -: 1678:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1679:inline
+        -: 1680:__hash_table<_Tp, _Hash, _Equal, _Alloc>&
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEEaSEOSC_ called 1 returned 100% blocks executed 100%
+        1: 1681:__hash_table<_Tp, _Hash, _Equal, _Alloc>::operator=(__hash_table&& __u)
+        -: 1682:    _NOEXCEPT_(
+        -: 1683:        __node_traits::propagate_on_container_move_assignment::value &&
+        -: 1684:        is_nothrow_move_assignable<__node_allocator>::value &&
+        -: 1685:        is_nothrow_move_assignable<hasher>::value &&
+        -: 1686:        is_nothrow_move_assignable<key_equal>::value)
+        -: 1687:{
+        1: 1688:    __move_assign(__u, integral_constant<bool,
+        -: 1689:                  __node_traits::propagate_on_container_move_assignment::value>());
+        1: 1690:    return *this;
+        1: 1690-block  0
+        -: 1691:}
+        -: 1692:
+        -: 1693:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1694:template <class _InputIterator>
+        -: 1695:void
+        -: 1696:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__assign_unique(_InputIterator __first,
+        -: 1697:                                                          _InputIterator __last)
+        -: 1698:{
+        -: 1699:    typedef iterator_traits<_InputIterator> _ITraits;
+        -: 1700:    typedef typename _ITraits::value_type _ItValueType;
+        -: 1701:    static_assert((is_same<_ItValueType, __container_value_type>::value),
+        -: 1702:                  "__assign_unique may only be called with the containers value type");
+        -: 1703:
+        -: 1704:    if (bucket_count() != 0)
+        -: 1705:    {
+        -: 1706:        __next_pointer __cache = __detach();
+        -: 1707:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1708:        try
+        -: 1709:        {
+        -: 1710:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1711:            for (; __cache != nullptr && __first != __last; ++__first)
+        -: 1712:            {
+        -: 1713:                __cache->__upcast()->__value_ = *__first;
+        -: 1714:                __next_pointer __next = __cache->__next_;
+        -: 1715:                __node_insert_unique(__cache->__upcast());
+        -: 1716:                __cache = __next;
+        -: 1717:            }
+        -: 1718:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1719:        }
+        -: 1720:        catch (...)
+        -: 1721:        {
+        -: 1722:            __deallocate_node(__cache);
+        -: 1723:            throw;
+        -: 1724:        }
+        -: 1725:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1726:        __deallocate_node(__cache);
+        -: 1727:    }
+        -: 1728:    for (; __first != __last; ++__first)
+        -: 1729:        __insert_unique(*__first);
+        -: 1730:}
+        -: 1731:
+        -: 1732:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1733:template <class _InputIterator>
+        -: 1734:void
+        -: 1735:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__assign_multi(_InputIterator __first,
+        -: 1736:                                                         _InputIterator __last)
+        -: 1737:{
+        -: 1738:    typedef iterator_traits<_InputIterator> _ITraits;
+        -: 1739:    typedef typename _ITraits::value_type _ItValueType;
+        -: 1740:    static_assert((is_same<_ItValueType, __container_value_type>::value ||
+        -: 1741:                  is_same<_ItValueType, __node_value_type>::value),
+        -: 1742:                  "__assign_multi may only be called with the containers value type"
+        -: 1743:                  " or the nodes value type");
+        -: 1744:    if (bucket_count() != 0)
+        -: 1745:    {
+        -: 1746:        __next_pointer __cache = __detach();
+        -: 1747:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1748:        try
+        -: 1749:        {
+        -: 1750:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1751:            for (; __cache != nullptr && __first != __last; ++__first)
+        -: 1752:            {
+        -: 1753:                __cache->__upcast()->__value_ = *__first;
+        -: 1754:                __next_pointer __next = __cache->__next_;
+        -: 1755:                __node_insert_multi(__cache->__upcast());
+        -: 1756:                __cache = __next;
+        -: 1757:            }
+        -: 1758:#ifndef _LIBCPP_NO_EXCEPTIONS
+        -: 1759:        }
+        -: 1760:        catch (...)
+        -: 1761:        {
+        -: 1762:            __deallocate_node(__cache);
+        -: 1763:            throw;
+        -: 1764:        }
+        -: 1765:#endif  // _LIBCPP_NO_EXCEPTIONS
+        -: 1766:        __deallocate_node(__cache);
+        -: 1767:    }
+        -: 1768:    for (; __first != __last; ++__first)
+        -: 1769:        __insert_multi(_NodeTypes::__get_value(*__first));
+        -: 1770:}
+        -: 1771:
+        -: 1772:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1773:inline
+        -: 1774:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE5beginEv called 6 returned 100% blocks executed 100%
+        6: 1775:__hash_table<_Tp, _Hash, _Equal, _Alloc>::begin() _NOEXCEPT
+        -: 1776:{
+        -: 1777:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1778:    return iterator(__p1_.first().__next_, this);
+        -: 1779:#else
+        6: 1780:    return iterator(__p1_.first().__next_);
+        6: 1780-block  0
+        -: 1781:#endif
+        -: 1782:}
+        -: 1783:
+        -: 1784:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1785:inline
+        -: 1786:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 1787:__hash_table<_Tp, _Hash, _Equal, _Alloc>::end() _NOEXCEPT
+        -: 1788:{
+        -: 1789:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1790:    return iterator(nullptr, this);
+        -: 1791:#else
+        -: 1792:    return iterator(nullptr);
+        -: 1793:#endif
+        -: 1794:}
+        -: 1795:
+        -: 1796:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1797:inline
+        -: 1798:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator
+        -: 1799:__hash_table<_Tp, _Hash, _Equal, _Alloc>::begin() const _NOEXCEPT
+        -: 1800:{
+        -: 1801:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1802:    return const_iterator(__p1_.first().__next_, this);
+        -: 1803:#else
+        -: 1804:    return const_iterator(__p1_.first().__next_);
+        -: 1805:#endif
+        -: 1806:}
+        -: 1807:
+        -: 1808:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1809:inline
+        -: 1810:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE3endEv called 80 returned 100% blocks executed 100%
+       80: 1811:__hash_table<_Tp, _Hash, _Equal, _Alloc>::end() const _NOEXCEPT
+        -: 1812:{
+        -: 1813:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1814:    return const_iterator(nullptr, this);
+        -: 1815:#else
+       80: 1816:    return const_iterator(nullptr);
+       80: 1816-block  0
+        -: 1817:#endif
+        -: 1818:}
+        -: 1819:
+        -: 1820:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1821:void
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE5clearEv called 1 returned 100% blocks executed 25%
+        1: 1822:__hash_table<_Tp, _Hash, _Equal, _Alloc>::clear() _NOEXCEPT
+        -: 1823:{
+        1: 1824:    if (size() > 0)
+    $$$$$: 1824-block  0
+        1: 1824-block  1
+        -: 1825:    {
+    #####: 1826:        __deallocate_node(__p1_.first().__next_);
+    #####: 1827:        __p1_.first().__next_ = nullptr;
+    #####: 1828:        size_type __bc = bucket_count();
+    #####: 1829:        for (size_type __i = 0; __i < __bc; ++__i)
+    $$$$$: 1829-block  0
+    $$$$$: 1829-block  1
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 1829-block  2
+    #####: 1830:            __bucket_list_[__i] = nullptr;
+    $$$$$: 1830-block  0
+    #####: 1831:        size() = 0;
+    #####: 1832:    }
+    $$$$$: 1832-block  0
+        1: 1833:}
+        1: 1833-block  0
+        -: 1834:
+        -: 1835:
+        -: 1836:// Prepare the container for an insertion of the value __value with the hash
+        -: 1837:// __hash. This does a lookup into the container to see if __value is already
+        -: 1838:// present, and performs a rehash if necessary. Returns a pointer to the
+        -: 1839:// existing element if it exists, otherwise nullptr.
+        -: 1840://
+        -: 1841:// Note that this function does forward exceptions if key_eq() throws, and never
+        -: 1842:// mutates __value or actually inserts into the map.
+        -: 1843:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1844:_LIBCPP_INLINE_VISIBILITY
+        -: 1845:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__next_pointer
+        -: 1846:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_unique_prepare(
+        -: 1847:    size_t __hash, value_type& __value)
+        -: 1848:{
+        -: 1849:    size_type __bc = bucket_count();
+        -: 1850:
+        -: 1851:    if (__bc != 0)
+        -: 1852:    {
+        -: 1853:        size_t __chash = __constrain_hash(__hash, __bc);
+        -: 1854:        __next_pointer __ndptr = __bucket_list_[__chash];
+        -: 1855:        if (__ndptr != nullptr)
+        -: 1856:        {
+        -: 1857:            for (__ndptr = __ndptr->__next_; __ndptr != nullptr &&
+        -: 1858:                                             __constrain_hash(__ndptr->__hash(), __bc) == __chash;
+        -: 1859:                                                     __ndptr = __ndptr->__next_)
+        -: 1860:            {
+        -: 1861:                if (key_eq()(__ndptr->__upcast()->__value_, __value))
+        -: 1862:                    return __ndptr;
+        -: 1863:            }
+        -: 1864:        }
+        -: 1865:    }
+        -: 1866:    if (size()+1 > __bc * max_load_factor() || __bc == 0)
+        -: 1867:    {
+        -: 1868:        rehash(_VSTD::max<size_type>(2 * __bc + !__is_hash_power2(__bc),
+        -: 1869:                                     size_type(ceil(float(size() + 1) / max_load_factor()))));
+        -: 1870:    }
+        -: 1871:    return nullptr;
+        -: 1872:}
+        -: 1873:
+        -: 1874:// Insert the node __nd into the container by pushing it into the right bucket,
+        -: 1875:// and updating size(). Assumes that __nd->__hash is up-to-date, and that
+        -: 1876:// rehashing has already occurred and that no element with the same key exists
+        -: 1877:// in the map.
+        -: 1878:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1879:_LIBCPP_INLINE_VISIBILITY
+        -: 1880:void
+        -: 1881:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_unique_perform(
+        -: 1882:    __node_pointer __nd) _NOEXCEPT
+        -: 1883:{
+        -: 1884:    size_type __bc = bucket_count();
+        -: 1885:    size_t __chash = __constrain_hash(__nd->__hash(), __bc);
+        -: 1886:    // insert_after __bucket_list_[__chash], or __first_node if bucket is null
+        -: 1887:    __next_pointer __pn = __bucket_list_[__chash];
+        -: 1888:    if (__pn == nullptr)
+        -: 1889:    {
+        -: 1890:        __pn =__p1_.first().__ptr();
+        -: 1891:        __nd->__next_ = __pn->__next_;
+        -: 1892:        __pn->__next_ = __nd->__ptr();
+        -: 1893:        // fix up __bucket_list_
+        -: 1894:        __bucket_list_[__chash] = __pn;
+        -: 1895:        if (__nd->__next_ != nullptr)
+        -: 1896:            __bucket_list_[__constrain_hash(__nd->__next_->__hash(), __bc)] = __nd->__ptr();
+        -: 1897:    }
+        -: 1898:    else
+        -: 1899:    {
+        -: 1900:        __nd->__next_ = __pn->__next_;
+        -: 1901:        __pn->__next_ = __nd->__ptr();
+        -: 1902:    }
+        -: 1903:    ++size();
+        -: 1904:}
+        -: 1905:
+        -: 1906:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1907:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator, bool>
+        -: 1908:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_unique(__node_pointer __nd)
+        -: 1909:{
+        -: 1910:    __nd->__hash_ = hash_function()(__nd->__value_);
+        -: 1911:    __next_pointer __existing_node =
+        -: 1912:        __node_insert_unique_prepare(__nd->__hash(), __nd->__value_);
+        -: 1913:
+        -: 1914:    // Insert the node, unless it already exists in the container.
+        -: 1915:    bool __inserted = false;
+        -: 1916:    if (__existing_node == nullptr)
+        -: 1917:    {
+        -: 1918:        __node_insert_unique_perform(__nd);
+        -: 1919:        __existing_node = __nd->__ptr();
+        -: 1920:        __inserted = true;
+        -: 1921:    }
+        -: 1922:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 1923:    return pair<iterator, bool>(iterator(__existing_node, this), __inserted);
+        -: 1924:#else
+        -: 1925:    return pair<iterator, bool>(iterator(__existing_node), __inserted);
+        -: 1926:#endif
+        -: 1927:}
+        -: 1928:
+        -: 1929:// Prepare the container for an insertion of the value __cp_val with the hash
+        -: 1930:// __cp_hash. This does a lookup into the container to see if __cp_value is
+        -: 1931:// already present, and performs a rehash if necessary. Returns a pointer to the
+        -: 1932:// last occurrence of __cp_val in the map.
+        -: 1933://
+        -: 1934:// Note that this function does forward exceptions if key_eq() throws, and never
+        -: 1935:// mutates __value or actually inserts into the map.
+        -: 1936:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1937:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__next_pointer
+        -: 1938:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_multi_prepare(
+        -: 1939:    size_t __cp_hash, value_type& __cp_val)
+        -: 1940:{
+        -: 1941:    size_type __bc = bucket_count();
+        -: 1942:    if (size()+1 > __bc * max_load_factor() || __bc == 0)
+        -: 1943:    {
+        -: 1944:        rehash(_VSTD::max<size_type>(2 * __bc + !__is_hash_power2(__bc),
+        -: 1945:                       size_type(ceil(float(size() + 1) / max_load_factor()))));
+        -: 1946:        __bc = bucket_count();
+        -: 1947:    }
+        -: 1948:    size_t __chash = __constrain_hash(__cp_hash, __bc);
+        -: 1949:    __next_pointer __pn = __bucket_list_[__chash];
+        -: 1950:    if (__pn != nullptr)
+        -: 1951:    {
+        -: 1952:        for (bool __found = false; __pn->__next_ != nullptr &&
+        -: 1953:                                   __constrain_hash(__pn->__next_->__hash(), __bc) == __chash;
+        -: 1954:                                                           __pn = __pn->__next_)
+        -: 1955:        {
+        -: 1956:            //      __found    key_eq()     action
+        -: 1957:            //      false       false       loop
+        -: 1958:            //      true        true        loop
+        -: 1959:            //      false       true        set __found to true
+        -: 1960:            //      true        false       break
+        -: 1961:            if (__found != (__pn->__next_->__hash() == __cp_hash &&
+        -: 1962:                            key_eq()(__pn->__next_->__upcast()->__value_, __cp_val)))
+        -: 1963:            {
+        -: 1964:                if (!__found)
+        -: 1965:                    __found = true;
+        -: 1966:                else
+        -: 1967:                    break;
+        -: 1968:            }
+        -: 1969:        }
+        -: 1970:    }
+        -: 1971:    return __pn;
+        -: 1972:}
+        -: 1973:
+        -: 1974:// Insert the node __cp into the container after __pn (which is the last node in
+        -: 1975:// the bucket that compares equal to __cp). Rehashing, and checking for
+        -: 1976:// uniqueness has already been performed (in __node_insert_multi_prepare), so
+        -: 1977:// all we need to do is update the bucket and size(). Assumes that __cp->__hash
+        -: 1978:// is up-to-date.
+        -: 1979:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 1980:void
+        -: 1981:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_multi_perform(
+        -: 1982:    __node_pointer __cp, __next_pointer __pn) _NOEXCEPT
+        -: 1983:{
+        -: 1984:    size_type __bc = bucket_count();
+        -: 1985:    size_t __chash = __constrain_hash(__cp->__hash_, __bc);
+        -: 1986:    if (__pn == nullptr)
+        -: 1987:    {
+        -: 1988:        __pn =__p1_.first().__ptr();
+        -: 1989:        __cp->__next_ = __pn->__next_;
+        -: 1990:        __pn->__next_ = __cp->__ptr();
+        -: 1991:        // fix up __bucket_list_
+        -: 1992:        __bucket_list_[__chash] = __pn;
+        -: 1993:        if (__cp->__next_ != nullptr)
+        -: 1994:            __bucket_list_[__constrain_hash(__cp->__next_->__hash(), __bc)]
+        -: 1995:                = __cp->__ptr();
+        -: 1996:    }
+        -: 1997:    else
+        -: 1998:    {
+        -: 1999:        __cp->__next_ = __pn->__next_;
+        -: 2000:        __pn->__next_ = __cp->__ptr();
+        -: 2001:        if (__cp->__next_ != nullptr)
+        -: 2002:        {
+        -: 2003:            size_t __nhash = __constrain_hash(__cp->__next_->__hash(), __bc);
+        -: 2004:            if (__nhash != __chash)
+        -: 2005:                __bucket_list_[__nhash] = __cp->__ptr();
+        -: 2006:        }
+        -: 2007:    }
+        -: 2008:    ++size();
+        -: 2009:}
+        -: 2010:
+        -: 2011:
+        -: 2012:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2013:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2014:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_multi(__node_pointer __cp)
+        -: 2015:{
+        -: 2016:    __cp->__hash_ = hash_function()(__cp->__value_);
+        -: 2017:    __next_pointer __pn = __node_insert_multi_prepare(__cp->__hash(), __cp->__value_);
+        -: 2018:    __node_insert_multi_perform(__cp, __pn);
+        -: 2019:
+        -: 2020:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2021:    return iterator(__cp->__ptr(), this);
+        -: 2022:#else
+        -: 2023:    return iterator(__cp->__ptr());
+        -: 2024:#endif
+        -: 2025:}
+        -: 2026:
+        -: 2027:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2028:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2029:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_insert_multi(
+        -: 2030:        const_iterator __p, __node_pointer __cp)
+        -: 2031:{
+        -: 2032:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2033:    _LIBCPP_ASSERT(__get_const_db()->__find_c_from_i(&__p) == this,
+        -: 2034:        "unordered container::emplace_hint(const_iterator, args...) called with an iterator not"
+        -: 2035:        " referring to this unordered container");
+        -: 2036:#endif
+        -: 2037:    if (__p != end() && key_eq()(*__p, __cp->__value_))
+        -: 2038:    {
+        -: 2039:        __next_pointer __np = __p.__node_;
+        -: 2040:        __cp->__hash_ = __np->__hash();
+        -: 2041:        size_type __bc = bucket_count();
+        -: 2042:        if (size()+1 > __bc * max_load_factor() || __bc == 0)
+        -: 2043:        {
+        -: 2044:            rehash(_VSTD::max<size_type>(2 * __bc + !__is_hash_power2(__bc),
+        -: 2045:                           size_type(ceil(float(size() + 1) / max_load_factor()))));
+        -: 2046:            __bc = bucket_count();
+        -: 2047:        }
+        -: 2048:        size_t __chash = __constrain_hash(__cp->__hash_, __bc);
+        -: 2049:        __next_pointer __pp = __bucket_list_[__chash];
+        -: 2050:        while (__pp->__next_ != __np)
+        -: 2051:            __pp = __pp->__next_;
+        -: 2052:        __cp->__next_ = __np;
+        -: 2053:        __pp->__next_ = static_cast<__next_pointer>(__cp);
+        -: 2054:        ++size();
+        -: 2055:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2056:        return iterator(static_cast<__next_pointer>(__cp), this);
+        -: 2057:#else
+        -: 2058:        return iterator(static_cast<__next_pointer>(__cp));
+        -: 2059:#endif
+        -: 2060:    }
+        -: 2061:    return __node_insert_multi(__cp);
+        -: 2062:}
+        -: 2063:
+        -: 2064:
+        -: 2065:
+        -: 2066:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2067:template <class _Key, class ..._Args>
+        -: 2068:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator, bool>
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE25__emplace_unique_key_argsIS6_JS6_EEENS_4pairINS_15__hash_iteratorIPNS_11__hash_nodeIS6_PvEEEEbEERKT_DpOT0_ called 0 returned 0% blocks executed 0%
+    #####: 2069:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__emplace_unique_key_args(_Key const& __k, _Args&&... __args)
+        -: 2070:{
+        -: 2071:
+    #####: 2072:    size_t __hash = hash_function()(__k);
+    #####: 2073:    size_type __bc = bucket_count();
+    #####: 2074:    bool __inserted = false;
+        -: 2075:    __next_pointer __nd;
+        -: 2076:    size_t __chash;
+    #####: 2077:    if (__bc != 0)
+    $$$$$: 2077-block  0
+    $$$$$: 2077-block  1
+        -: 2078:    {
+    #####: 2079:        __chash = __constrain_hash(__hash, __bc);
+    #####: 2080:        __nd = __bucket_list_[__chash];
+    #####: 2081:        if (__nd != nullptr)
+    $$$$$: 2081-block  0
+    $$$$$: 2081-block  1
+        -: 2082:        {
+    #####: 2083:            for (__nd = __nd->__next_; __nd != nullptr &&
+    $$$$$: 2083-block  0
+    $$$$$: 2083-block  1
+    $$$$$: 2083-block  2
+    $$$$$: 2083-block  3
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2083-block  4
+    #####: 2084:                (__nd->__hash() == __hash || __constrain_hash(__nd->__hash(), __bc) == __chash);
+    $$$$$: 2084-block  0
+    $$$$$: 2084-block  1
+    $$$$$: 2084-block  2
+    #####: 2085:                                                           __nd = __nd->__next_)
+        -: 2086:            {
+    #####: 2087:                if (key_eq()(__nd->__upcast()->__value_, __k))
+    $$$$$: 2087-block  0
+branch  0 never executed
+branch  1 never executed
+    #####: 2088:                    goto __done;
+    $$$$$: 2088-block  0
+    #####: 2089:            }
+    $$$$$: 2089-block  0
+    #####: 2090:        }
+    $$$$$: 2090-block  0
+    #####: 2091:    }
+    $$$$$: 2091-block  0
+        -: 2092:    {
+    #####: 2093:        __node_holder __h = __construct_node_hash(__hash, _VSTD::forward<_Args>(__args)...);
+    #####: 2094:        if (size()+1 > __bc * max_load_factor() || __bc == 0)
+    $$$$$: 2094-block  0
+    $$$$$: 2094-block  1
+    $$$$$: 2094-block  2
+    $$$$$: 2094-block  3
+    $$$$$: 2094-block  4
+        -: 2095:        {
+    #####: 2096:            rehash(_VSTD::max<size_type>(2 * __bc + !__is_hash_power2(__bc),
+    $$$$$: 2096-block  0
+    $$$$$: 2096-block  1
+    $$$$$: 2096-block  2
+    $$$$$: 2096-block  3
+    #####: 2097:                           size_type(ceil(float(size() + 1) / max_load_factor()))));
+    #####: 2098:            __bc = bucket_count();
+    #####: 2099:            __chash = __constrain_hash(__hash, __bc);
+    $$$$$: 2099-block  0
+    #####: 2100:        }
+    $$$$$: 2100-block  0
+        -: 2101:        // insert_after __bucket_list_[__chash], or __first_node if bucket is null
+    #####: 2102:        __next_pointer __pn = __bucket_list_[__chash];
+    $$$$$: 2102-block  0
+    #####: 2103:        if (__pn == nullptr)
+    $$$$$: 2103-block  0
+branch  0 never executed
+branch  1 never executed
+        -: 2104:        {
+    #####: 2105:            __pn = __p1_.first().__ptr();
+    #####: 2106:            __h->__next_ = __pn->__next_;
+    #####: 2107:            __pn->__next_ = __h.get()->__ptr();
+        -: 2108:            // fix up __bucket_list_
+    #####: 2109:            __bucket_list_[__chash] = __pn;
+    $$$$$: 2109-block  0
+    #####: 2110:            if (__h->__next_ != nullptr)
+    $$$$$: 2110-block  0
+    $$$$$: 2110-block  1
+    #####: 2111:                __bucket_list_[__constrain_hash(__h->__next_->__hash(), __bc)]
+    $$$$$: 2111-block  0
+    $$$$$: 2111-block  1
+    $$$$$: 2111-block  2
+    #####: 2112:                    = __h.get()->__ptr();
+    #####: 2113:        }
+    $$$$$: 2113-block  0
+        -: 2114:        else
+        -: 2115:        {
+    #####: 2116:            __h->__next_ = __pn->__next_;
+    #####: 2117:            __pn->__next_ = static_cast<__next_pointer>(__h.get());
+    $$$$$: 2117-block  0
+        -: 2118:        }
+    #####: 2119:        __nd = static_cast<__next_pointer>(__h.release());
+        -: 2120:        // increment size
+    #####: 2121:        ++size();
+    #####: 2122:        __inserted = true;
+    #####: 2123:    }
+    $$$$$: 2123-block  0
+    $$$$$: 2123-block  1
+    $$$$$: 2123-block  2
+        -: 2124:__done:
+        -: 2125:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2126:    return pair<iterator, bool>(iterator(__nd, this), __inserted);
+        -: 2127:#else
+    #####: 2128:    return pair<iterator, bool>(iterator(__nd), __inserted);
+    $$$$$: 2128-block  0
+        -: 2129:#endif
+    #####: 2130:}
+        -: 2131:
+        -: 2132:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2133:template <class... _Args>
+        -: 2134:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator, bool>
+        -: 2135:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__emplace_unique_impl(_Args&&... __args)
+        -: 2136:{
+        -: 2137:    __node_holder __h = __construct_node(_VSTD::forward<_Args>(__args)...);
+        -: 2138:    pair<iterator, bool> __r = __node_insert_unique(__h.get());
+        -: 2139:    if (__r.second)
+        -: 2140:        __h.release();
+        -: 2141:    return __r;
+        -: 2142:}
+        -: 2143:
+        -: 2144:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2145:template <class... _Args>
+        -: 2146:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2147:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__emplace_multi(_Args&&... __args)
+        -: 2148:{
+        -: 2149:    __node_holder __h = __construct_node(_VSTD::forward<_Args>(__args)...);
+        -: 2150:    iterator __r = __node_insert_multi(__h.get());
+        -: 2151:    __h.release();
+        -: 2152:    return __r;
+        -: 2153:}
+        -: 2154:
+        -: 2155:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2156:template <class... _Args>
+        -: 2157:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2158:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__emplace_hint_multi(
+        -: 2159:        const_iterator __p, _Args&&... __args)
+        -: 2160:{
+        -: 2161:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2162:    _LIBCPP_ASSERT(__get_const_db()->__find_c_from_i(&__p) == this,
+        -: 2163:        "unordered container::emplace_hint(const_iterator, args...) called with an iterator not"
+        -: 2164:        " referring to this unordered container");
+        -: 2165:#endif
+        -: 2166:    __node_holder __h = __construct_node(_VSTD::forward<_Args>(__args)...);
+        -: 2167:    iterator __r = __node_insert_multi(__p, __h.get());
+        -: 2168:    __h.release();
+        -: 2169:    return __r;
+        -: 2170:}
+        -: 2171:
+        -: 2172:#if _LIBCPP_STD_VER > 14
+        -: 2173:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2174:template <class _NodeHandle, class _InsertReturnType>
+        -: 2175:_LIBCPP_INLINE_VISIBILITY
+        -: 2176:_InsertReturnType
+        -: 2177:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_insert_unique(
+        -: 2178:    _NodeHandle&& __nh)
+        -: 2179:{
+        -: 2180:    if (__nh.empty())
+        -: 2181:        return _InsertReturnType{end(), false, _NodeHandle()};
+        -: 2182:    pair<iterator, bool> __result = __node_insert_unique(__nh.__ptr_);
+        -: 2183:    if (__result.second)
+        -: 2184:        __nh.__release_ptr();
+        -: 2185:    return _InsertReturnType{__result.first, __result.second, _VSTD::move(__nh)};
+        -: 2186:}
+        -: 2187:
+        -: 2188:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2189:template <class _NodeHandle>
+        -: 2190:_LIBCPP_INLINE_VISIBILITY
+        -: 2191:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2192:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_insert_unique(
+        -: 2193:    const_iterator, _NodeHandle&& __nh)
+        -: 2194:{
+        -: 2195:    if (__nh.empty())
+        -: 2196:        return end();
+        -: 2197:    pair<iterator, bool> __result = __node_insert_unique(__nh.__ptr_);
+        -: 2198:    if (__result.second)
+        -: 2199:        __nh.__release_ptr();
+        -: 2200:    return __result.first;
+        -: 2201:}
+        -: 2202:
+        -: 2203:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2204:template <class _NodeHandle>
+        -: 2205:_LIBCPP_INLINE_VISIBILITY
+        -: 2206:_NodeHandle
+        -: 2207:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_extract(
+        -: 2208:    key_type const& __key)
+        -: 2209:{
+        -: 2210:    iterator __i = find(__key);
+        -: 2211:    if (__i == end())
+        -: 2212:        return _NodeHandle();
+        -: 2213:    return __node_handle_extract<_NodeHandle>(__i);
+        -: 2214:}
+        -: 2215:
+        -: 2216:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2217:template <class _NodeHandle>
+        -: 2218:_LIBCPP_INLINE_VISIBILITY
+        -: 2219:_NodeHandle
+        -: 2220:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_extract(
+        -: 2221:    const_iterator __p)
+        -: 2222:{
+        -: 2223:    allocator_type __alloc(__node_alloc());
+        -: 2224:    return _NodeHandle(remove(__p).release(), __alloc);
+        -: 2225:}
+        -: 2226:
+        -: 2227:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2228:template <class _Table>
+        -: 2229:_LIBCPP_INLINE_VISIBILITY
+        -: 2230:void
+        -: 2231:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_merge_unique(
+        -: 2232:    _Table& __source)
+        -: 2233:{
+        -: 2234:    static_assert(is_same<__node, typename _Table::__node>::value, "");
+        -: 2235:
+        -: 2236:    for (typename _Table::iterator __it = __source.begin();
+        -: 2237:         __it != __source.end();)
+        -: 2238:    {
+        -: 2239:        __node_pointer __src_ptr = __it.__node_->__upcast();
+        -: 2240:        size_t __hash = hash_function()(__src_ptr->__value_);
+        -: 2241:        __next_pointer __existing_node =
+        -: 2242:            __node_insert_unique_prepare(__hash, __src_ptr->__value_);
+        -: 2243:        auto __prev_iter = __it++;
+        -: 2244:        if (__existing_node == nullptr)
+        -: 2245:        {
+        -: 2246:            (void)__source.remove(__prev_iter).release();
+        -: 2247:            __src_ptr->__hash_ = __hash;
+        -: 2248:            __node_insert_unique_perform(__src_ptr);
+        -: 2249:        }
+        -: 2250:    }
+        -: 2251:}
+        -: 2252:
+        -: 2253:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2254:template <class _NodeHandle>
+        -: 2255:_LIBCPP_INLINE_VISIBILITY
+        -: 2256:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2257:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_insert_multi(
+        -: 2258:    _NodeHandle&& __nh)
+        -: 2259:{
+        -: 2260:    if (__nh.empty())
+        -: 2261:        return end();
+        -: 2262:    iterator __result = __node_insert_multi(__nh.__ptr_);
+        -: 2263:    __nh.__release_ptr();
+        -: 2264:    return __result;
+        -: 2265:}
+        -: 2266:
+        -: 2267:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2268:template <class _NodeHandle>
+        -: 2269:_LIBCPP_INLINE_VISIBILITY
+        -: 2270:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2271:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_insert_multi(
+        -: 2272:    const_iterator __hint, _NodeHandle&& __nh)
+        -: 2273:{
+        -: 2274:    if (__nh.empty())
+        -: 2275:        return end();
+        -: 2276:    iterator __result = __node_insert_multi(__hint, __nh.__ptr_);
+        -: 2277:    __nh.__release_ptr();
+        -: 2278:    return __result;
+        -: 2279:}
+        -: 2280:
+        -: 2281:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2282:template <class _Table>
+        -: 2283:_LIBCPP_INLINE_VISIBILITY
+        -: 2284:void
+        -: 2285:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_handle_merge_multi(
+        -: 2286:    _Table& __source)
+        -: 2287:{
+        -: 2288:    static_assert(is_same<typename _Table::__node, __node>::value, "");
+        -: 2289:
+        -: 2290:    for (typename _Table::iterator __it = __source.begin();
+        -: 2291:         __it != __source.end();)
+        -: 2292:    {
+        -: 2293:        __node_pointer __src_ptr = __it.__node_->__upcast();
+        -: 2294:        size_t __src_hash = hash_function()(__src_ptr->__value_);
+        -: 2295:        __next_pointer __pn =
+        -: 2296:            __node_insert_multi_prepare(__src_hash, __src_ptr->__value_);
+        -: 2297:        (void)__source.remove(__it++).release();
+        -: 2298:        __src_ptr->__hash_ = __src_hash;
+        -: 2299:        __node_insert_multi_perform(__src_ptr, __pn);
+        -: 2300:    }
+        -: 2301:}
+        -: 2302:#endif  // _LIBCPP_STD_VER > 14
+        -: 2303:
+        -: 2304:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2305:void
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE6rehashEm called 0 returned 0% blocks executed 0%
+    #####: 2306:__hash_table<_Tp, _Hash, _Equal, _Alloc>::rehash(size_type __n)
+        -: 2307:_LIBCPP_DISABLE_UBSAN_UNSIGNED_INTEGER_CHECK
+        -: 2308:{
+    #####: 2309:    if (__n == 1)
+    $$$$$: 2309-block  0
+branch  0 never executed
+branch  1 never executed
+    #####: 2310:        __n = 2;
+    $$$$$: 2310-block  0
+    #####: 2311:    else if (__n & (__n - 1))
+    $$$$$: 2311-block  0
+    $$$$$: 2311-block  1
+    #####: 2312:        __n = __next_prime(__n);
+    $$$$$: 2312-block  0
+    #####: 2313:    size_type __bc = bucket_count();
+    #####: 2314:    if (__n > __bc)
+    $$$$$: 2314-block  0
+branch  0 never executed
+branch  1 never executed
+    #####: 2315:        __rehash(__n);
+    $$$$$: 2315-block  0
+    #####: 2316:    else if (__n < __bc)
+    $$$$$: 2316-block  0
+    $$$$$: 2316-block  1
+        -: 2317:    {
+    #####: 2318:        __n = _VSTD::max<size_type>
+        -: 2319:              (
+        -: 2320:                  __n,
+    #####: 2321:                  __is_hash_power2(__bc) ? __next_hash_pow2(size_t(ceil(float(size()) / max_load_factor()))) :
+    $$$$$: 2321-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2321-block  1
+    $$$$$: 2321-block  2
+    #####: 2322:                                           __next_prime(size_t(ceil(float(size()) / max_load_factor())))
+        -: 2323:              );
+    #####: 2324:        if (__n < __bc)
+    $$$$$: 2324-block  0
+    $$$$$: 2324-block  1
+    #####: 2325:            __rehash(__n);
+    $$$$$: 2325-block  0
+    #####: 2326:    }
+    $$$$$: 2326-block  0
+    #####: 2327:}
+    $$$$$: 2327-block  0
+        -: 2328:
+        -: 2329:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2330:void
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE8__rehashEm called 0 returned 0% blocks executed 0%
+    #####: 2331:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__rehash(size_type __nbc)
+        -: 2332:{
+        -: 2333:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2334:    __get_db()->__invalidate_all(this);
+        -: 2335:#endif
+    #####: 2336:    __pointer_allocator& __npa = __bucket_list_.get_deleter().__alloc();
+    #####: 2337:    __bucket_list_.reset(__nbc > 0 ?
+    $$$$$: 2337-block  0
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2337-block  1
+    $$$$$: 2337-block  2
+    #####: 2338:                      __pointer_alloc_traits::allocate(__npa, __nbc) : nullptr);
+    #####: 2339:    __bucket_list_.get_deleter().size() = __nbc;
+    #####: 2340:    if (__nbc > 0)
+    $$$$$: 2340-block  0
+    $$$$$: 2340-block  1
+        -: 2341:    {
+    #####: 2342:        for (size_type __i = 0; __i < __nbc; ++__i)
+    $$$$$: 2342-block  0
+    $$$$$: 2342-block  1
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2342-block  2
+    #####: 2343:            __bucket_list_[__i] = nullptr;
+    $$$$$: 2343-block  0
+    #####: 2344:        __next_pointer __pp = __p1_.first().__ptr();
+    #####: 2345:        __next_pointer __cp = __pp->__next_;
+    #####: 2346:        if (__cp != nullptr)
+    $$$$$: 2346-block  0
+    $$$$$: 2346-block  1
+        -: 2347:        {
+    #####: 2348:            size_type __chash = __constrain_hash(__cp->__hash(), __nbc);
+    #####: 2349:            __bucket_list_[__chash] = __pp;
+    #####: 2350:            size_type __phash = __chash;
+    #####: 2351:            for (__pp = __cp, __cp = __cp->__next_; __cp != nullptr;
+    $$$$$: 2351-block  0
+    $$$$$: 2351-block  1
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2351-block  2
+    #####: 2352:                                                           __cp = __pp->__next_)
+        -: 2353:            {
+    #####: 2354:                __chash = __constrain_hash(__cp->__hash(), __nbc);
+    #####: 2355:                if (__chash == __phash)
+    $$$$$: 2355-block  0
+branch  0 never executed
+branch  1 never executed
+    #####: 2356:                    __pp = __cp;
+    $$$$$: 2356-block  0
+        -: 2357:                else
+        -: 2358:                {
+    #####: 2359:                    if (__bucket_list_[__chash] == nullptr)
+    $$$$$: 2359-block  0
+branch  0 never executed
+branch  1 never executed
+        -: 2360:                    {
+    #####: 2361:                        __bucket_list_[__chash] = __pp;
+    #####: 2362:                        __pp = __cp;
+    #####: 2363:                        __phash = __chash;
+    #####: 2364:                    }
+    $$$$$: 2364-block  0
+        -: 2365:                    else
+        -: 2366:                    {
+    #####: 2367:                        __next_pointer __np = __cp;
+    #####: 2368:                        for (; __np->__next_ != nullptr &&
+    $$$$$: 2368-block  0
+    $$$$$: 2368-block  1
+    $$$$$: 2368-block  2
+    $$$$$: 2368-block  3
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2368-block  4
+    $$$$$: 2368-block  5
+    #####: 2369:                               key_eq()(__cp->__upcast()->__value_,
+    $$$$$: 2369-block  0
+    $$$$$: 2369-block  1
+    #####: 2370:                                        __np->__next_->__upcast()->__value_);
+    #####: 2371:                                                           __np = __np->__next_)
+        -: 2372:                            ;
+    #####: 2373:                        __pp->__next_ = __np->__next_;
+    #####: 2374:                        __np->__next_ = __bucket_list_[__chash]->__next_;
+    #####: 2375:                        __bucket_list_[__chash]->__next_ = __cp;
+    $$$$$: 2375-block  0
+        -: 2376:
+        -: 2377:                    }
+        -: 2378:                }
+    #####: 2379:            }
+    $$$$$: 2379-block  0
+    #####: 2380:        }
+    $$$$$: 2380-block  0
+    #####: 2381:    }
+    $$$$$: 2381-block  0
+    #####: 2382:}
+    $$$$$: 2382-block  0
+        -: 2383:
+        -: 2384:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2385:template <class _Key>
+        -: 2386:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2387:__hash_table<_Tp, _Hash, _Equal, _Alloc>::find(const _Key& __k)
+        -: 2388:{
+        -: 2389:    size_t __hash = hash_function()(__k);
+        -: 2390:    size_type __bc = bucket_count();
+        -: 2391:    if (__bc != 0)
+        -: 2392:    {
+        -: 2393:        size_t __chash = __constrain_hash(__hash, __bc);
+        -: 2394:        __next_pointer __nd = __bucket_list_[__chash];
+        -: 2395:        if (__nd != nullptr)
+        -: 2396:        {
+        -: 2397:            for (__nd = __nd->__next_; __nd != nullptr &&
+        -: 2398:                (__nd->__hash() == __hash
+        -: 2399:                  || __constrain_hash(__nd->__hash(), __bc) == __chash);
+        -: 2400:                                                           __nd = __nd->__next_)
+        -: 2401:            {
+        -: 2402:                if ((__nd->__hash() == __hash)
+        -: 2403:                    && key_eq()(__nd->__upcast()->__value_, __k))
+        -: 2404:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2405:                    return iterator(__nd, this);
+        -: 2406:#else
+        -: 2407:                    return iterator(__nd);
+        -: 2408:#endif
+        -: 2409:            }
+        -: 2410:        }
+        -: 2411:    }
+        -: 2412:    return end();
+        -: 2413:}
+        -: 2414:
+        -: 2415:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2416:template <class _Key>
+        -: 2417:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE4findIS6_EENS_21__hash_const_iteratorIPNS_11__hash_nodeIS6_PvEEEERKT_ called 40 returned 100% blocks executed 13%
+       40: 2418:__hash_table<_Tp, _Hash, _Equal, _Alloc>::find(const _Key& __k) const
+        -: 2419:{
+       40: 2420:    size_t __hash = hash_function()(__k);
+       40: 2421:    size_type __bc = bucket_count();
+       40: 2422:    if (__bc != 0)
+    $$$$$: 2422-block  0
+       40: 2422-block  1
+        -: 2423:    {
+    #####: 2424:        size_t __chash = __constrain_hash(__hash, __bc);
+    #####: 2425:        __next_pointer __nd = __bucket_list_[__chash];
+    #####: 2426:        if (__nd != nullptr)
+    $$$$$: 2426-block  0
+    $$$$$: 2426-block  1
+        -: 2427:        {
+    #####: 2428:            for (__nd = __nd->__next_; __nd != nullptr &&
+    $$$$$: 2428-block  0
+    $$$$$: 2428-block  1
+    $$$$$: 2428-block  2
+    $$$$$: 2428-block  3
+branch  0 never executed
+branch  1 never executed
+    $$$$$: 2428-block  4
+    #####: 2429:                (__hash == __nd->__hash()
+    #####: 2430:                    || __constrain_hash(__nd->__hash(), __bc) == __chash);
+    $$$$$: 2430-block  0
+    $$$$$: 2430-block  1
+    $$$$$: 2430-block  2
+    #####: 2431:                                                           __nd = __nd->__next_)
+        -: 2432:            {
+    #####: 2433:                if ((__nd->__hash() == __hash)
+    $$$$$: 2433-block  0
+    $$$$$: 2433-block  1
+    #####: 2434:                    && key_eq()(__nd->__upcast()->__value_, __k))
+    $$$$$: 2434-block  0
+    $$$$$: 2434-block  1
+        -: 2435:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2436:                    return const_iterator(__nd, this);
+        -: 2437:#else
+    #####: 2438:                    return const_iterator(__nd);
+    $$$$$: 2438-block  0
+        -: 2439:#endif
+    #####: 2440:            }
+    $$$$$: 2440-block  0
+    #####: 2441:        }
+    $$$$$: 2441-block  0
+        -: 2442:
+    #####: 2443:    }
+    $$$$$: 2443-block  0
+       40: 2444:    return end();
+       40: 2444-block  0
+       40: 2445:}
+       40: 2445-block  0
+        -: 2446:
+        -: 2447:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2448:template <class ..._Args>
+        -: 2449:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_holder
+        -: 2450:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__construct_node(_Args&& ...__args)
+        -: 2451:{
+        -: 2452:    static_assert(!__is_hash_value_type<_Args...>::value,
+        -: 2453:                  "Construct cannot be called with a hash value type");
+        -: 2454:    __node_allocator& __na = __node_alloc();
+        -: 2455:    __node_holder __h(__node_traits::allocate(__na, 1), _Dp(__na));
+        -: 2456:    __node_traits::construct(__na, _NodeTypes::__get_ptr(__h->__value_), _VSTD::forward<_Args>(__args)...);
+        -: 2457:    __h.get_deleter().__value_constructed = true;
+        -: 2458:    __h->__hash_ = hash_function()(__h->__value_);
+        -: 2459:    __h->__next_ = nullptr;
+        -: 2460:    return __h;
+        -: 2461:}
+        -: 2462:
+        -: 2463:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2464:template <class _First, class ..._Rest>
+        -: 2465:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_holder
+function _ZNSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE21__construct_node_hashIS6_JEEENS_10unique_ptrINS_11__hash_nodeIS6_PvEENS_22__hash_node_destructorINS4_ISH_EEEEEEmOT_DpOT0_ called 0 returned 0% blocks executed 0%
+    #####: 2466:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__construct_node_hash(
+        -: 2467:    size_t __hash, _First&& __f, _Rest&& ...__rest)
+        -: 2468:{
+        -: 2469:    static_assert(!__is_hash_value_type<_First, _Rest...>::value,
+        -: 2470:                  "Construct cannot be called with a hash value type");
+    #####: 2471:    __node_allocator& __na = __node_alloc();
+    #####: 2472:    __node_holder __h(__node_traits::allocate(__na, 1), _Dp(__na));
+    #####: 2473:    __node_traits::construct(__na, _NodeTypes::__get_ptr(__h->__value_),
+    $$$$$: 2473-block  0
+    $$$$$: 2473-block  1
+    #####: 2474:                             _VSTD::forward<_First>(__f),
+        -: 2475:                             _VSTD::forward<_Rest>(__rest)...);
+    #####: 2476:    __h.get_deleter().__value_constructed = true;
+    #####: 2477:    __h->__hash_ = __hash;
+    #####: 2478:    __h->__next_ = nullptr;
+    #####: 2479:    return __h;
+    #####: 2480:}
+    $$$$$: 2480-block  0
+    $$$$$: 2480-block  1
+    $$$$$: 2480-block  2
+    $$$$$: 2480-block  3
+    $$$$$: 2480-block  4
+    $$$$$: 2480-block  5
+        -: 2481:
+        -: 2482:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2483:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2484:__hash_table<_Tp, _Hash, _Equal, _Alloc>::erase(const_iterator __p)
+        -: 2485:{
+        -: 2486:    __next_pointer __np = __p.__node_;
+        -: 2487:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2488:    _LIBCPP_ASSERT(__get_const_db()->__find_c_from_i(&__p) == this,
+        -: 2489:        "unordered container erase(iterator) called with an iterator not"
+        -: 2490:        " referring to this container");
+        -: 2491:    _LIBCPP_ASSERT(__p != end(),
+        -: 2492:        "unordered container erase(iterator) called with a non-dereferenceable iterator");
+        -: 2493:    iterator __r(__np, this);
+        -: 2494:#else
+        -: 2495:    iterator __r(__np);
+        -: 2496:#endif
+        -: 2497:    ++__r;
+        -: 2498:    remove(__p);
+        -: 2499:    return __r;
+        -: 2500:}
+        -: 2501:
+        -: 2502:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2503:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator
+        -: 2504:__hash_table<_Tp, _Hash, _Equal, _Alloc>::erase(const_iterator __first,
+        -: 2505:                                                const_iterator __last)
+        -: 2506:{
+        -: 2507:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2508:    _LIBCPP_ASSERT(__get_const_db()->__find_c_from_i(&__first) == this,
+        -: 2509:        "unodered container::erase(iterator, iterator) called with an iterator not"
+        -: 2510:        " referring to this unodered container");
+        -: 2511:    _LIBCPP_ASSERT(__get_const_db()->__find_c_from_i(&__last) == this,
+        -: 2512:        "unodered container::erase(iterator, iterator) called with an iterator not"
+        -: 2513:        " referring to this unodered container");
+        -: 2514:#endif
+        -: 2515:    for (const_iterator __p = __first; __first != __last; __p = __first)
+        -: 2516:    {
+        -: 2517:        ++__first;
+        -: 2518:        erase(__p);
+        -: 2519:    }
+        -: 2520:    __next_pointer __np = __last.__node_;
+        -: 2521:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2522:    return iterator (__np, this);
+        -: 2523:#else
+        -: 2524:    return iterator (__np);
+        -: 2525:#endif
+        -: 2526:}
+        -: 2527:
+        -: 2528:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2529:template <class _Key>
+        -: 2530:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::size_type
+        -: 2531:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__erase_unique(const _Key& __k)
+        -: 2532:{
+        -: 2533:    iterator __i = find(__k);
+        -: 2534:    if (__i == end())
+        -: 2535:        return 0;
+        -: 2536:    erase(__i);
+        -: 2537:    return 1;
+        -: 2538:}
+        -: 2539:
+        -: 2540:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2541:template <class _Key>
+        -: 2542:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::size_type
+        -: 2543:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__erase_multi(const _Key& __k)
+        -: 2544:{
+        -: 2545:    size_type __r = 0;
+        -: 2546:    iterator __i = find(__k);
+        -: 2547:    if (__i != end())
+        -: 2548:    {
+        -: 2549:        iterator __e = end();
+        -: 2550:        do
+        -: 2551:        {
+        -: 2552:            erase(__i++);
+        -: 2553:            ++__r;
+        -: 2554:        } while (__i != __e && key_eq()(*__i, __k));
+        -: 2555:    }
+        -: 2556:    return __r;
+        -: 2557:}
+        -: 2558:
+        -: 2559:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2560:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::__node_holder
+        -: 2561:__hash_table<_Tp, _Hash, _Equal, _Alloc>::remove(const_iterator __p) _NOEXCEPT
+        -: 2562:{
+        -: 2563:    // current node
+        -: 2564:    __next_pointer __cn = __p.__node_;
+        -: 2565:    size_type __bc = bucket_count();
+        -: 2566:    size_t __chash = __constrain_hash(__cn->__hash(), __bc);
+        -: 2567:    // find previous node
+        -: 2568:    __next_pointer __pn = __bucket_list_[__chash];
+        -: 2569:    for (; __pn->__next_ != __cn; __pn = __pn->__next_)
+        -: 2570:        ;
+        -: 2571:    // Fix up __bucket_list_
+        -: 2572:        // if __pn is not in same bucket (before begin is not in same bucket) &&
+        -: 2573:        //    if __cn->__next_ is not in same bucket (nullptr is not in same bucket)
+        -: 2574:    if (__pn == __p1_.first().__ptr()
+        -: 2575:            || __constrain_hash(__pn->__hash(), __bc) != __chash)
+        -: 2576:    {
+        -: 2577:        if (__cn->__next_ == nullptr
+        -: 2578:            || __constrain_hash(__cn->__next_->__hash(), __bc) != __chash)
+        -: 2579:            __bucket_list_[__chash] = nullptr;
+        -: 2580:    }
+        -: 2581:        // if __cn->__next_ is not in same bucket (nullptr is in same bucket)
+        -: 2582:    if (__cn->__next_ != nullptr)
+        -: 2583:    {
+        -: 2584:        size_t __nhash = __constrain_hash(__cn->__next_->__hash(), __bc);
+        -: 2585:        if (__nhash != __chash)
+        -: 2586:            __bucket_list_[__nhash] = __pn;
+        -: 2587:    }
+        -: 2588:    // remove __cn
+        -: 2589:    __pn->__next_ = __cn->__next_;
+        -: 2590:    __cn->__next_ = nullptr;
+        -: 2591:    --size();
+        -: 2592:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2593:    __c_node* __c = __get_db()->__find_c_and_lock(this);
+        -: 2594:    for (__i_node** __dp = __c->end_; __dp != __c->beg_; )
+        -: 2595:    {
+        -: 2596:        --__dp;
+        -: 2597:        iterator* __i = static_cast<iterator*>((*__dp)->__i_);
+        -: 2598:        if (__i->__node_ == __cn)
+        -: 2599:        {
+        -: 2600:            (*__dp)->__c_ = nullptr;
+        -: 2601:            if (--__c->end_ != __dp)
+        -: 2602:                _VSTD::memmove(__dp, __dp+1, (__c->end_ - __dp)*sizeof(__i_node*));
+        -: 2603:        }
+        -: 2604:    }
+        -: 2605:    __get_db()->unlock();
+        -: 2606:#endif
+        -: 2607:    return __node_holder(__cn->__upcast(), _Dp(__node_alloc(), true));
+        -: 2608:}
+        -: 2609:
+        -: 2610:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2611:template <class _Key>
+        -: 2612:inline
+        -: 2613:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::size_type
+function _ZNKSt3__112__hash_tableINS_12basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEENS_4hashIS6_EENS_8equal_toIS6_EENS4_IS6_EEE14__count_uniqueIS6_EEmRKT_ called 40 returned 100% blocks executed 100%
+       40: 2614:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__count_unique(const _Key& __k) const
+        -: 2615:{
+       40: 2616:    return static_cast<size_type>(find(__k) != end());
+       40: 2616-block  0
+        -: 2617:}
+        -: 2618:
+        -: 2619:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2620:template <class _Key>
+        -: 2621:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::size_type
+        -: 2622:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__count_multi(const _Key& __k) const
+        -: 2623:{
+        -: 2624:    size_type __r = 0;
+        -: 2625:    const_iterator __i = find(__k);
+        -: 2626:    if (__i != end())
+        -: 2627:    {
+        -: 2628:        const_iterator __e = end();
+        -: 2629:        do
+        -: 2630:        {
+        -: 2631:            ++__i;
+        -: 2632:            ++__r;
+        -: 2633:        } while (__i != __e && key_eq()(*__i, __k));
+        -: 2634:    }
+        -: 2635:    return __r;
+        -: 2636:}
+        -: 2637:
+        -: 2638:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2639:template <class _Key>
+        -: 2640:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator,
+        -: 2641:     typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator>
+        -: 2642:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__equal_range_unique(
+        -: 2643:        const _Key& __k)
+        -: 2644:{
+        -: 2645:    iterator __i = find(__k);
+        -: 2646:    iterator __j = __i;
+        -: 2647:    if (__i != end())
+        -: 2648:        ++__j;
+        -: 2649:    return pair<iterator, iterator>(__i, __j);
+        -: 2650:}
+        -: 2651:
+        -: 2652:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2653:template <class _Key>
+        -: 2654:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator,
+        -: 2655:     typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator>
+        -: 2656:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__equal_range_unique(
+        -: 2657:        const _Key& __k) const
+        -: 2658:{
+        -: 2659:    const_iterator __i = find(__k);
+        -: 2660:    const_iterator __j = __i;
+        -: 2661:    if (__i != end())
+        -: 2662:        ++__j;
+        -: 2663:    return pair<const_iterator, const_iterator>(__i, __j);
+        -: 2664:}
+        -: 2665:
+        -: 2666:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2667:template <class _Key>
+        -: 2668:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator,
+        -: 2669:     typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::iterator>
+        -: 2670:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__equal_range_multi(
+        -: 2671:        const _Key& __k)
+        -: 2672:{
+        -: 2673:    iterator __i = find(__k);
+        -: 2674:    iterator __j = __i;
+        -: 2675:    if (__i != end())
+        -: 2676:    {
+        -: 2677:        iterator __e = end();
+        -: 2678:        do
+        -: 2679:        {
+        -: 2680:            ++__j;
+        -: 2681:        } while (__j != __e && key_eq()(*__j, __k));
+        -: 2682:    }
+        -: 2683:    return pair<iterator, iterator>(__i, __j);
+        -: 2684:}
+        -: 2685:
+        -: 2686:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2687:template <class _Key>
+        -: 2688:pair<typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator,
+        -: 2689:     typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::const_iterator>
+        -: 2690:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__equal_range_multi(
+        -: 2691:        const _Key& __k) const
+        -: 2692:{
+        -: 2693:    const_iterator __i = find(__k);
+        -: 2694:    const_iterator __j = __i;
+        -: 2695:    if (__i != end())
+        -: 2696:    {
+        -: 2697:        const_iterator __e = end();
+        -: 2698:        do
+        -: 2699:        {
+        -: 2700:            ++__j;
+        -: 2701:        } while (__j != __e && key_eq()(*__j, __k));
+        -: 2702:    }
+        -: 2703:    return pair<const_iterator, const_iterator>(__i, __j);
+        -: 2704:}
+        -: 2705:
+        -: 2706:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2707:void
+        -: 2708:__hash_table<_Tp, _Hash, _Equal, _Alloc>::swap(__hash_table& __u)
+        -: 2709:#if _LIBCPP_STD_VER <= 11
+        -: 2710:    _NOEXCEPT_(
+        -: 2711:        __is_nothrow_swappable<hasher>::value && __is_nothrow_swappable<key_equal>::value
+        -: 2712:        && (!allocator_traits<__pointer_allocator>::propagate_on_container_swap::value
+        -: 2713:              || __is_nothrow_swappable<__pointer_allocator>::value)
+        -: 2714:        && (!__node_traits::propagate_on_container_swap::value
+        -: 2715:              || __is_nothrow_swappable<__node_allocator>::value)
+        -: 2716:            )
+        -: 2717:#else
+        -: 2718:  _NOEXCEPT_(__is_nothrow_swappable<hasher>::value && __is_nothrow_swappable<key_equal>::value)
+        -: 2719:#endif
+        -: 2720:{
+        -: 2721:    _LIBCPP_ASSERT(__node_traits::propagate_on_container_swap::value ||
+        -: 2722:                   this->__node_alloc() == __u.__node_alloc(),
+        -: 2723:                   "list::swap: Either propagate_on_container_swap must be true"
+        -: 2724:                   " or the allocators must compare equal");
+        -: 2725:    {
+        -: 2726:    __node_pointer_pointer __npp = __bucket_list_.release();
+        -: 2727:    __bucket_list_.reset(__u.__bucket_list_.release());
+        -: 2728:    __u.__bucket_list_.reset(__npp);
+        -: 2729:    }
+        -: 2730:    _VSTD::swap(__bucket_list_.get_deleter().size(), __u.__bucket_list_.get_deleter().size());
+        -: 2731:    _VSTD::__swap_allocator(__bucket_list_.get_deleter().__alloc(),
+        -: 2732:             __u.__bucket_list_.get_deleter().__alloc());
+        -: 2733:    _VSTD::__swap_allocator(__node_alloc(), __u.__node_alloc());
+        -: 2734:    _VSTD::swap(__p1_.first().__next_, __u.__p1_.first().__next_);
+        -: 2735:    __p2_.swap(__u.__p2_);
+        -: 2736:    __p3_.swap(__u.__p3_);
+        -: 2737:    if (size() > 0)
+        -: 2738:        __bucket_list_[__constrain_hash(__p1_.first().__next_->__hash(), bucket_count())] =
+        -: 2739:            __p1_.first().__ptr();
+        -: 2740:    if (__u.size() > 0)
+        -: 2741:        __u.__bucket_list_[__constrain_hash(__u.__p1_.first().__next_->__hash(), __u.bucket_count())] =
+        -: 2742:            __u.__p1_.first().__ptr();
+        -: 2743:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2744:    __get_db()->swap(this, &__u);
+        -: 2745:#endif
+        -: 2746:}
+        -: 2747:
+        -: 2748:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2749:typename __hash_table<_Tp, _Hash, _Equal, _Alloc>::size_type
+        -: 2750:__hash_table<_Tp, _Hash, _Equal, _Alloc>::bucket_size(size_type __n) const
+        -: 2751:{
+        -: 2752:    _LIBCPP_ASSERT(__n < bucket_count(),
+        -: 2753:        "unordered container::bucket_size(n) called with n >= bucket_count()");
+        -: 2754:    __next_pointer __np = __bucket_list_[__n];
+        -: 2755:    size_type __bc = bucket_count();
+        -: 2756:    size_type __r = 0;
+        -: 2757:    if (__np != nullptr)
+        -: 2758:    {
+        -: 2759:        for (__np = __np->__next_; __np != nullptr &&
+        -: 2760:                                   __constrain_hash(__np->__hash(), __bc) == __n;
+        -: 2761:                                                    __np = __np->__next_, ++__r)
+        -: 2762:            ;
+        -: 2763:    }
+        -: 2764:    return __r;
+        -: 2765:}
+        -: 2766:
+        -: 2767:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2768:inline _LIBCPP_INLINE_VISIBILITY
+        -: 2769:void
+        -: 2770:swap(__hash_table<_Tp, _Hash, _Equal, _Alloc>& __x,
+        -: 2771:     __hash_table<_Tp, _Hash, _Equal, _Alloc>& __y)
+        -: 2772:    _NOEXCEPT_(_NOEXCEPT_(__x.swap(__y)))
+        -: 2773:{
+        -: 2774:    __x.swap(__y);
+        -: 2775:}
+        -: 2776:
+        -: 2777:#if _LIBCPP_DEBUG_LEVEL == 2
+        -: 2778:
+        -: 2779:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2780:bool
+        -: 2781:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__dereferenceable(const const_iterator* __i) const
+        -: 2782:{
+        -: 2783:    return __i->__node_ != nullptr;
+        -: 2784:}
+        -: 2785:
+        -: 2786:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2787:bool
+        -: 2788:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__decrementable(const const_iterator*) const
+        -: 2789:{
+        -: 2790:    return false;
+        -: 2791:}
+        -: 2792:
+        -: 2793:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2794:bool
+        -: 2795:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__addable(const const_iterator*, ptrdiff_t) const
+        -: 2796:{
+        -: 2797:    return false;
+        -: 2798:}
+        -: 2799:
+        -: 2800:template <class _Tp, class _Hash, class _Equal, class _Alloc>
+        -: 2801:bool
+        -: 2802:__hash_table<_Tp, _Hash, _Equal, _Alloc>::__subscriptable(const const_iterator*, ptrdiff_t) const
+        -: 2803:{
+        -: 2804:    return false;
+        -: 2805:}
+        -: 2806:
+        -: 2807:#endif  // _LIBCPP_DEBUG_LEVEL == 2
+        -: 2808:
+        -: 2809:_LIBCPP_END_NAMESPACE_STD
+        -: 2810:
+        -: 2811:_LIBCPP_POP_MACROS
+        -: 2812:
+        -: 2813:#endif  // _LIBCPP__HASH_TABLE
